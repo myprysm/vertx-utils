@@ -1,0 +1,7 @@
+verticles:
+  string-verticle:
+    verticle: java.lang.String
+    options:
+      config:
+        - some
+        - config

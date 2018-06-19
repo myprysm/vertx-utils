@@ -1,0 +1,8 @@
+{
+  "services": {
+    "bad-service": {
+      "address": "address",
+      "facade": "java.lang.String"
+    }
+  }
+}

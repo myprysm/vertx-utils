@@ -1,0 +1,9 @@
+{
+  "services": {
+    "bad-service": {
+      "address": "address",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "factoryMethod": "someMethod"
+    }
+  }
+}

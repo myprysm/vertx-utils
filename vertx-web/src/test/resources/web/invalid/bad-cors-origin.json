@@ -1,0 +1,6 @@
+{
+  "enableCors": true,
+  "cors": {
+    "allowedOrigins": 101
+  }
+}

@@ -1,0 +1,20 @@
+= Cheatsheets
+
+[[VerticleOptions]]
+== VerticleOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[name]]`name`|`String`|-
+|[[options]]`options`|`link:dataobjects.html#DeploymentOptions[DeploymentOptions]`|
++++
+Sets the verticle options.
+ <p>
+ This expects a Vert.x <code>DeploymentOptions</code> JSON object
++++
+|[[verticle]]`verticle`|`String`|-
+|===
+

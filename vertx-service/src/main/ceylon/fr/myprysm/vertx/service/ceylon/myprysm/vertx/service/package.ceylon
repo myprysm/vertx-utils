@@ -1,0 +1,1 @@
+shared package fr.myprysm.vertx.service.ceylon.myprysm.vertx.service;

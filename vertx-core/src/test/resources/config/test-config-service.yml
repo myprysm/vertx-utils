@@ -1,0 +1,54 @@
+verticles:
+  string-verticle-1:
+    verticle: java.lang.String
+  string-verticle-2:
+    verticle: java.lang.String
+    options:
+      config:
+        some: param
+
+configuration:
+  # Just flagged here to know they exist
+  env:
+    types:
+      int:    will
+      long:   this
+      float:  be
+      double: overriden
+      bool:
+        y:    at
+        n:    runtime
+      string: !
+  types:
+    numbers:
+      integers:
+        int:  123
+        long: 123456789123
+      decimals:
+        float:  123.123
+        double: 123456789123.123456
+    booleans:
+      zero:   0
+      y:      y
+      Y:      Y
+      n:      n
+      N:      N
+      on:     on
+      off:    off
+      yes:    yes
+      Yes:    Yes
+      no:     no
+      No:     No
+      true:   true
+      TRUE:   TRUE
+      false:  false
+      FALSE:  FALSE
+    string: foo bar
+    arrays:
+      inline: [1,2,3]
+      list:
+        - one
+        - two
+        - three
+
+

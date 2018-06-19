@@ -1,0 +1,3 @@
+verticles:
+  verticle-does-not-exist:
+    verticle: i do not exist

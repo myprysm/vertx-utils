@@ -1,0 +1,8 @@
+verticles:
+  simple-verticle-1:
+    verticle: fr.myprysm.vertx.core.StarterVerticleTest$SimpleVerticle
+    options:
+      instances: 3
+
+  simple-verticle-2:
+    verticle: fr.myprysm.vertx.core.StarterVerticleTest$SimpleVerticle

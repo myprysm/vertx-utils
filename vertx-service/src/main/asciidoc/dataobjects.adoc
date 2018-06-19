@@ -1,0 +1,93 @@
+= Cheatsheets
+
+[[ServiceOptions]]
+== ServiceOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[address]]`address`|`String`|
++++
+The event bus address on which the service will be registered.
+ <p>
+ Must not be blank or null.
++++
+|[[discovery]]`discovery`|`Boolean`|
++++
+Indicates whether the service will be registered on Vert.x Service Discovery.
+ <p>
+ Please note that this behaviour is enabled by default.
+ You have
++++
+|[[facade]]`facade`|`String`|
++++
+The Service facade/interface name.
++++
+|[[factoryMethod]]`factoryMethod`|`String`|
++++
+The factory method.
+ <p>
+ This should the name of a static method available on the <code>facade</code> class,
+ accepting as arguments <code>Vertx</code> and a <code>Handler</code>
+ that will receive the configured service.
++++
+|[[healthCheck]]`healthCheck`|`Boolean`|
++++
+Indicates whether Health Check is enabled for the service.
+ <p>
+ This does not apply to classic Vert.x services instanciated with the <code>factoryMethod</code>.
+ This does not apply to a <code>Service</code> that does not implement <code>HealthCheck</code> interface.
++++
+|[[healthCheckName]]`healthCheckName`|`String`|
++++
+Custom health check name.
+ <p>
+ It allows to change the default name configured for a <code>Service</code> health check.
+ <p>
+ It is automatically bound to Vert.x Health Check so name can contain "/" to group
+ results in a single <code>JsonObject</code>
++++
+|[[healthCheckTimeout]]`healthCheckTimeout`|`Number (Long)`|
++++
+Custom health check timeout.
+ <p>
+ Must be a positive value, representing a duration in milliseconds.
+ Default is 1 second (1000 milliseconds).
++++
+|[[implementation]]`implementation`|`String`|
++++
+The Service implementation name.
+ <p>
+ The class must implement the provided <code>facade</code>.
++++
+|[[name]]`name`|`String`|
++++
+The name of the service for service discovery.
++++
+|[[register]]`register`|`Boolean`|
++++
+Indicates whether the service will be registered.
+ <p>
+ Please note that this behaviour is enabled by default.
+ You have to disable it through configuration.
+ <p>
+ This disables also <code>discovery</code>.
++++
+|===
+
+[[ServiceVerticleOptions]]
+== ServiceVerticleOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[services]]`services`|`link:dataobjects.html#ServiceOptions[ServiceOptions]`|
++++
+The service map to start with the <code>ServiceVerticle</code>
++++
+|===
+

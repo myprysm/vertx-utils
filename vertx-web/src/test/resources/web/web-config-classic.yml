@@ -1,0 +1,12 @@
+verticles:
+  simple-verticle-1:
+    verticle: java.lang.String
+  simple-verticle-2:
+    verticle: java.lang.String
+    options:
+      config:
+        some: param
+
+configuration:
+  http:
+    port: 9002

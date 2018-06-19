@@ -1,0 +1,5 @@
+verticles:
+  string-verticle:
+    verticle: java.lang.String
+    options:
+      workerPoolName: 12

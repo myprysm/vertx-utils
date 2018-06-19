@@ -1,0 +1,39 @@
+= Cheatsheets
+
+[[CorsOptions]]
+== CorsOptions
+
+++++
+ See Vert.x documentation for Cross Origin Resource Sharing.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[allowCredentials]]`allowCredentials`|`Boolean`|-
+|[[allowedHeaders]]`allowedHeaders`|`Array of String`|-
+|[[allowedMethods]]`allowedMethods`|`Array of link:enums.html#HttpMethod[HttpMethod]`|-
+|[[allowedOrigins]]`allowedOrigins`|`String`|-
+|[[exposedHeaders]]`exposedHeaders`|`Array of String`|-
+|[[maxAgeSeconds]]`maxAgeSeconds`|`Number (Integer)`|-
+|===
+
+[[WebVerticleOptions]]
+== WebVerticleOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cors]]`cors`|`link:dataobjects.html#CorsOptions[CorsOptions]`|-
+|[[enableCors]]`enableCors`|`Boolean`|-
+|[[enableHealthChecks]]`enableHealthChecks`|`Boolean`|-
+|[[enableMetrics]]`enableMetrics`|`Boolean`|-
+|[[monitoringPath]]`monitoringPath`|`String`|-
+|[[specs]]`specs`|`String`|-
+|[[useOpenAPI3Router]]`useOpenAPI3Router`|`Boolean`|-
+|===
+

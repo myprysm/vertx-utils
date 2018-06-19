@@ -1,0 +1,7 @@
+{
+  "services": {
+    "bad-service": {
+      "address": "address"
+    }
+  }
+}

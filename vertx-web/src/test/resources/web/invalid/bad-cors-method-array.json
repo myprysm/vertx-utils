@@ -1,0 +1,10 @@
+{
+  "enableCors": true,
+  "cors": {
+    "allowedMethods": [
+      "GET",
+      "POST",
+      "VERB"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "services": {
+    "service-hc-timeout": {
+      "address": "service-hc-timeout",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "implementation": "fr.myprysm.vertx.service.DelayHealthCheckServiceImpl",
+      "healthCheckTimeout": 50
+    }
+  }
+}

@@ -1,0 +1,13 @@
+verticles:
+  simple-verticle-1:
+    verticle: java.lang.String
+  simple-verticle-2:
+    verticle: java.lang.String
+    options:
+      config:
+        useOpenAPI3Router: true
+        specs: web/invalid/swagger-minimal.yml
+
+configuration:
+  http:
+    port: 9001

@@ -1,0 +1,1 @@
+shared package fr.myprysm.vertx.core.ceylon.myprysm.vertx.core;

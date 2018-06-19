@@ -1,0 +1,8 @@
+verticles:
+  string-verticle:
+    verticle: java.lang.String
+    options:
+      extraClasspath:
+        - 1
+        - 2
+        - 3

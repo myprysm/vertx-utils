@@ -1,0 +1,3 @@
+verticles:
+  fail-to-start:
+    verticle: fr.myprysm.vertx.core.StarterVerticleTest$FailVerticle

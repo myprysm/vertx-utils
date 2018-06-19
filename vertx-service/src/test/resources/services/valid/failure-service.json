@@ -1,0 +1,10 @@
+{
+  "services": {
+    "failure-service": {
+      "address": "failure-service",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "implementation": "fr.myprysm.vertx.service.SimpleFailureServiceImpl",
+      "healthCheckName": "failure-name"
+    }
+  }
+}

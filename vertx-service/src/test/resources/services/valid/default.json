@@ -1,0 +1,22 @@
+{
+  "services": {
+    "service-1": {
+      "address": "service-1",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "implementation": "fr.myprysm.vertx.service.SimpleSuccessServiceImpl"
+    },
+    "unregistered-service": {
+      "address": "none",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "implementation": "fr.myprysm.vertx.service.SimpleSuccessServiceImpl",
+      "register": false,
+      "discovery": false,
+      "healthCheck": false
+    },
+    "service-2": {
+      "address": "service-2",
+      "facade": "fr.myprysm.vertx.service.SimpleService",
+      "factoryMethod": "createFailure"
+    }
+  }
+}

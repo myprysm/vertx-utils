@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2018 the original author or the original authors
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>vertx-parent</artifactId>
+        <groupId>fr.myprysm.vertx</groupId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../vertx-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>vertx-web</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <description>
+        Web utilities to fasten endpoint development with Vert.x.
+        Provides abstract classes for classic and OpenAPI 3.0 endpoints
+    </description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.myprysm.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${stack.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.myprysm.vertx</groupId>
+            <artifactId>vertx-test</artifactId>
+            <version>${stack.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-dropwizard-metrics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-circuit-breaker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web-api-contract</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
+
+    <developers>
+        <developer>
+            <name>Damien Benon</name>
+            <url>https://github.com/myprysm</url>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/myprysm/vertx-utils/vertx-web</url>
+    </scm>
+
+</project>
