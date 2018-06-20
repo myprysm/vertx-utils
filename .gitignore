@@ -34,4 +34,4 @@ openshift2-example/**/*.jar
 node_modules
 _config.yml
 java-exercise
-
+.ceylon
