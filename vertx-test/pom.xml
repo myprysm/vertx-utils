@@ -31,6 +31,7 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <version>0.1.1</version>
     <description>Myprysm Vert.x test helpers to fasten test writing</description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-test</url>
 
     <licenses>
         <license>

@@ -27,7 +27,7 @@
     <description>
         Myprysm Vert.x Utils stack dependency versions
     </description>
-
+    <url>https://github.com/myprysm/vertx-utils/vertx-dependencies</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>

@@ -34,6 +34,7 @@
         Brings some facility to setup quickly retrofit interfaces
         with RxJava2 and Vert.x Json API Support
     </description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-retrofit</url>
 
     <licenses>
         <license>

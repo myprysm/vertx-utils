@@ -34,6 +34,7 @@
         Web utilities to fasten endpoint development with Vert.x.
         Provides abstract classes for classic and OpenAPI 3.0 endpoints
     </description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-web</url>
 
     <licenses>
         <license>

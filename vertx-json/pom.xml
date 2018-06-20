@@ -33,6 +33,7 @@
     <description>
         Vert.x Json API Helpers to manipulate quickly and efficiently JsonObject and JsonArray
     </description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-json</url>
 
     <licenses>
         <license>
