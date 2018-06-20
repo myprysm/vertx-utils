@@ -23,13 +23,13 @@
     <parent>
         <groupId>fr.myprysm.vertx</groupId>
         <artifactId>vertx-parent</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.3-SNAPSHOT</version>
         <relativePath>../vertx-parent/pom.xml</relativePath>
     </parent>
     <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-json</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
     <description>
         Vert.x Json API Helpers to manipulate quickly and efficiently JsonObject and JsonArray
     </description>

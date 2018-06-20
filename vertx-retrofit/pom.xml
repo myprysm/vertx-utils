@@ -21,7 +21,7 @@
     <parent>
         <artifactId>vertx-parent</artifactId>
         <groupId>fr.myprysm.vertx</groupId>
-        <version>0.1.2</version>
+        <version>0.1.3-SNAPSHOT</version>
         <relativePath>../vertx-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -29,7 +29,7 @@
     <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-retrofit</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
     <description>
         Brings some facility to setup quickly retrofit interfaces
         with RxJava2 and Vert.x Json API Support
