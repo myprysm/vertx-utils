@@ -29,7 +29,7 @@ import io.vertx.core.http.HttpMethod
  * @param allowedMethods
  * @param allowedOrigins
  * @param exposedHeaders
- * @param maxAgeSeconds
+ * @param maxAgeSeconds 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.web.CorsOptions original] using Vert.x codegen.
