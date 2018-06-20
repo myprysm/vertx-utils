@@ -22,8 +22,11 @@
 
     <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-dependencies</artifactId>
-    <version>0.1.0</version>
-    <name>Myprysm components versions</name>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.1</version>
+    <description>
+        Myprysm Vert.x Utils stack dependency versions
+    </description>
 
     <licenses>
         <license>
@@ -34,7 +37,7 @@
     </licenses>
 
     <properties>
-        <stack.version>0.1.0</stack.version>
+        <stack.version>0.1.1</stack.version>
     </properties>
 
     <dependencyManagement>

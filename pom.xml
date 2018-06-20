@@ -22,8 +22,13 @@
 
     <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-utils</artifactId>
-    <version>0.1.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.1</version>
     <packaging>pom</packaging>
+    <description>
+        Myprysm Vert.x Utils is a set of utilities to fasten application development with Vert.x
+    </description>
+    <url>https://github.com/myprysm/vertx-utils</url>
 
     <licenses>
         <license>
@@ -45,7 +50,6 @@
         <module>vertx-dependencies</module>
     </modules>
 
-
     <developers>
         <developer>
             <name>Damien Benon</name>
@@ -53,7 +57,94 @@
         </developer>
     </developers>
     <scm>
-        <url>https://github.com/myprysm/vertx-utils</url>
+        <connection>scm:git:git://github.com/myprysm/vertx-utils.git</connection>
+        <developerConnection>scm:git:ssh://github.com:myprysm/vertx-utils.git</developerConnection>
+        <url>https://github.com/myprysm/vertx-utils/tree/master</url>
     </scm>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- sources -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                    <goal>test-jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Doc & report -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>javadoc</id>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </plugin>
+                    <!-- Sign the artifacts -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- sonatype to push artifact to maven central -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

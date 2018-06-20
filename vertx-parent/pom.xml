@@ -20,9 +20,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>vertx-parent</artifactId>
     <groupId>fr.myprysm.vertx</groupId>
-    <version>0.1.0</version>
+    <artifactId>vertx-parent</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.1</version>
     <description>Parent project for Myprysm Vert.x projects</description>
     <packaging>pom</packaging>
 
@@ -35,7 +36,7 @@
     </licenses>
 
     <properties>
-        <stack.version>0.1.0</stack.version>
+        <stack.version>0.1.1</stack.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <vertx.version>3.5.2</vertx.version>
@@ -540,4 +541,16 @@
     <scm>
         <url>https://github.com/myprysm/vertx-utils/vertx-parent</url>
     </scm>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
