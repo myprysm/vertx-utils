@@ -23,12 +23,14 @@
     <parent>
         <groupId>fr.myprysm.vertx</groupId>
         <artifactId>vertx-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
         <relativePath>../vertx-parent/pom.xml</relativePath>
     </parent>
 
+    <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-validation</artifactId>
-    <version>0.1.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.1</version>
     <description>
         Validation micro-framework for Vert.x Json API.
         Broadly use combinator pattern and suppliers to provide
