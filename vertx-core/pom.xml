@@ -21,15 +21,17 @@
     <parent>
         <artifactId>vertx-parent</artifactId>
         <groupId>fr.myprysm.vertx</groupId>
-        <version>0.1.0</version>
+        <version>0.1.2</version>
         <relativePath>../vertx-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-core</artifactId>
-    <version>0.1.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.2</version>
     <description>Myprysm Vert.x Core with ConfigService and StarterVerticle</description>
-
+    <url>https://github.com/myprysm/vertx-utils/vertx-core</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>

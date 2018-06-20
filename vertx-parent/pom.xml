@@ -20,12 +20,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>vertx-parent</artifactId>
     <groupId>fr.myprysm.vertx</groupId>
-    <version>0.1.0</version>
+    <artifactId>vertx-parent</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.2</version>
     <description>Parent project for Myprysm Vert.x projects</description>
     <packaging>pom</packaging>
-
+    <url>https://github.com/myprysm/vertx-utils/vertx-parent</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -35,7 +36,7 @@
     </licenses>
 
     <properties>
-        <stack.version>0.1.0</stack.version>
+        <stack.version>0.1.2</stack.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <vertx.version>3.5.2</vertx.version>
@@ -60,6 +61,8 @@
         <jacoco-plugin.version>0.8.0</jacoco-plugin.version>
         <javadoc-plugin.version>3.0.0</javadoc-plugin.version>
         <site-plugin.version>3.7</site-plugin.version>
+        <gpg-plugin.version>1.6</gpg-plugin.version>
+        <nexus-plugin.version>1.6.8</nexus-plugin.version>
     </properties>
 
     <dependencies>
@@ -447,6 +450,45 @@
                 </plugin>
 
 
+                <!-- Plugins for site phase -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${site-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-site</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>site-and-stage</id>
+                            <phase>site</phase>
+                            <goals>
+                                <goal>site</goal>
+                                <goal>stage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- sources -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                                <goal>test-jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <!-- Doc & report -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -471,25 +513,31 @@
                         <failOnError>false</failOnError>
                     </configuration>
                 </plugin>
-                <!-- Plugins for site phase -->
+
+                <!-- sonatype to push artifact to maven central -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
+                <!-- Sign the artifacts -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${site-plugin.version}</version>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${gpg-plugin.version}</version>
                     <executions>
                         <execution>
-                            <id>attach-site</id>
-                            <phase>prepare-package</phase>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
                             <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>site-and-stage</id>
-                            <phase>site</phase>
-                            <goals>
-                                <goal>site</goal>
-                                <goal>stage</goal>
+                                <goal>sign</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -529,6 +577,33 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <developers>
@@ -540,4 +615,16 @@
     <scm>
         <url>https://github.com/myprysm/vertx-utils/vertx-parent</url>
     </scm>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

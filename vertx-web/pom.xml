@@ -21,17 +21,20 @@
     <parent>
         <artifactId>vertx-parent</artifactId>
         <groupId>fr.myprysm.vertx</groupId>
-        <version>0.1.0</version>
+        <version>0.1.2</version>
         <relativePath>../vertx-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-web</artifactId>
-    <version>0.1.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.2</version>
     <description>
         Web utilities to fasten endpoint development with Vert.x.
         Provides abstract classes for classic and OpenAPI 3.0 endpoints
     </description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-web</url>
 
     <licenses>
         <license>
