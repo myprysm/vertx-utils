@@ -14,7 +14,7 @@ Add it as a maven dependency to your project along with vertx-junit5 and Junit5:
 <dependency>
     <groupId>fr.myprysm.vertx</groupId>
     <artifactId>vertx-test</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <scope>test</scope>
 </dependency>
 ```
