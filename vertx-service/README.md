@@ -44,3 +44,37 @@ The beat will return a Vert.x `Handler` that will(/can) respond asynchronously t
 
 You have to take care by yourself that the `Future` that will be handled is not yet already completed
 if you want to keep a proper log trace.
+
+## Configuration
+
+Service description are passed as named entries in the services configuration map:
+
+```
+verticles:
+  service:
+    verticle: fr.myprysm.vertx.service.ServiceVerticle
+    options:
+      config:
+        services:
+          # Service name is used for Service Discovery registration
+          service-1:
+            address:        my.service.package:service-1
+            facade:         fr.myprysm.vertx.service.SimpleService
+            implementation: fr.myprysm.vertx.service.SimpleSuccessServiceImpl
+            
+          # This service is not registered automatically with a proxy
+          # This allows different purposes for services as Vert.x is injected
+          # likely for batches or other technical/background tasks
+          unregistered-service:
+            facade:         fr.myprysm.vertx.service.SimpleService
+            implementation: fr.myprysm.vertx.service.SimpleSuccessServiceImpl
+            register:       false
+            healthCheck:    false
+            
+          # This service is not registered on Vert.x Service Discovery while a proxy is still created
+          service-2:
+            address:        my.service.package:service-2
+            facade:         fr.myprysm.vertx.service.SimpleService
+            implementation: fr.myprysm.vertx.service.SimpleSuccessServiceImpl
+            discovery:      false
+```  
