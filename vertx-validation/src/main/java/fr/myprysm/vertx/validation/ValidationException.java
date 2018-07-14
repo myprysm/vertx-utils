@@ -16,9 +16,22 @@
 
 package fr.myprysm.vertx.validation;
 
-public class ValidationException extends Exception {
+/**
+ * Validation exception.
+ * <p>
+ * Can only be created from a {@link ValidationResult}
+ */
+public class ValidationException extends RuntimeException {
+    /**
+     * Default message if none provided in the result.
+     */
     private static final String DEFAULT_MESSAGE = "Generic validation exception";
 
+    /**
+     * Create a new ValidationException from the validation result.
+     *
+     * @param validation the validation result
+     */
     public ValidationException(ValidationResult validation) {
         super(validation.getReason().orElse(DEFAULT_MESSAGE));
     }

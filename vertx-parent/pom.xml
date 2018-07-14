@@ -36,7 +36,7 @@
     </licenses>
 
     <properties>
-        <stack.version>0.1.2</stack.version>
+        <stack.version>0.1.4-SNAPSHOT</stack.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <vertx.version>3.5.2</vertx.version>
@@ -47,8 +47,8 @@
         <classpath-scanner.version>2.18.1</classpath-scanner.version>
 
         <assertj.version>3.9.0</assertj.version>
-        <junit-jupiter.version>5.1.0</junit-jupiter.version>
-        <junit-platform.version>1.1.0</junit-platform.version>
+        <junit-jupiter.version>5.2.0</junit-jupiter.version>
+        <junit-platform.version>1.2.0</junit-platform.version>
 
         <!-- plugin versions & properties -->
         <source-plugin.version>3.0.1</source-plugin.version>
@@ -57,7 +57,8 @@
         <docker-plugin.version>1.0.0</docker-plugin.version>
         <shade-plugin.version>2.4.3</shade-plugin.version>
         <clean-plugin.version>3.0.0</clean-plugin.version>
-        <surefire-plugin.version>2.19.1</surefire-plugin.version>
+        <surefire-plugin.version>2.22.0</surefire-plugin.version>
+        <failsafe-plugin.version>2.22.0</failsafe-plugin.version>
         <jacoco-plugin.version>0.8.0</jacoco-plugin.version>
         <javadoc-plugin.version>3.0.0</javadoc-plugin.version>
         <site-plugin.version>3.7</site-plugin.version>
@@ -71,46 +72,12 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-codegen</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-lang-kotlin</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Disabled at the moment as it clashes with classpath scanner -->
-        <!--<dependency>-->
-        <!--<groupId>io.vertx</groupId>-->
-        <!--<artifactId>vertx-lang-scala_2.12</artifactId>-->
-        <!--&lt;!&ndash;Not provided by Vert.x BOM&ndash;&gt;-->
-        <!--<version>${vertx.version}</version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-lang-groovy</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-lang-ruby</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-lang-ceylon</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-lang-js</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
@@ -296,13 +263,6 @@
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${clean-plugin.version}</version>
-                    <configuration>
-                        <filesets>
-                            <fileset>
-                                <directory>${project.basedir}/src/main/generated</directory>
-                            </fileset>
-                        </filesets>
-                    </configuration>
                 </plugin>
 
                 <plugin>
@@ -395,13 +355,6 @@
                     <configuration>
                         <!-- Sets the vm arguments for JaCoCO instrumentation -->
                         <argLine>${surefireArgLine}</argLine>
-                        <includes>
-                            <include>**/Test*.java</include>
-                            <include>**/*Test.java</include>
-                            <include>**/*Tests.java</include>
-                            <include>**/*TestCase.java</include>
-                            <include>**/RandomName.java</include>
-                        </includes>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -409,7 +362,40 @@
                             <artifactId>junit-platform-surefire-provider</artifactId>
                             <version>${junit-platform.version}</version>
                         </dependency>
+                        <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-engine</artifactId>
+                            <version>${junit-jupiter.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.junit.vintage</groupId>
+                            <artifactId>junit-vintage-engine</artifactId>
+                            <version>${junit-jupiter.version}</version>
+                        </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe-plugin.version}</version>
+                    <configuration>
+                        <!-- Sets the vm arguments for JaCoCO instrumentation -->
+                        <argLine>${failsafeArgLine}</argLine>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -436,6 +422,28 @@
                             <configuration>
                                 <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
                                 <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                                <propertyName>failsafeArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
                             </configuration>
                         </execution>
                     </executions>
@@ -572,6 +580,60 @@
                             <cmd><![CDATA[
 ["exec java -XX:+PrintFlagsFinal $JAVA_OPTIONS -Dvertx.metrics.options.enabled=true -Dvertx.metrics.options.jmxEnabled=true -jar $JAR_NAME -cp -cluster ."]
                         ]]></cmd>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>codegen</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-lang-kotlin</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <!-- Disabled at the moment as it clashes with classpath scanner -->
+                <!--<dependency>-->
+                <!--<groupId>io.vertx</groupId>-->
+                <!--<artifactId>vertx-lang-scala_2.12</artifactId>-->
+                <!--&lt;!&ndash;Not provided by Vert.x BOM&ndash;&gt;-->
+                <!--<version>${vertx.version}</version>-->
+                <!--<scope>provided</scope>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-lang-groovy</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-lang-ruby</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-lang-ceylon</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-lang-js</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/generated</directory>
+                                </fileset>
+                            </filesets>
                         </configuration>
                     </plugin>
                 </plugins>

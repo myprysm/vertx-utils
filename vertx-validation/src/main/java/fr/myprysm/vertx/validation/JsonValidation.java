@@ -642,6 +642,46 @@ public interface JsonValidation extends Function<JsonObject, ValidationResult> {
     }
 
     /**
+     * Validates that all the items in the <code>field</code> array are valid according to the provided <code>itemValidation</code>.
+     *
+     * @param field          the name of the field
+     * @param itemValidation the validation chain
+     * @return validation result combinator
+     */
+    static JsonValidation nestedArray(String field, JsonValidation itemValidation) {
+        requireNonNull(field);
+        requireNonNull(itemValidation);
+        return nestedArray(field, () -> itemValidation);
+    }
+
+    /**
+     * Validates that all the items in the <code>field</code> array are valid according to the provided <code>itemValidation</code>.
+     *
+     * @param field    the name of the field
+     * @param supplier the validation chain supplier
+     * @return validation result combinator
+     */
+    static JsonValidation nestedArray(String field, Supplier<JsonValidation> supplier) {
+        requireNonNull(field);
+        requireNonNull(supplier);
+        AtomicReference<String> nestedMessage = new AtomicReference<>();
+        return arrayOf(field, JsonObject.class).and(holds(json -> {
+            JsonValidation validation = supplier.get();
+            JsonArray array = json.getJsonArray(field);
+
+            for (int i = 0; i < array.size(); i++) {
+                JsonObject item = array.getJsonObject(i);
+                ValidationResult result = validation.apply(item);
+                if (!result.isValid()) {
+                    nestedMessage.set("Item " + i + " is invalid: " + result.getReason().get());
+                }
+            }
+
+            return true;
+        }, message(field, " is not valid. Nested error is: " + nestedMessage.get())));
+    }
+
+    /**
      * Validates the nested field by applying the provided (sub) validation.
      *
      * @param field         the nested field to validate
