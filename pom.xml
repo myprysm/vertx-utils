@@ -53,6 +53,7 @@
         <module>vertx-service</module>
         <module>vertx-web</module>
         <module>vertx-dependencies</module>
+        <module>vertx-elasticsearch</module>
     </modules>
 
     <developers>

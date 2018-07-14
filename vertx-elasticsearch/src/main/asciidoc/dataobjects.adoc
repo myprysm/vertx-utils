@@ -1,0 +1,627 @@
+= Cheatsheets
+
+[[AcknowledgedResponse]]
+== AcknowledgedResponse
+
+++++
+ Response that indicates whether it has been acknowledged.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
+|===
+
+[[BaseRequest]]
+== BaseRequest
+
+++++
+ Base DataObject request.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[BulkRequest]]
+== BulkRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[requests]]`requests`|`Array of link:dataobjects.html#DocWriteRequest[DocWriteRequest]`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
+|===
+
+[[BulkResponse]]
+== BulkResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[errors]]`errors`|`Boolean`|-
+|[[items]]`items`|`Array of link:dataobjects.html#BulkResponseItem[BulkResponseItem]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[took]]`took`|`Number (long)`|-
+|===
+
+[[BulkResponseItem]]
+== BulkResponseItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[failed]]`failed`|`Boolean`|-
+|[[failure]]`failure`|`String`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (Long)`|-
+|===
+
+[[ClusterUpdateSettingsRequest]]
+== ClusterUpdateSettingsRequest
+
+++++
+ ClusterUpdateSettingsRequest DataObject.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[persistentSettings]]`persistentSettings`|`Json object`|-
+|[[transientSettings]]`transientSettings`|`Json object`|-
+|===
+
+[[ClusterUpdateSettingsResponse]]
+== ClusterUpdateSettingsResponse
+
+++++
+ ClusterUpdateSettingsResponse.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
+|[[persistentSettings]]`persistentSettings`|`Json object`|-
+|[[transientSettings]]`transientSettings`|`Json object`|-
+|===
+
+[[DeleteIndexRequest]]
+== DeleteIndexRequest
+
+++++
+ DeleteIndexRequest.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[indices]]`indices`|`Array of String`|-
+|===
+
+[[DeleteIndexResponse]]
+== DeleteIndexResponse
+
+++++
+ DeleteIndexResponse.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
+|===
+
+[[DeleteRequest]]
+== DeleteRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
+|===
+
+[[DeleteResponse]]
+== DeleteResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[DocWriteRequest]]
+== DocWriteRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[DocWriteResponse]]
+== DocWriteResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[DocumentField]]
+== DocumentField
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[name]]`name`|`String`|-
+|[[values]]`values`|`Json array`|-
+|===
+
+[[ElasticsearchClientOptions]]
+== ElasticsearchClientOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[defaultHeaders]]`defaultHeaders`|`String`|-
+|[[hosts]]`hosts`|`Array of link:dataobjects.html#HttpHost[HttpHost]`|-
+|[[maxRetryTimeout]]`maxRetryTimeout`|`Number (int)`|-
+|[[pathPrefix]]`pathPrefix`|`String`|-
+|[[useNativeAsyncAPI]]`useNativeAsyncAPI`|`Boolean`|-
+|===
+
+[[Failure]]
+== Failure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|===
+
+[[FetchSourceContext]]
+== FetchSourceContext
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[excludes]]`excludes`|`Array of String`|-
+|[[fetchSource]]`fetchSource`|`Boolean`|-
+|[[includes]]`includes`|`Array of String`|-
+|===
+
+[[GetFailure]]
+== GetFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[GetIndexRequest]]
+== GetIndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[features]]`features`|`Array of link:enums.html#Feature[Feature]`|-
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[includeDefaults]]`includeDefaults`|`Boolean`|-
+|[[indices]]`indices`|`Array of String`|-
+|[[local]]`local`|`Boolean`|-
+|[[masterNodeTimeout]]`masterNodeTimeout`|`Number (long)`|-
+|[[types]]`types`|`Array of String`|-
+|===
+
+[[GetRequest]]
+== GetRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[parent]]`parent`|`String`|-
+|[[preference]]`preference`|`String`|-
+|[[realTime]]`realTime`|`Boolean`|-
+|[[refresh]]`refresh`|`Boolean`|-
+|[[routing]]`routing`|`String`|-
+|[[storedFields]]`storedFields`|`Array of String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[GetRequestItem]]
+== GetRequestItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[parent]]`parent`|`String`|-
+|[[routing]]`routing`|`String`|-
+|[[storedFields]]`storedFields`|`Array of String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[GetResponse]]
+== GetResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[exists]]`exists`|`Boolean`|-
+|[[fields]]`fields`|`link:dataobjects.html#DocumentField[DocumentField]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[source]]`source`|`Json object`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[HttpHost]]
+== HttpHost
+
+++++
+ HttpHost.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[hostname]]`hostname`|`String`|-
+|[[port]]`port`|`Number (Integer)`|-
+|[[protocol]]`protocol`|`String`|-
+|===
+
+[[IndexRequest]]
+== IndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[pipeline]]`pipeline`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[source]]`source`|`Json object`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[IndexResponse]]
+== IndexResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[MainResponse]]
+== MainResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[available]]`available`|`Boolean`|-
+|[[build]]`build`|`String`|-
+|[[clusterName]]`clusterName`|`String`|-
+|[[clusterUuid]]`clusterUuid`|`String`|-
+|[[nodeName]]`nodeName`|`String`|-
+|[[version]]`version`|`String`|-
+|===
+
+[[MultiGetRequest]]
+== MultiGetRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[items]]`items`|`Array of link:dataobjects.html#GetRequestItem[GetRequestItem]`|-
+|[[preference]]`preference`|`String`|-
+|[[realTime]]`realTime`|`Boolean`|-
+|[[refresh]]`refresh`|`Boolean`|-
+|===
+
+[[MultiGetResponse]]
+== MultiGetResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[failures]]`failures`|`Array of link:dataobjects.html#GetFailure[GetFailure]`|-
+|[[responses]]`responses`|`Array of link:dataobjects.html#GetResponse[GetResponse]`|-
+|===
+
+[[ReplicationResponse]]
+== ReplicationResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|===
+
+[[Script]]
+== Script
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[idOrCode]]`idOrCode`|`String`|-
+|[[lang]]`lang`|`String`|-
+|[[options]]`options`|`String`|-
+|[[params]]`params`|`Json object`|-
+|[[type]]`type`|`link:enums.html#ScriptType[ScriptType]`|-
+|===
+
+[[ShardId]]
+== ShardId
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[id]]`id`|`Number (int)`|-
+|[[index]]`index`|`String`|-
+|===
+
+[[ShardInfo]]
+== ShardInfo
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[failed]]`failed`|`Number (int)`|-
+|[[failures]]`failures`|`Array of link:dataobjects.html#ShardInfoFailure[ShardInfoFailure]`|-
+|[[successful]]`successful`|`Number (int)`|-
+|[[total]]`total`|`Number (int)`|-
+|===
+
+[[ShardInfoFailure]]
+== ShardInfoFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|[[nodeId]]`nodeId`|`String`|-
+|[[primary]]`primary`|`Boolean`|-
+|[[shardId]]`shardId`|`String`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|===
+
+[[UpdateRequest]]
+== UpdateRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[detectNoop]]`detectNoop`|`Boolean`|-
+|[[doc]]`doc`|`Json object`|-
+|[[docAsUpsert]]`docAsUpsert`|`Boolean`|-
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[fields]]`fields`|`Array of String`|-
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[retryOnConflict]]`retryOnConflict`|`Number (int)`|-
+|[[routing]]`routing`|`String`|-
+|[[script]]`script`|`link:dataobjects.html#Script[Script]`|-
+|[[scriptedUpsert]]`scriptedUpsert`|`Boolean`|-
+|[[type]]`type`|`String`|-
+|[[upsert]]`upsert`|`Json object`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
+|===
+
+[[UpdateResponse]]
+== UpdateResponse
+
+++++
+ Update response from Elasticsearch.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[getResult]]`getResult`|`link:dataobjects.html#GetResponse[GetResponse]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+

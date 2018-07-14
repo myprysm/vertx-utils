@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>vertx-parent</artifactId>
+        <groupId>fr.myprysm.vertx</groupId>
+        <version>0.1.4-SNAPSHOT</version>
+        <relativePath>../vertx-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>fr.myprysm.vertx</groupId>
+    <artifactId>vertx-elasticsearch</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <version>0.1.4-SNAPSHOT</version>
+
+    <description>
+        Vert.x Wrapper for official Elasticsearch High Level Rest Client.
+    </description>
+    <url>https://github.com/myprysm/vertx-utils/vertx-elasticsearch</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <lucene.version>7.3.1</lucene.version>
+        <elasticsearch.version>6.3.1</elasticsearch.version>
+        <log4j.version>2.9.1</log4j.version>
+        <jrand.version>0.2.5-alpha</jrand.version>
+        <es-plugin.version>6.6</es-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.myprysm.vertx</groupId>
+            <artifactId>vertx-validation</artifactId>
+            <version>${stack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rx-java2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.myprysm.vertx</groupId>
+            <artifactId>vertx-test</artifactId>
+            <version>${stack.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.xdrop</groupId>
+            <artifactId>jrand</artifactId>
+            <version>${jrand.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>me.xdrop</groupId>
+                    <artifactId>jrand-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>me.xdrop</groupId>
+                    <artifactId>jrand-test</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>me.xdrop</groupId>
+                    <artifactId>jrand-annotation-processor</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.github.alexcojocaru</groupId>
+                <artifactId>elasticsearch-maven-plugin</artifactId>
+                <version>${es-plugin.version}</version>
+                <configuration>
+                    <version>${elasticsearch.version}</version>
+                    <clusterName>test</clusterName>
+                    <transportPort>9300</transportPort>
+                    <httpPort>9200</httpPort>
+                </configuration>
+                <executions>
+                    <!--
+                        The elasticsearch maven plugin goals are by default bound to the
+                        pre-integration-test and post-integration-test phases
+                    -->
+                    <execution>
+                        <id>start-elasticsearch</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>runforked</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-elasticsearch</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <developers>
+        <developer>
+            <name>Damien Benon</name>
+            <url>https://github.com/myprysm</url>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/myprysm/vertx-utils/vertx-elasticsearch</url>
+    </scm>
+</project>
