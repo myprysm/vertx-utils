@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.myprysm.vertx.elasticsearch.action.admin.indices.delete;
+package fr.myprysm.vertx.elasticsearch.action.admin.indices.create;
 
 import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
 import io.vertx.codegen.annotations.DataObject;
@@ -26,12 +26,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * DeleteIndexRequest.
- */
+import static org.elasticsearch.action.support.master.AcknowledgedRequest.DEFAULT_ACK_TIMEOUT;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,53 +39,54 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @DataObject(generateConverter = true)
-public class DeleteIndexRequest extends BaseRequest {
+public class CreateIndexRequest extends BaseRequest {
 
-    /**
-     * Indices.
-     */
-    private List<String> indices;
+    private String cause;
+    private String index;
+    private JsonObject settings;
 
-    /**
-     * Build a new DeleteIndexRequest from another.
-     *
-     * @param other the other
-     */
-    public DeleteIndexRequest(DeleteIndexRequest other) {
-        super(other);
-        indices = other.indices;
+    private Map<String, JsonObject> mappings;
+    private Set<Alias> aliases;
+
+    private Integer waitForActiveShards;
+    private long timeout = DEFAULT_ACK_TIMEOUT.millis();
+
+    public CreateIndexRequest(String index) {
+        this.index = index;
+    }
+
+    private Map<String, JsonObject> safeMappings() {
+        if (mappings == null) {
+            mappings = new HashMap<>();
+        }
+        return mappings;
+    }
+
+    public CreateIndexRequest addMapping(String name, JsonObject mapping) {
+        safeMappings().put(name, mapping);
+        return this;
     }
 
     /**
-     * Build a new DeleteIndexRequest with the provided indice.
-     *
-     * @param index the indice
-     */
-    public DeleteIndexRequest(String index) {
-        this.indices = Arrays.asList(index);
-    }
-
-    /**
-     * Build a new <code>DeleteIndexRequest</code> from a <code>JsonObject</code>,
+     * Build a new <code>CreateIndexRequest</code> from a <code>JsonObject</code>,
      * calling parent constructor.
      *
      * @param json the <code>JsonObject</code>
      */
-    public DeleteIndexRequest(JsonObject json) {
+    public CreateIndexRequest(JsonObject json) {
         super(json);
-        DeleteIndexRequestConverter.fromJson(json, this);
+        CreateIndexRequestConverter.fromJson(json, this);
     }
 
-
     /**
-     * Transforms the <code>DeleteIndexRequest</code> into a <code>JsonObject</code>,
+     * Transforms the <code>CreateIndexRequest</code> into a <code>JsonObject</code>,
      * calling parent <code>toJson</code>.
      *
      * @return the <code>JsonObject</code>
      */
     public JsonObject toJson() {
         JsonObject json = super.toJson();
-        DeleteIndexRequestConverter.toJson(this, json);
+        CreateIndexRequestConverter.toJson(this, json);
         return json;
     }
 }

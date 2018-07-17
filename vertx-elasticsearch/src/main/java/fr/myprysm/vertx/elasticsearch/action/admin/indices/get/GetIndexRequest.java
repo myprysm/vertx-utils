@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest.Feature;
 import org.elasticsearch.action.support.IndicesOptions;
@@ -37,6 +38,7 @@ import static org.elasticsearch.action.support.master.MasterNodeRequest.DEFAULT_
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @DataObject(generateConverter = true)
 public class GetIndexRequest extends BaseRequest {
 
@@ -66,11 +68,6 @@ public class GetIndexRequest extends BaseRequest {
         JsonObject json = new JsonObject();
         GetIndexRequestConverter.toJson(this, json);
         return json;
-    }
-
-    @Override
-    public GetIndexRequest addHeader(String headerKey, String headerValue) {
-        return (GetIndexRequest) super.addHeader(headerKey, headerValue);
     }
 
 }

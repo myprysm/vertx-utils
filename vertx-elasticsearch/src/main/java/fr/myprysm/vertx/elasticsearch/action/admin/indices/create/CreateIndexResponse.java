@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package fr.myprysm.vertx.elasticsearch.action.admin.indices.delete;
+package fr.myprysm.vertx.elasticsearch.action.admin.indices.create;
 
-import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
+import fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
@@ -26,12 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * DeleteIndexRequest.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,53 +33,43 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @DataObject(generateConverter = true)
-public class DeleteIndexRequest extends BaseRequest {
+public class CreateIndexResponse extends AcknowledgedResponse {
 
-    /**
-     * Indices.
-     */
-    private List<String> indices;
+    private boolean shardsAcknowledged;
+    private String index;
 
-    /**
-     * Build a new DeleteIndexRequest from another.
-     *
-     * @param other the other
-     */
-    public DeleteIndexRequest(DeleteIndexRequest other) {
+    public CreateIndexResponse(boolean acknowledged, boolean shardsAcknowledged, String index) {
+        super(acknowledged);
+        this.shardsAcknowledged = shardsAcknowledged;
+        this.index = index;
+    }
+
+    public CreateIndexResponse(CreateIndexResponse other) {
         super(other);
-        indices = other.indices;
+        shardsAcknowledged = other.shardsAcknowledged;
+        index = other.index;
     }
 
     /**
-     * Build a new DeleteIndexRequest with the provided indice.
-     *
-     * @param index the indice
-     */
-    public DeleteIndexRequest(String index) {
-        this.indices = Arrays.asList(index);
-    }
-
-    /**
-     * Build a new <code>DeleteIndexRequest</code> from a <code>JsonObject</code>,
+     * Build a new <code>CreateIndexResponse</code> from a <code>JsonObject</code>,
      * calling parent constructor.
      *
      * @param json the <code>JsonObject</code>
      */
-    public DeleteIndexRequest(JsonObject json) {
+    public CreateIndexResponse(JsonObject json) {
         super(json);
-        DeleteIndexRequestConverter.fromJson(json, this);
+        CreateIndexResponseConverter.fromJson(json, this);
     }
 
-
     /**
-     * Transforms the <code>DeleteIndexRequest</code> into a <code>JsonObject</code>,
+     * Transforms the <code>CreateIndexResponse</code> into a <code>JsonObject</code>,
      * calling parent <code>toJson</code>.
      *
      * @return the <code>JsonObject</code>
      */
     public JsonObject toJson() {
         JsonObject json = super.toJson();
-        DeleteIndexRequestConverter.toJson(this, json);
+        CreateIndexResponseConverter.toJson(this, json);
         return json;
     }
 }
