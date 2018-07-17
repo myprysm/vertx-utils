@@ -21,9 +21,11 @@ import java.io.IOException;
 public abstract class VertxESRestTestCase implements VertxTest {
 
     private static Vertx vertx;
-    private ElasticsearchClient client;
-    private static fr.myprysm.vertx.elasticsearch.ElasticsearchClient _client;
+    private ElasticsearchClient nativeClient;
+    private static fr.myprysm.vertx.elasticsearch.ElasticsearchClient _nativeAsync;
     private RestHighLevelClient esClient;
+    private static fr.myprysm.vertx.elasticsearch.ElasticsearchClient _vertxAsync;
+    private ElasticsearchClient vertxClient;
 
     @BeforeAll
     public static void setUpVertx() {
@@ -34,14 +36,33 @@ public abstract class VertxESRestTestCase implements VertxTest {
     }
 
     @BeforeEach
-    public void initElasticSearchClient() throws IOException {
-        if (client == null) {
+    public void initElasticSearchClient() throws IOException, InterruptedException {
+        if (nativeClient == null) {
             esClient = new RestHighLevelClient(RestClient.builder(getHosts()));
-            _client = ElasticsearchClientFactory.create(vertx, useNativeAsync(), new CustomHolder(esClient));
-            client = new ElasticsearchClient(_client);
+            BaseElasticsearchRestClient.ClientHolder holder = new CustomHolder(esClient);
+
+            _nativeAsync = ElasticsearchClientFactory.create(vertx, true, holder);
+            nativeClient = new ElasticsearchClient(_nativeAsync);
+
+            holder.incRefCount();
+            _vertxAsync = ElasticsearchClientFactory.create(vertx, false, holder);
+            vertxClient = new ElasticsearchClient(_vertxAsync);
         }
 
+        long start = System.currentTimeMillis();
         resetES();
+        long stopReset = System.currentTimeMillis();
+        initES();
+        long stopInit = System.currentTimeMillis();
+
+        System.out.println(String.format("%dms to reset indexes, %dms to init Elasticsearch, %dms total",
+                stopReset - start,
+                stopInit - stopReset,
+                stopInit - start));
+    }
+
+    void initES() throws InterruptedException {
+
     }
 
     /**
@@ -92,19 +113,17 @@ public abstract class VertxESRestTestCase implements VertxTest {
     }
 
     ElasticsearchClient rxClient() {
-        return client;
+        return randomBoolean() ? nativeClient : vertxClient;
     }
 
     RestHighLevelClient esClient() {
         return esClient;
     }
 
-    abstract boolean useNativeAsync();
-
-
     @AfterAll
     public static void tearDownVertx() {
-        _client.close();
+        _nativeAsync.close();
+        _vertxAsync.close();
         vertx.close();
         RxJavaPlugins.reset();
     }

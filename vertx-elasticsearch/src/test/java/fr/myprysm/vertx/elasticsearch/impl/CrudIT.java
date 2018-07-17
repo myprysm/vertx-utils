@@ -56,7 +56,7 @@ import static org.elasticsearch.rest.RestStatus.CREATED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("Duplicates")
-abstract class CrudIT extends VertxESRestTestCase {
+class CrudIT extends VertxESRestTestCase {
 
     @Test
     void testDelete() throws InterruptedException {
