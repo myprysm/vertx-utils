@@ -18,6 +18,17 @@ import fr.myprysm.vertx.elasticsearch.action.get.MultiGetResponse;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexConverters;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollConverters;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchConverters;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchConverters;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollConverters;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateConverters;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateRequest;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse;
@@ -126,6 +137,50 @@ class NativeAsyncElasticsearchRestClientImpl extends BaseElasticsearchRestClient
                 DeleteConverters::responseToDataObject,
                 handler,
                 client()::deleteAsync
+        );
+    }
+
+    @Override
+    public void search(SearchRequest request, Handler<AsyncResult<SearchResponse>> handler) {
+        executeRequestAsync(
+                request,
+                SearchConverters::requestToES,
+                SearchConverters::responseToDataObject,
+                handler,
+                client()::searchAsync
+        );
+    }
+
+    @Override
+    public void multiSearch(MultiSearchRequest request, Handler<AsyncResult<MultiSearchResponse>> handler) {
+        executeRequestAsync(
+                request,
+                MultiSearchConverters::requestToES,
+                MultiSearchConverters::responseToDataObject,
+                handler,
+                client()::multiSearchAsync
+        );
+    }
+
+    @Override
+    public void searchScroll(SearchScrollRequest request, Handler<AsyncResult<SearchResponse>> handler) {
+        executeRequestAsync(
+                request,
+                SearchScrollConverters::requestToES,
+                SearchConverters::responseToDataObject,
+                handler,
+                client()::searchScrollAsync
+        );
+    }
+
+    @Override
+    public void clearScroll(ClearScrollRequest request, Handler<AsyncResult<ClearScrollResponse>> handler) {
+        executeRequestAsync(
+                request,
+                ClearScrollConverters::requestToES,
+                ClearScrollConverters::responseToDataObject,
+                handler,
+                client()::clearScrollAsync
         );
     }
 

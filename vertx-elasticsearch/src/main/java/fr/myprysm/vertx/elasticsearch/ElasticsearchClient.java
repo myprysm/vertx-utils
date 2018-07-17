@@ -12,6 +12,13 @@ import fr.myprysm.vertx.elasticsearch.action.get.MultiGetResponse;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexResponse;
 import fr.myprysm.vertx.elasticsearch.action.main.MainResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateRequest;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse;
 import fr.myprysm.vertx.elasticsearch.impl.ElasticsearchClientFactory;
@@ -154,42 +161,58 @@ public interface ElasticsearchClient {
      */
     void delete(DeleteRequest request, Handler<AsyncResult<DeleteResponse>> handler);
 
-//    /**
-//     * Asynchronously executes a search using the Search API
-//     * <p>
-//     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
-//     */
-//    void search(SearchRequest request, Handler<AsyncResult<SearchResponse>> handler);
+    /**
+     * Asynchronously executes a search using the Search API
+     * <p>
+     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
+     *
+     * @param request the request
+     * @param handler the handler
+     */
+    void search(SearchRequest request, Handler<AsyncResult<SearchResponse>> handler);
 
-//    /**
-//     * Asynchronously executes a multi search using the msearch API
-//     * <p>
-//     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
-//     * elastic.co</a>
-//     */
-//    void multiSearch(MultiSearchRequest request, Handler<AsyncResult<MultiSearchResponse>> handler);
-//
-//    /**
-//     * Asynchronously executes a search using the Search Scroll API
-//     * <p>
-//     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
-//     * API on elastic.co</a>
-//     */
-//    void searchScroll(SearchScrollRequest request, Handler<AsyncResult<SearchScrollResponse>> handler);
-//
-//    /**
-//     * Asynchronously clears one or more scroll ids using the Clear Scroll API
-//     * <p>
-//     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
-//     * Clear Scroll API on elastic.co</a>
-//     */
-//    void clearScroll(ClearScrollRequest request, Handler<AsyncResult<ClearScrollResponse>> handler);
+    /**
+     * Asynchronously executes a multi search using the msearch API
+     * <p>
+     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
+     * elastic.co</a>
+     *
+     * @param request the request
+     * @param handler the handler
+     */
+    void multiSearch(MultiSearchRequest request, Handler<AsyncResult<MultiSearchResponse>> handler);
+
+
+    /**
+     * Asynchronously executes a search using the Search Scroll API
+     * <p>
+     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
+     * API on elastic.co</a>
+     *
+     * @param request the request
+     * @param handler the handler
+     */
+    void searchScroll(SearchScrollRequest request, Handler<AsyncResult<SearchResponse>> handler);
+
+    /**
+     * Asynchronously clears one or more scroll ids using the Clear Scroll API
+     * <p>
+     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
+     * Clear Scroll API on elastic.co</a>
+     *
+     * @param request the request
+     * @param handler the handler
+     */
+    void clearScroll(ClearScrollRequest request, Handler<AsyncResult<ClearScrollResponse>> handler);
 //
 //    /**
 //     * Asynchronously executes a request using the Ranking Evaluation API.
 //     * <p>
 //     * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-rank-eval.html">Ranking Evaluation API
 //     * on elastic.co</a>
+//*
+//     * @param request the request
+//     * @param handler the handler
 //     */
 //    void rankEval(RankEvalRequest request, Handler<AsyncResult<RankEvalResponse>> handler);
 //
@@ -198,6 +221,9 @@ public interface ElasticsearchClient {
      * Asynchronously executes a bulk request using the Bulk API
      * <p>
      * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html">Bulk API on elastic.co</a>
+     *
+     * @param request the request
+     * @param handler the handler
      */
     void bulk(BulkRequest request, Handler<AsyncResult<BulkResponse>> handler);
 

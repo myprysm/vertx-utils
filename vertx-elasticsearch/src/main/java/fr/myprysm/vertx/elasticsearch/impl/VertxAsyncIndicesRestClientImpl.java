@@ -1,10 +1,19 @@
 package fr.myprysm.vertx.elasticsearch.impl;
 
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexConverters;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexConverters;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexConverters;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingConverters;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshConverters;
+import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse;
 import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -36,8 +45,39 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
     }
 
     @Override
+    public void create(CreateIndexRequest request, Handler<AsyncResult<CreateIndexResponse>> handler) {
+        executeRequestBlocking(
+                request,
+                CreateIndexConverters::requestToES,
+                CreateIndexConverters::responseToDataObject,
+                handler,
+                client()::create);
+    }
+
+    @Override
+    public void putMapping(PutMappingRequest request, Handler<AsyncResult<PutMappingResponse>> handler) {
+        executeRequestBlocking(
+                request,
+                PutMappingConverters::requestToES,
+                PutMappingConverters::responseToDataObject,
+                handler,
+                client()::putMapping);
+    }
+
+    @Override
+    public void refresh(RefreshRequest request, Handler<AsyncResult<RefreshResponse>> handler) {
+        executeRequestBlocking(
+                request,
+                RefreshConverters::requestToES,
+                RefreshConverters::responseToDataObject,
+                handler,
+                client()::refresh
+        );
+    }
+
+    @Override
     public void exists(GetIndexRequest request, Handler<AsyncResult<Boolean>> handler) {
-        this.executeRequestBlocking(
+        executeRequestBlocking(
                 request,
                 GetIndexConverters::requestToES,
                 CommonConverters::objectToBoolean,
