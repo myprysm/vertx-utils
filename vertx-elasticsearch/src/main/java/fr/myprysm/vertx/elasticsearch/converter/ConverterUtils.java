@@ -1,5 +1,10 @@
 package fr.myprysm.vertx.elasticsearch.converter;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +15,28 @@ import java.util.Map;
  * Conversion utilities.
  */
 public interface ConverterUtils {
+
+    /**
+     * Converts a {@link JsonObject} to a {@link Map}
+     *
+     * @param json the object to convert
+     * @return the map
+     */
+    static Map<String, Object> convert(JsonObject json) {
+        return Json.mapper.convertValue(json, new TypeReference<Map<String, Object>>() {
+        });
+    }
+
+    /**
+     * Converts a {@link JsonArray} to a {@link List} of the specified type.
+     *
+     * @param jsonArray the array to convert
+     * @return the list
+     */
+    static <T> List<T> convert(JsonArray jsonArray) {
+        return Json.mapper.convertValue(jsonArray, new TypeReference<List<T>>() {
+        });
+    }
 
     /**
      * Converts the items in the collection with the converter.
