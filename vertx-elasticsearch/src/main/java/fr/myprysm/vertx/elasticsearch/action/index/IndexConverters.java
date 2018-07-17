@@ -1,7 +1,7 @@
 package fr.myprysm.vertx.elasticsearch.action.index;
 
 import fr.myprysm.vertx.elasticsearch.action.support.SupportConverters;
-import fr.myprysm.vertx.json.Json;
+import fr.myprysm.vertx.elasticsearch.converter.ConverterUtils;
 import org.elasticsearch.common.unit.TimeValue;
 
 /**
@@ -23,7 +23,7 @@ public interface IndexConverters {
                 .type(request.getType())
                 .parent(request.getParent())
                 .routing(request.getRouting())
-                .source(Json.convert(request.getSource()))
+                .source(ConverterUtils.convert(request.getSource()))
                 .setPipeline(request.getPipeline())
                 .version(request.getVersion())
                 .versionType(request.getVersionType())

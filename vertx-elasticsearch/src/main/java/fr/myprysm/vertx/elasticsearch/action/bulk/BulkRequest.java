@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.elasticsearch.action.bulk.BulkShardRequest;
 import org.elasticsearch.action.support.WriteRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @DataObject(generateConverter = true)
 public class BulkRequest extends BaseRequest {
 

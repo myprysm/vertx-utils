@@ -50,11 +50,6 @@ public class GetRequest extends BaseRequest {
         this.id = id;
     }
 
-    @Override
-    public GetRequest addHeader(String headerKey, String headerValue) {
-        return (GetRequest) super.addHeader(headerKey, headerValue);
-    }
-
     public JsonObject toJson() {
         JsonObject json = super.toJson();
         GetRequestConverter.toJson(this, json);

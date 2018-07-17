@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationRequest;
@@ -17,6 +18,7 @@ import org.elasticsearch.index.VersionType;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @DataObject(generateConverter = true)
 public class DeleteRequest extends DocWriteRequest {
     private Integer waitForActiveShards;

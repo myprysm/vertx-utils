@@ -48,6 +48,7 @@ public class DocumentField {
         return json;
     }
 
+    @SuppressWarnings("unchecked")
     public <V> V getValue() {
         if (values == null || values.size() == 0) {
             return null;

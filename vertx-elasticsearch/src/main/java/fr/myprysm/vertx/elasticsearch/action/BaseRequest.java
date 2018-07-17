@@ -41,9 +41,10 @@ public class BaseRequest {
      * @param headerValue the header value
      * @return the request
      */
-    public BaseRequest addHeader(String headerKey, String headerValue) {
+    @SuppressWarnings("unchecked")
+    public <T extends BaseRequest> T addHeader(String headerKey, String headerValue) {
         safeHeaders().put(headerKey, headerValue);
-        return this;
+        return (T) this;
     }
 
     /**

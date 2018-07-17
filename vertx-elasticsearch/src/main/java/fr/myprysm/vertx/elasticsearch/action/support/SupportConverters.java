@@ -1,8 +1,8 @@
 package fr.myprysm.vertx.elasticsearch.action.support;
 
 import fr.myprysm.vertx.elasticsearch.converter.ConverterUtils;
-import fr.myprysm.vertx.json.Json;
 import io.vertx.core.json.JsonArray;
+import org.elasticsearch.action.support.DefaultShardOperationFailedException;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 
 import java.util.Arrays;
@@ -55,7 +55,7 @@ public interface SupportConverters {
     static ShardInfo shardInfoToDataObject(org.elasticsearch.action.support.replication.ReplicationResponse.ShardInfo esShardInfo) {
         ShardInfo shardInfo = new ShardInfo();
         if (esShardInfo.getFailed() > 0) {
-            shardInfo.setFailures(ConverterUtils.convert(Arrays.asList(esShardInfo.getFailures()), SupportConverters::failureToDataObject));
+            shardInfo.setFailures(ConverterUtils.convert(Arrays.asList(esShardInfo.getFailures()), SupportConverters::shardInfoFailureToDataObject));
         }
         return shardInfo
                 .setSuccessful(esShardInfo.getSuccessful())
@@ -86,13 +86,31 @@ public interface SupportConverters {
      * @param esFailure the Elasticsearch failure
      * @return the failure
      */
-    static ShardInfoFailure failureToDataObject(ReplicationResponse.ShardInfo.Failure esFailure) {
+    static ShardInfoFailure shardInfoFailureToDataObject(ReplicationResponse.ShardInfo.Failure esFailure) {
         return new ShardInfoFailure(
                 String.valueOf(esFailure.shardId()),
                 esFailure.nodeId(),
                 esFailure.status(),
                 esFailure.primary(),
                 esFailure.reason()
+        );
+    }
+
+    static ShardFailure shardSearchFailureToDataObject(org.elasticsearch.action.search.ShardSearchFailure failure) {
+        return new ShardFailure(
+                failure.status(),
+                failure.index(),
+                failure.shardId(),
+                failure.reason()
+        );
+    }
+
+    static ShardFailure shardOperationFailureToDataObject(DefaultShardOperationFailedException failure) {
+        return new ShardFailure(
+                failure.status(),
+                failure.index(),
+                failure.shardId(),
+                failure.reason()
         );
     }
 
@@ -107,8 +125,8 @@ public interface SupportConverters {
                 script.getType(),
                 script.getLang(),
                 script.getIdOrCode(),
-                script.getOptions() == null ? new HashMap<>() : script.getOptions(),
-                (script.getParams() == null) ? new HashMap<>() : Json.convert(script.getParams())
+                (script.getOptions() == null) ? new HashMap<>() : script.getOptions(),
+                (script.getParams() == null) ? new HashMap<>() : ConverterUtils.convert(script.getParams())
         );
     }
 

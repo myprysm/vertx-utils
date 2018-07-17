@@ -2,7 +2,7 @@ package fr.myprysm.vertx.elasticsearch.action.update;
 
 import fr.myprysm.vertx.elasticsearch.action.get.GetConverters;
 import fr.myprysm.vertx.elasticsearch.action.support.SupportConverters;
-import fr.myprysm.vertx.json.Json;
+import fr.myprysm.vertx.elasticsearch.converter.ConverterUtils;
 import org.elasticsearch.action.get.GetResponse;
 
 /**
@@ -30,11 +30,11 @@ public interface UpdateConverters {
         }
 
         if (request.getDoc() != null) {
-            esRequest.doc(Json.convert(request.getDoc()));
+            esRequest.doc(ConverterUtils.convert(request.getDoc()));
         }
 
         if (request.getUpsert() != null) {
-            esRequest.upsert(Json.convert(request.getUpsert()));
+            esRequest.upsert(ConverterUtils.convert(request.getUpsert()));
         }
 
         return esRequest
