@@ -43,8 +43,8 @@ public class Json {
         module.addDeserializer(JsonObject.class, new JsonObjectDeserializer());
         module.addDeserializer(JsonArray.class, new JsonArrayDeserializer());
 
-        mapper = io.vertx.core.json.Json.mapper;
-        prettyMapper = io.vertx.core.json.Json.prettyMapper;
+        mapper = io.vertx.core.json.Json.mapper.copy();
+        prettyMapper = io.vertx.core.json.Json.prettyMapper.copy();
 
         mapper.registerModule(module);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
