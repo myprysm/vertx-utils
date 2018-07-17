@@ -44,6 +44,33 @@ module VertxUtilsElasticsearch
       end
       raise ArgumentError, "Invalid arguments when calling delete(#{request})"
     end
+    # @param [Hash] request 
+    # @yield 
+    # @return [void]
+    def create(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:create, [Java::FrMyprysmVertxElasticsearchActionAdminIndicesCreate::CreateIndexRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionAdminIndicesCreate::CreateIndexRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling create(#{request})"
+    end
+    # @param [Hash] request 
+    # @yield 
+    # @return [void]
+    def put_mapping(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:putMapping, [Java::FrMyprysmVertxElasticsearchActionAdminIndicesMappingPut::PutMappingRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionAdminIndicesMappingPut::PutMappingRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling put_mapping(#{request})"
+    end
+    # @param [Hash] request 
+    # @yield 
+    # @return [void]
+    def refresh(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:refresh, [Java::FrMyprysmVertxElasticsearchActionAdminRefresh::RefreshRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionAdminRefresh::RefreshRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling refresh(#{request})"
+    end
     #  Asynchronously checks if one or more aliases exist using the Aliases Exist API.
     #  <p>
     #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html">

@@ -23,6 +23,12 @@ var JIndicesClient = Java.type('fr.myprysm.vertx.elasticsearch.IndicesClient');
 var DeleteIndexResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexResponse');
 var GetIndexRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexRequest');
 var DeleteIndexRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest');
+var PutMappingRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest');
+var RefreshRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest');
+var CreateIndexRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest');
+var RefreshResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse');
+var CreateIndexResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse');
+var PutMappingResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse');
 
 /**
  Vertx Elasticsearch indices client.
@@ -50,6 +56,63 @@ var IndicesClient = function(j_val) {
     var __args = arguments;
     if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
       j_indicesClient["delete(fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest,io.vertx.core.Handler)"](request != null ? new DeleteIndexRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param request {Object} 
+   @param handler {function} 
+   */
+  this.create = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_indicesClient["create(fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest,io.vertx.core.Handler)"](request != null ? new CreateIndexRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param request {Object} 
+   @param handler {function} 
+   */
+  this.putMapping = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_indicesClient["putMapping(fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest,io.vertx.core.Handler)"](request != null ? new PutMappingRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param request {Object} 
+   @param handler {function} 
+   */
+  this.refresh = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_indicesClient["refresh(fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest,io.vertx.core.Handler)"](request != null ? new RefreshRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
       if (ar.succeeded()) {
         handler(utils.convReturnDataObject(ar.result()), null);
       } else {

@@ -11,9 +11,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import ceylon.language.Callable;
 import ceylon.language.DocAnnotation$annotation$;
-import io.vertx.ceylon.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
+import io.vertx.ceylon.core.Vertx;
 import io.vertx.core.Handler;
 
 @Ceylon(major = 8)
@@ -211,11 +211,67 @@ public class ElasticsearchClient implements ReifiedType {
     delegate.delete(arg_0, arg_1);
   }
 
-  @DocAnnotation$annotation$(description = " Asynchronously executes a bulk request using the Bulk API\n\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html\">Bulk API on elastic.co</a>\n")
+  @DocAnnotation$annotation$(description = " Asynchronously executes a search using the Search API\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html\">Search API on elastic.co</a>\n")
+  @TypeInfo("ceylon.language::Anything")
+  public void search(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::SearchRequest") @Name("request")@DocAnnotation$annotation$(description = "the request\n") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.SearchRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::SearchResponse)") @Name("handler")@DocAnnotation$annotation$(description = "the handler\n") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.search.SearchRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.search.SearchRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.search.SearchResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.searchResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.search(arg_0, arg_1);
+  }
+
+  @DocAnnotation$annotation$(description = " Asynchronously executes a multi search using the msearch API\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html\">Multi search API on\n elastic.co</a>\n")
+  @TypeInfo("ceylon.language::Anything")
+  public void multiSearch(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::MultiSearchRequest") @Name("request")@DocAnnotation$annotation$(description = "the request\n") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.MultiSearchRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::MultiSearchResponse)") @Name("handler")@DocAnnotation$annotation$(description = "the handler\n") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.multiSearchResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.multiSearch(arg_0, arg_1);
+  }
+
+  @DocAnnotation$annotation$(description = " Asynchronously executes a search using the Search Scroll API\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html\">Search Scroll\n API on elastic.co</a>\n")
+  @TypeInfo("ceylon.language::Anything")
+  public void searchScroll(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::SearchScrollRequest") @Name("request")@DocAnnotation$annotation$(description = "the request\n") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.SearchScrollRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::SearchResponse)") @Name("handler")@DocAnnotation$annotation$(description = "the handler\n") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.search.SearchResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.searchResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.searchScroll(arg_0, arg_1);
+  }
+
+  @DocAnnotation$annotation$(description = " Asynchronously clears one or more scroll ids using the Clear Scroll API\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api\">\n Clear Scroll API on elastic.co</a>\n")
+  @TypeInfo("ceylon.language::Anything")
+  public void clearScroll(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::ClearScrollRequest") @Name("request")@DocAnnotation$annotation$(description = "the request\n") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.ClearScrollRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search::ClearScrollResponse)") @Name("handler")@DocAnnotation$annotation$(description = "the handler\n") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.clearScrollResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.clearScroll(arg_0, arg_1);
+  }
+
+  @DocAnnotation$annotation$(description = " Asynchronously executes a bulk request using the Bulk API\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html\">Bulk API on elastic.co</a>\n")
   @TypeInfo("ceylon.language::Anything")
   public void bulk(
-    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk::BulkRequest") @Name("request") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk.BulkRequest request, 
-    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk::BulkResponse)") @Name("handler") Callable<?> handler) {
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk::BulkRequest") @Name("request")@DocAnnotation$annotation$(description = "the request\n") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk.BulkRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk::BulkResponse)") @Name("handler")@DocAnnotation$annotation$(description = "the handler\n") Callable<?> handler) {
     fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
     io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse>(handler) {
       public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse event) {

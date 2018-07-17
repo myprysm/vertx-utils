@@ -7,7 +7,7 @@ import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRes
  *
  * DeleteIndexResponse.
  *
- * @param acknowledged
+ * @param acknowledged 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexResponse original] using Vert.x codegen.

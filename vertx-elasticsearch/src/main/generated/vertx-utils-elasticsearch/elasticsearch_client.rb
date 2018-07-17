@@ -162,11 +162,62 @@ module VertxUtilsElasticsearch
       end
       raise ArgumentError, "Invalid arguments when calling delete(#{request})"
     end
+    #  Asynchronously executes a search using the Search API
+    #  <p>
+    #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
+    # @param [Hash] request the request
+    # @yield the handler
+    # @return [void]
+    def search(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:search, [Java::FrMyprysmVertxElasticsearchActionSearch::SearchRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionSearch::SearchRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling search(#{request})"
+    end
+    #  Asynchronously executes a multi search using the msearch API
+    #  <p>
+    #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
+    #  elastic.co</a>
+    # @param [Hash] request the request
+    # @yield the handler
+    # @return [void]
+    def multi_search(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:multiSearch, [Java::FrMyprysmVertxElasticsearchActionSearch::MultiSearchRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionSearch::MultiSearchRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling multi_search(#{request})"
+    end
+    #  Asynchronously executes a search using the Search Scroll API
+    #  <p>
+    #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
+    #  API on elastic.co</a>
+    # @param [Hash] request the request
+    # @yield the handler
+    # @return [void]
+    def search_scroll(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:searchScroll, [Java::FrMyprysmVertxElasticsearchActionSearch::SearchScrollRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionSearch::SearchScrollRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling search_scroll(#{request})"
+    end
+    #  Asynchronously clears one or more scroll ids using the Clear Scroll API
+    #  <p>
+    #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
+    #  Clear Scroll API on elastic.co</a>
+    # @param [Hash] request the request
+    # @yield the handler
+    # @return [void]
+    def clear_scroll(request=nil)
+      if request.class == Hash && block_given?
+        return @j_del.java_method(:clearScroll, [Java::FrMyprysmVertxElasticsearchActionSearch::ClearScrollRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchActionSearch::ClearScrollRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling clear_scroll(#{request})"
+    end
     #  Asynchronously executes a bulk request using the Bulk API
-    # 
+    #  <p>
     #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html">Bulk API on elastic.co</a>
-    # @param [Hash] request 
-    # @yield 
+    # @param [Hash] request the request
+    # @yield the handler
     # @return [void]
     def bulk(request=nil)
       if request.class == Hash && block_given?

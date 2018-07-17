@@ -71,6 +71,38 @@ public class ElasticsearchClient_GroovyExtension {
       }
     } : null);
   }
+  public static void search(fr.myprysm.vertx.elasticsearch.ElasticsearchClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.search(request != null ? new fr.myprysm.vertx.elasticsearch.action.search.SearchRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
+  public static void multiSearch(fr.myprysm.vertx.elasticsearch.ElasticsearchClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.multiSearch(request != null ? new fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
+  public static void searchScroll(fr.myprysm.vertx.elasticsearch.ElasticsearchClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.searchScroll(request != null ? new fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.SearchResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
+  public static void clearScroll(fr.myprysm.vertx.elasticsearch.ElasticsearchClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.clearScroll(request != null ? new fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
   public static void bulk(fr.myprysm.vertx.elasticsearch.ElasticsearchClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
     j_receiver.bulk(request != null ? new fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
       handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse>>() {

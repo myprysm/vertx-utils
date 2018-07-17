@@ -28,15 +28,22 @@ var MultiGetResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.get.Mult
 var BulkResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse');
 var GetRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.get.GetRequest');
 var DeleteResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.delete.DeleteResponse');
+var SearchResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.search.SearchResponse');
+var SearchScrollRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest');
 var UpdateResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse');
 var UpdateRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.update.UpdateRequest');
+var SearchRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.search.SearchRequest');
+var MultiSearchResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse');
 var BulkRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest');
 var GetResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.get.GetResponse');
 var MultiGetRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.get.MultiGetRequest');
 var DeleteRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.delete.DeleteRequest');
 var MainResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.main.MainResponse');
 var BaseRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.BaseRequest');
+var ClearScrollResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse');
 var IndexResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.index.IndexResponse');
+var ClearScrollRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest');
+var MultiSearchRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest');
 
 /**
  Vertx Elasticsearch client.
@@ -288,13 +295,104 @@ var ElasticsearchClient = function(j_val) {
   };
 
   /**
+   Asynchronously executes a search using the Search API
+   <p>
+   See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
+
+   @public
+   @param request {Object} the request 
+   @param handler {function} the handler 
+   */
+  this.search = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_elasticsearchClient["search(fr.myprysm.vertx.elasticsearch.action.search.SearchRequest,io.vertx.core.Handler)"](request != null ? new SearchRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Asynchronously executes a multi search using the msearch API
+   <p>
+   See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
+   elastic.co</a>
+
+   @public
+   @param request {Object} the request 
+   @param handler {function} the handler 
+   */
+  this.multiSearch = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_elasticsearchClient["multiSearch(fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest,io.vertx.core.Handler)"](request != null ? new MultiSearchRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Asynchronously executes a search using the Search Scroll API
+   <p>
+   See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
+   API on elastic.co</a>
+
+   @public
+   @param request {Object} the request 
+   @param handler {function} the handler 
+   */
+  this.searchScroll = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_elasticsearchClient["searchScroll(fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest,io.vertx.core.Handler)"](request != null ? new SearchScrollRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Asynchronously clears one or more scroll ids using the Clear Scroll API
+   <p>
+   See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
+   Clear Scroll API on elastic.co</a>
+
+   @public
+   @param request {Object} the request 
+   @param handler {function} the handler 
+   */
+  this.clearScroll = function(request, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_elasticsearchClient["clearScroll(fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest,io.vertx.core.Handler)"](request != null ? new ClearScrollRequest(new JsonObject(Java.asJSONCompatible(request))) : null, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
    Asynchronously executes a bulk request using the Bulk API
-  
+   <p>
    See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html">Bulk API on elastic.co</a>
 
    @public
-   @param request {Object} 
-   @param handler {function} 
+   @param request {Object} the request 
+   @param handler {function} the handler 
    */
   this.bulk = function(request, handler) {
     var __args = arguments;

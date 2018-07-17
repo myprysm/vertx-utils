@@ -9,7 +9,7 @@ import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettings
  *
  * @param acknowledged
  * @param persistentSettings
- * @param transientSettings
+ * @param transientSettings 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse original] using Vert.x codegen.

@@ -22,24 +22,31 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import fr.myprysm.vertx.elasticsearch.action.index.IndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.get.MultiGetResponse;
 import fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse;
 import fr.myprysm.vertx.elasticsearch.action.get.GetRequest;
-import io.vertx.reactivex.core.Vertx;
-import fr.myprysm.vertx.elasticsearch.action.delete.DeleteResponse;
-import fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse;
 import fr.myprysm.vertx.elasticsearch.action.update.UpdateRequest;
 import fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest;
 import fr.myprysm.vertx.elasticsearch.action.get.GetResponse;
 import fr.myprysm.vertx.elasticsearch.action.get.MultiGetRequest;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.AsyncResult;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.index.IndexRequest;
+import io.vertx.reactivex.core.Vertx;
+import fr.myprysm.vertx.elasticsearch.action.delete.DeleteResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest;
+import fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.SearchRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse;
 import fr.myprysm.vertx.elasticsearch.action.delete.DeleteRequest;
 import fr.myprysm.vertx.elasticsearch.action.main.MainResponse;
 import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import fr.myprysm.vertx.elasticsearch.action.index.IndexResponse;
+import fr.myprysm.vertx.elasticsearch.action.search.ClearScrollRequest;
 
 /**
  * Vertx Elasticsearch client.
@@ -340,11 +347,113 @@ public class ElasticsearchClient {
   }
 
   /**
+   * Asynchronously executes a search using the Search API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
+   * @param request the request
+   * @param handler the handler
+   */
+  public void search(SearchRequest request, Handler<AsyncResult<SearchResponse>> handler) { 
+    delegate.search(request, handler);
+  }
+
+  /**
+   * Asynchronously executes a search using the Search API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API on elastic.co</a>
+   * @param request the request
+   * @return 
+   */
+  public Single<SearchResponse> rxSearch(SearchRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<SearchResponse>(handler -> {
+      search(request, handler);
+    });
+  }
+
+  /**
+   * Asynchronously executes a multi search using the msearch API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
+   * elastic.co</a>
+   * @param request the request
+   * @param handler the handler
+   */
+  public void multiSearch(MultiSearchRequest request, Handler<AsyncResult<MultiSearchResponse>> handler) { 
+    delegate.multiSearch(request, handler);
+  }
+
+  /**
+   * Asynchronously executes a multi search using the msearch API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Multi search API on
+   * elastic.co</a>
+   * @param request the request
+   * @return 
+   */
+  public Single<MultiSearchResponse> rxMultiSearch(MultiSearchRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<MultiSearchResponse>(handler -> {
+      multiSearch(request, handler);
+    });
+  }
+
+  /**
+   * Asynchronously executes a search using the Search Scroll API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
+   * API on elastic.co</a>
+   * @param request the request
+   * @param handler the handler
+   */
+  public void searchScroll(SearchScrollRequest request, Handler<AsyncResult<SearchResponse>> handler) { 
+    delegate.searchScroll(request, handler);
+  }
+
+  /**
+   * Asynchronously executes a search using the Search Scroll API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Search Scroll
+   * API on elastic.co</a>
+   * @param request the request
+   * @return 
+   */
+  public Single<SearchResponse> rxSearchScroll(SearchScrollRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<SearchResponse>(handler -> {
+      searchScroll(request, handler);
+    });
+  }
+
+  /**
+   * Asynchronously clears one or more scroll ids using the Clear Scroll API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
+   * Clear Scroll API on elastic.co</a>
+   * @param request the request
+   * @param handler the handler
+   */
+  public void clearScroll(ClearScrollRequest request, Handler<AsyncResult<ClearScrollResponse>> handler) { 
+    delegate.clearScroll(request, handler);
+  }
+
+  /**
+   * Asynchronously clears one or more scroll ids using the Clear Scroll API
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html#_clear_scroll_api">
+   * Clear Scroll API on elastic.co</a>
+   * @param request the request
+   * @return 
+   */
+  public Single<ClearScrollResponse> rxClearScroll(ClearScrollRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<ClearScrollResponse>(handler -> {
+      clearScroll(request, handler);
+    });
+  }
+
+  /**
    * Asynchronously executes a bulk request using the Bulk API
-   *
+   * <p>
    * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html">Bulk API on elastic.co</a>
-   * @param request 
-   * @param handler 
+   * @param request the request
+   * @param handler the handler
    */
   public void bulk(BulkRequest request, Handler<AsyncResult<BulkResponse>> handler) { 
     delegate.bulk(request, handler);
@@ -352,9 +461,9 @@ public class ElasticsearchClient {
 
   /**
    * Asynchronously executes a bulk request using the Bulk API
-   *
+   * <p>
    * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html">Bulk API on elastic.co</a>
-   * @param request 
+   * @param request the request
    * @return 
    */
   public Single<BulkResponse> rxBulk(BulkRequest request) { 

@@ -23,7 +23,7 @@ import org.elasticsearch.rest.RestStatus
  * @param shardInfo
  * @param status
  * @param type
- * @param version
+ * @param version 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.update.UpdateResponse original] using Vert.x codegen.

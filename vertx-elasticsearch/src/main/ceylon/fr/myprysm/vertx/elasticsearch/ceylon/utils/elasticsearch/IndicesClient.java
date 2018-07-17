@@ -67,6 +67,45 @@ public class IndicesClient implements ReifiedType {
     delegate.delete(arg_0, arg_1);
   }
 
+  @TypeInfo("ceylon.language::Anything")
+  public void create(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.create::CreateIndexRequest") @Name("request") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.create.CreateIndexRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.create::CreateIndexResponse)") @Name("handler") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.create.createIndexResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.create(arg_0, arg_1);
+  }
+
+  @TypeInfo("ceylon.language::Anything")
+  public void putMapping(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.mapping.put::PutMappingRequest") @Name("request") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.mapping.put::PutMappingResponse)") @Name("handler") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.indices.mapping.put.putMappingResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.putMapping(arg_0, arg_1);
+  }
+
+  @TypeInfo("ceylon.language::Anything")
+  public void refresh(
+    final @TypeInfo("fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.refresh::RefreshRequest") @Name("request") fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.refresh.RefreshRequest request, 
+    final @TypeInfo("ceylon.language::Anything(ceylon.language::Throwable|fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.refresh::RefreshResponse)") @Name("handler") Callable<?> handler) {
+    fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest arg_0 = request == null ? null : new fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest(io.vertx.lang.ceylon.ToJava.JsonObject.convert(request.toJson()));
+    io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse>> arg_1 = handler == null ? null : new io.vertx.lang.ceylon.CallableAsyncResultHandler<fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse>(handler) {
+      public Object toCeylon(fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse event) {
+        return fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.admin.refresh.refreshResponse_.get_().getToCeylon().safeConvert(event);
+      }
+    };
+    delegate.refresh(arg_0, arg_1);
+  }
+
   @DocAnnotation$annotation$(description = " Asynchronously checks if one or more aliases exist using the Aliases Exist API.\n <p>\n See <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html\">\n Indices Aliases API on elastic.co</a>\n")
   @TypeInfo("ceylon.language::Anything")
   public void exists(

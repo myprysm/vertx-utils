@@ -25,8 +25,14 @@ import io.reactivex.Maybe;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshResponse;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 
 /**
  * Vertx Elasticsearch indices client.
@@ -96,6 +102,36 @@ public class IndicesClient {
   public Single<DeleteIndexResponse> rxDelete(DeleteIndexRequest request) { 
     return new io.vertx.reactivex.core.impl.AsyncResultSingle<DeleteIndexResponse>(handler -> {
       delete(request, handler);
+    });
+  }
+
+  public void create(CreateIndexRequest request, Handler<AsyncResult<CreateIndexResponse>> handler) { 
+    delegate.create(request, handler);
+  }
+
+  public Single<CreateIndexResponse> rxCreate(CreateIndexRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<CreateIndexResponse>(handler -> {
+      create(request, handler);
+    });
+  }
+
+  public void putMapping(PutMappingRequest request, Handler<AsyncResult<PutMappingResponse>> handler) { 
+    delegate.putMapping(request, handler);
+  }
+
+  public Single<PutMappingResponse> rxPutMapping(PutMappingRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<PutMappingResponse>(handler -> {
+      putMapping(request, handler);
+    });
+  }
+
+  public void refresh(RefreshRequest request, Handler<AsyncResult<RefreshResponse>> handler) { 
+    delegate.refresh(request, handler);
+  }
+
+  public Single<RefreshResponse> rxRefresh(RefreshRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<RefreshResponse>(handler -> {
+      refresh(request, handler);
     });
   }
 
