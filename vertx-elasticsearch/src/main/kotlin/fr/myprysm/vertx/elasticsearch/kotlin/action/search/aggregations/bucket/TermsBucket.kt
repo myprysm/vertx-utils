@@ -4,22 +4,22 @@ import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.TermsBuc
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.Aggregation
 
 fun TermsBucket(
-        aggregations: Map<String, fr.myprysm.vertx.elasticsearch.action.search.aggregations.Aggregation>? = null,
-        docCount: Long? = null,
-        docCountError: Long? = null,
-        key: String? = null): TermsBucket = fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.TermsBucket().apply {
+  aggregations: Map<String, fr.myprysm.vertx.elasticsearch.action.search.aggregations.Aggregation>? = null,
+  docCount: Long? = null,
+  docCountError: Long? = null,
+  key: String? = null): TermsBucket = fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.TermsBucket().apply {
 
-    if (aggregations != null) {
-        this.setAggregations(aggregations)
-    }
-    if (docCount != null) {
-        this.setDocCount(docCount)
-    }
-    if (docCountError != null) {
-        this.setDocCountError(docCountError)
-    }
-    if (key != null) {
-        this.setKey(key)
-    }
+  if (aggregations != null) {
+    this.setAggregations(aggregations)
+  }
+  if (docCount != null) {
+    this.setDocCount(docCount)
+  }
+  if (docCountError != null) {
+    this.setDocCountError(docCountError)
+  }
+  if (key != null) {
+    this.setKey(key)
+  }
 }
 

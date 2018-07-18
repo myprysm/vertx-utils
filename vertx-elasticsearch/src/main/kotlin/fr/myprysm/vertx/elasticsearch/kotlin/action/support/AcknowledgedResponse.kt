@@ -13,10 +13,10 @@ import fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse original] using Vert.x codegen.
  */
 fun AcknowledgedResponse(
-        acknowledged: Boolean? = null): AcknowledgedResponse = fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse().apply {
+  acknowledged: Boolean? = null): AcknowledgedResponse = fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse().apply {
 
-    if (acknowledged != null) {
-        this.setAcknowledged(acknowledged)
-    }
+  if (acknowledged != null) {
+    this.setAcknowledged(acknowledged)
+  }
 }
 

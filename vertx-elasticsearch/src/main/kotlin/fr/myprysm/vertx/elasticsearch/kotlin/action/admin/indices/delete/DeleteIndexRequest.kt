@@ -14,14 +14,14 @@ import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexReq
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest original] using Vert.x codegen.
  */
 fun DeleteIndexRequest(
-        headers: Map<String, String>? = null,
-        indices: Iterable<String>? = null): DeleteIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest().apply {
+  headers: Map<String, String>? = null,
+  indices: Iterable<String>? = null): DeleteIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest().apply {
 
-    if (headers != null) {
-        this.setHeaders(headers)
-    }
-    if (indices != null) {
-        this.setIndices(indices.toList())
-    }
+  if (headers != null) {
+    this.setHeaders(headers)
+  }
+  if (indices != null) {
+    this.setIndices(indices.toList())
+  }
 }
 

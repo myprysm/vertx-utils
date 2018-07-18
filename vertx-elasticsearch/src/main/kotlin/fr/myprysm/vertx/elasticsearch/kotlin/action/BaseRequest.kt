@@ -13,10 +13,10 @@ import fr.myprysm.vertx.elasticsearch.action.BaseRequest
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.BaseRequest original] using Vert.x codegen.
  */
 fun BaseRequest(
-        headers: Map<String, String>? = null): BaseRequest = fr.myprysm.vertx.elasticsearch.action.BaseRequest().apply {
+  headers: Map<String, String>? = null): BaseRequest = fr.myprysm.vertx.elasticsearch.action.BaseRequest().apply {
 
-    if (headers != null) {
-        this.setHeaders(headers)
-    }
+  if (headers != null) {
+    this.setHeaders(headers)
+  }
 }
 
