@@ -30,9 +30,10 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
      *
      * @param vertx  the vertx instance
      * @param client the indices client instance
+     * @param name   the name of the client
      */
-    NativeAsyncIndicesRestClientImpl(Vertx vertx, org.elasticsearch.client.IndicesClient client) {
-        super(vertx, client);
+    NativeAsyncIndicesRestClientImpl(Vertx vertx, org.elasticsearch.client.IndicesClient client, String name) {
+        super(vertx, client, name);
     }
 
     @Override

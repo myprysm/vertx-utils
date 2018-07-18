@@ -15,10 +15,11 @@ public class VertxAsyncClusterRestClientImpl extends BaseClusterRestClient {
      * Build a new base indices client instance.
      *
      * @param vertx  the current vertx instance
-     * @param client the Elasticsearch cluster client instance.
+     * @param client the Elasticsearch cluster client instance
+     * @param name   the name of the client
      */
-    VertxAsyncClusterRestClientImpl(Vertx vertx, org.elasticsearch.client.ClusterClient client) {
-        super(vertx, client);
+    VertxAsyncClusterRestClientImpl(Vertx vertx, org.elasticsearch.client.ClusterClient client, String name) {
+        super(vertx, client, name);
     }
 
     @Override

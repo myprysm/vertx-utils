@@ -68,8 +68,8 @@ class NativeAsyncElasticsearchRestClientImpl extends BaseElasticsearchRestClient
     @Override
     Pair<IndicesClient, ClusterClient> getClients() {
         return Pair.of(
-                new NativeAsyncIndicesRestClientImpl(vertx(), client().indices()),
-                new NativeAsyncClusterRestClientImpl(vertx(), client().cluster())
+                new NativeAsyncIndicesRestClientImpl(vertx(), client().indices(), name()),
+                new NativeAsyncClusterRestClientImpl(vertx(), client().cluster(), name())
         );
     }
 

@@ -66,8 +66,8 @@ class VertxAsyncElasticsearchRestClientImpl extends BaseElasticsearchRestClient 
     @Override
     Pair<IndicesClient, ClusterClient> getClients() {
         return Pair.of(
-                new VertxAsyncIndicesRestClientImpl(vertx(), client().indices()),
-                new VertxAsyncClusterRestClientImpl(vertx(), client().cluster())
+                new VertxAsyncIndicesRestClientImpl(vertx(), client().indices(), name()),
+                new VertxAsyncClusterRestClientImpl(vertx(), client().cluster(), name())
         );
     }
 

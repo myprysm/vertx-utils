@@ -11,7 +11,10 @@ import fr.myprysm.vertx.elasticsearch.action.search.SearchConverters;
 import fr.myprysm.vertx.elasticsearch.action.search.SearchHit;
 import fr.myprysm.vertx.elasticsearch.action.search.SearchResponse;
 import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Bucket;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Children;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Filter;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.GeoHashGrid;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Range;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.RangeBucket;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Terms;
@@ -28,8 +31,10 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.MultiSearchRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.ScriptQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.join.aggregations.ChildrenAggregationBuilder;
@@ -37,6 +42,8 @@ import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.geogrid.GeoGridAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.matrix.stats.MatrixStatsAggregationBuilder;
@@ -345,6 +352,115 @@ class SearchIT extends VertxESRestTestCase {
                 });
     }
 
+
+    @Test
+    void testSearchWithGeoHashGrid() throws InterruptedException {
+        final String indexName = "museums";
+
+        JsonObject geoMapping = new JsonObject("{\n" +
+                "            \"properties\": {\n" +
+                "                \"location\": {\n" +
+                "                    \"type\": \"geo_point\"\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }");
+
+        rxClient().indices().rxCreate(new CreateIndexRequest(indexName).addMapping("doc", geoMapping))
+                .test()
+                .await()
+                .assertNoErrors();
+        JsonObject museum1 = new JsonObject("{\"location\": \"52.374081,4.912350\", \"name\": \"NEMO Science Museum\"}");
+        JsonObject museum2 = new JsonObject("{\"location\": \"52.369219,4.901618\", \"name\": \"Museum Het Rembrandthuis\"}");
+        JsonObject museum3 = new JsonObject("{\"location\": \"52.371667,4.914722\", \"name\": \"Nederlands Scheepvaartmuseum\"}");
+        JsonObject museum4 = new JsonObject("{\"location\": \"51.222900,4.405200\", \"name\": \"Letterenhuis\"}");
+        JsonObject museum5 = new JsonObject("{\"location\": \"48.861111,2.336389\", \"name\": \"Musée du Louvre\"}");
+        JsonObject museum6 = new JsonObject("{\"location\": \"48.860000,2.327000\", \"name\": \"Musée d'Orsay\"}");
+
+        rxClient().rxBulk(new BulkRequest()
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
+                .add(new IndexRequest(indexName, "doc", "1").setSource(museum1))
+                .add(new IndexRequest(indexName, "doc", "2").setSource(museum2))
+                .add(new IndexRequest(indexName, "doc", "3").setSource(museum3))
+                .add(new IndexRequest(indexName, "doc", "4").setSource(museum4))
+                .add(new IndexRequest(indexName, "doc", "5").setSource(museum5))
+                .add(new IndexRequest(indexName, "doc", "6").setSource(museum6))
+        )
+                .test()
+                .await()
+                .assertNoErrors();
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.aggregation(new GeoGridAggregationBuilder("large-grid").field("location").precision(3));
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(6L);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        GeoHashGrid geoAgg = searchResponse.getAggregationByName("large-grid");
+                        assertThat(geoAgg.getBuckets()).isNotNull();
+                        assertThat(geoAgg.getBuckets()).hasSize(3);
+
+                        for (Bucket bucket : geoAgg.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("u17", "u09", "u15");
+                            assertThat(bucket.getDocCount()).isBetween(1L, 3L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            FilterAggregationBuilder filter = new FilterAggregationBuilder(
+                    "zoomed-in",
+                    QueryBuilders.geoBoundingBoxQuery("location").setCorners(new GeoPoint(52.4, 4.9), new GeoPoint(52.3, 5.0))
+            );
+            filter.subAggregation(new GeoGridAggregationBuilder("zoom1").field("location").precision(8));
+            searchSourceBuilder.aggregation(filter);
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(6L);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Filter filterAgg = searchResponse.getAggregationByName("zoomed-in");
+                        assertThat(filterAgg.getDocCount()).isEqualTo(3L);
+                        assertThat(filterAgg.getAggregations()).isNotNull();
+                        assertThat(filterAgg.getAggregations()).hasSize(1);
+                        GeoHashGrid geoAgg = filterAgg.getAggregationByName("zoom1");
+                        assertThat(geoAgg.getBuckets()).isNotNull();
+                        assertThat(geoAgg.getBuckets()).hasSize(3);
+
+                        for (Bucket bucket : geoAgg.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("u173zy3j", "u173zvfz", "u173zt90");
+                            assertThat(bucket.getDocCount()).isEqualTo(1L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+    }
 
     @Test
     void testSearchWithParentJoin() throws InterruptedException {

@@ -29,9 +29,10 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
      *
      * @param vertx  the vertx instance
      * @param client the indices client instance
+     * @param name   the name of the client
      */
-    VertxAsyncIndicesRestClientImpl(Vertx vertx, IndicesClient client) {
-        super(vertx, client);
+    VertxAsyncIndicesRestClientImpl(Vertx vertx, IndicesClient client, String name) {
+        super(vertx, client, name);
     }
 
     @Override

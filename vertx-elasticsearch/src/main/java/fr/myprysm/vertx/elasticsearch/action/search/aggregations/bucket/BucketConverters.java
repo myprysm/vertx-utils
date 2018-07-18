@@ -62,20 +62,45 @@ public interface BucketConverters {
 
         return fillAggregations(bucket, esBucket)
                 .setFromAsString(esBucket.getFromAsString())
-                .setToAsString(esBucket.getToAsString())
-                .setKey(esBucket.getKeyAsString());
+                .setToAsString(esBucket.getToAsString());
     }
 
+    /**
+     * Fills the aggregations from the elasticsearch bucket into the data object bucket.
+     *
+     * @param bucket   the data object bucket
+     * @param esBucket the elasticsearch bucket
+     * @param <T>      type of the data object bucket
+     * @param <U>      type of the elasticsearch bucket
+     * @return the bucket with the aggregations
+     */
     static <T extends Bucket, U extends HasAggregations> T fillAggregations(T bucket, U esBucket) {
         bucket.setAggregations(extractAggregations(esBucket));
         return bucket;
     }
 
+    /**
+     * Fills the generic informations from the elasticsearch bucket into the data object bucket.
+     *
+     * @param bucket   the data object bucket
+     * @param esBucket the elasticsearch bucket
+     * @param <T>      type of the data object bucket
+     * @param <U>      type of the elasticsearch bucket
+     * @return the bucket with generic informations
+     */
     static <T extends Bucket, U extends MultiBucketsAggregation.Bucket> T fillGenericBucket(T bucket, U esBucket) {
         bucket.setDocCount(esBucket.getDocCount()).setKey(esBucket.getKeyAsString());
         return bucket;
     }
 
+    /**
+     * Extracts the aggregations from the elasticsearch {@link HasAggregations} object.
+     * <p>
+     * Iterates over the list rather than the map to avoid to construct it twice (the elasticsearch component usually does it).
+     *
+     * @param esAggregations the object with aggregations
+     * @return the aggregations as a map
+     */
     static Map<String, Aggregation> extractAggregations(HasAggregations esAggregations) {
         Map<String, Aggregation> subs = null;
         if (esAggregations.getAggregations() != null && !esAggregations.getAggregations().asList().isEmpty()) {
@@ -88,9 +113,62 @@ public interface BucketConverters {
         return subs;
     }
 
-    static Children childrenToDataObject(org.elasticsearch.join.aggregations.Children esChildren) {
-        return fillCommonAggregationDataObject(new Children(), esChildren)
-                .setAggregations(extractAggregations(esChildren))
-                .setDocCount(esChildren.getDocCount());
+    /**
+     * Fills a single aggregation data object from the elasticsearch object.
+     *
+     * @param agg   the data object
+     * @param esAgg the elasticsearch object
+     * @param <T>   the type of the data object
+     * @param <U>   the type of the elasticsearch object
+     * @return the data object with the aggregations and common information
+     */
+    @SuppressWarnings("unchecked")
+    static <T extends SingleBucketAggregation,
+            U extends org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation>
+    T singleBucketAggregationToDataObject(T agg, U esAgg) {
+        return (T) fillCommonAggregationDataObject(agg, esAgg)
+                .setAggregations(extractAggregations(esAgg))
+                .setDocCount(esAgg.getDocCount());
+    }
+
+    static GeoHashGrid geoHashGridToDataObject(org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid esAgg) {
+        GeoHashGrid agg = fillCommonAggregationDataObject(new GeoHashGrid(), esAgg);
+
+        if (esAgg.getBuckets() != null && esAgg.getBuckets().size() > 0) {
+            Map<String, Bucket> buckets = new HashMap<>();
+            for (org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid.Bucket esBucket : esAgg.getBuckets()) {
+                Bucket bucket = fillGenericBucket(new Bucket(), esBucket);
+                fillAggregations(bucket, esBucket);
+
+                buckets.put(esBucket.getKeyAsString(), bucket);
+            }
+
+            agg.setBuckets(buckets);
+        }
+
+
+        return agg;
+
+    }
+
+
+    static Filters filtersToDataObject(org.elasticsearch.search.aggregations.bucket.filter.Filters esAgg) {
+        Filters agg = fillCommonAggregationDataObject(new Filters(), esAgg);
+
+        if (esAgg.getBuckets() != null && esAgg.getBuckets().size() > 0) {
+            Map<String, Bucket> buckets = new HashMap<>();
+            for (org.elasticsearch.search.aggregations.bucket.filter.Filters.Bucket esBucket : esAgg.getBuckets()) {
+                Bucket bucket = fillGenericBucket(new Bucket(), esBucket);
+                fillAggregations(bucket, esBucket);
+
+                buckets.put(esBucket.getKeyAsString(), bucket);
+            }
+
+            agg.setBuckets(buckets);
+        }
+
+
+        return agg;
+
     }
 }

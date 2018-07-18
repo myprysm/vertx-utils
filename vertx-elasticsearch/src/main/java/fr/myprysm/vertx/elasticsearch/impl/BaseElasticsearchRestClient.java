@@ -23,6 +23,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -64,7 +65,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
      * @param clientName the client name
      */
     BaseElasticsearchRestClient(Vertx vertx, ElasticsearchClientOptions options, String clientName) {
-        super(vertx);
+        super(vertx, clientName);
         requireNonNull(options);
         requireNonNull(clientName);
         this.holder = lookupHolder(clientName, options);
@@ -81,7 +82,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
      * @param holder the Elasticsearch client holder
      */
     BaseElasticsearchRestClient(Vertx vertx, ClientHolder holder) {
-        super(vertx);
+        super(vertx, UUID.randomUUID().toString());
         requireNonNull(holder);
         this.holder = holder;
         this.client = holder.client();
@@ -118,7 +119,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
 
     @Override
     public void ping(BaseRequest request, Handler<AsyncResult<Boolean>> handler) {
-        executeSimpleRequestBlocking(request, req -> null, resp -> resp, handler, client::ping);
+        executeSimpleRequestBlocking(request, resp -> resp, handler, client::ping);
     }
 
     @Override
@@ -128,7 +129,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
 
     @Override
     public void info(BaseRequest request, Handler<AsyncResult<MainResponse>> handler) {
-        executeSimpleRequestBlocking(request, req -> null, MainConverters::responseToDataObject, handler, client::info);
+        executeSimpleRequestBlocking(request, MainConverters::responseToDataObject, handler, client::info);
     }
 
     @Override

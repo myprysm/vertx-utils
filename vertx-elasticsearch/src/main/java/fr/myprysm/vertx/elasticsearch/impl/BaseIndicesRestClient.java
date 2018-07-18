@@ -19,10 +19,11 @@ abstract class BaseIndicesRestClient extends BaseRestClient implements fr.myprys
      * Build a new base indices client instance.
      *
      * @param vertx  the current vertx instance
-     * @param client the Elasticsearch indices client instance.
+     * @param client the Elasticsearch indices client instance
+     * @param name   the name of the client
      */
-    BaseIndicesRestClient(Vertx vertx, IndicesClient client) {
-        super(vertx);
+    BaseIndicesRestClient(Vertx vertx, IndicesClient client, String name) {
+        super(vertx, name);
         this.client = requireNonNull(client);
     }
 

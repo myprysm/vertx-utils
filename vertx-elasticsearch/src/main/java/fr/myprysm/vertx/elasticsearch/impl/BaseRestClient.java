@@ -4,6 +4,9 @@ import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
 import fr.myprysm.vertx.elasticsearch.action.FutureActionListener;
 import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import fr.myprysm.vertx.elasticsearch.converter.Converter;
+import fr.myprysm.vertx.elasticsearch.metrics.DummyMetricsProvider;
+import fr.myprysm.vertx.elasticsearch.metrics.RequestMetrics;
+import fr.myprysm.vertx.elasticsearch.metrics.spi.MetricsProvider;
 import fr.myprysm.vertx.elasticsearch.utils.BiConsumer;
 import fr.myprysm.vertx.elasticsearch.utils.BiFunction;
 import fr.myprysm.vertx.elasticsearch.utils.Function;
@@ -11,10 +14,13 @@ import fr.myprysm.vertx.elasticsearch.utils.TriConsumer;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.ServiceHelper;
 import io.vertx.core.Vertx;
 import org.apache.http.Header;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.ActionRequest;
+
+import java.util.Collection;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,14 +35,42 @@ class BaseRestClient {
      * The vertx instance.
      */
     private final Vertx vertx;
+    private final String name;
+    private MetricsProvider provider;
 
     /**
      * Build a new client with the vertx instance.
      *
      * @param vertx the current vertx instance
+     * @param name  the name of the client
      */
-    BaseRestClient(Vertx vertx) {
+    BaseRestClient(Vertx vertx, String name) {
         this.vertx = requireNonNull(vertx);
+        this.name = name;
+        initMetrics(name);
+    }
+
+    String name() {
+        return name;
+    }
+
+    private void initMetrics(String name) {
+        Collection<MetricsProvider> metricsProviders = ServiceHelper.loadFactories(MetricsProvider.class);
+        MetricsProvider provider;
+        if (metricsProviders.isEmpty()) {
+            provider = new DummyMetricsProvider();
+        } else if (metricsProviders.size() == 1) {
+            provider = metricsProviders.iterator().next();
+        } else {
+            provider = metricsProviders.stream()
+                    .filter(p -> !(p instanceof DummyMetricsProvider))
+                    .findFirst()
+                    .orElse(new DummyMetricsProvider());
+        }
+
+        provider.setName(name);
+        provider.init();
+        this.provider = provider;
     }
 
     /**
@@ -56,6 +90,7 @@ class BaseRestClient {
      * The consumer accepts the elasticsearch request body and the headers.
      * It executes on the event loop.
      *
+     * @param metrics    the metrics
      * @param request    the request data object
      * @param converter  the request converter
      * @param handler    the result  handler
@@ -64,22 +99,27 @@ class BaseRestClient {
      * @param <ReqES>    the request ElasticSearch type
      * @param <RespData> the response DataObject type
      */
-    <ReqData extends BaseRequest, ReqES extends ActionRequest, RespData> void prepareRequest(ReqData request,
-                                                                                             Converter<ReqData, ReqES> converter,
-                                                                                             Handler<AsyncResult<RespData>> handler,
-                                                                                             BiConsumer<ReqES, Header[]> consumer) {
+    private <ReqData extends BaseRequest, ReqES extends ActionRequest, RespData> void prepareRequest(RequestMetrics metrics,
+                                                                                                     ReqData request,
+                                                                                                     Converter<ReqData, ReqES> converter,
+                                                                                                     Handler<AsyncResult<RespData>> handler,
+                                                                                                     BiConsumer<ReqES, Header[]> consumer) {
         ReqES esRequest = null;
         Header[] headers = new Header[]{};
+
+        metrics.startConvertRequestToES();
         if (request != null) {
+
             try {
                 esRequest = converter.convert(request);
             } catch (Exception exc) {
+                metrics.errorConvertRequestToES();
                 handler.handle(Future.failedFuture(exc));
                 return;
             }
-
             headers = CommonConverters.headersFromRequest(request);
         }
+        metrics.endConvertRequestToES();
 
         try {
             consumer.consume(esRequest, headers);
@@ -108,11 +148,17 @@ class BaseRestClient {
             Handler<AsyncResult<RespData>> handler,
             TriConsumer<ReqES, ActionListener<RespES>, Header[]> clientFunction) {
 
+        RequestMetrics requestMetrics = provider.forClass(request.getClass());
         prepareRequest(
+                requestMetrics,
                 request,
                 reqConverter,
                 handler,
-                (esRequest, headers) -> clientFunction.consume(esRequest, new FutureActionListener<>(respConverter, handler), headers)
+                (esRequest, headers) -> {
+                    requestMetrics.startRequest();
+                    // the action listener will finish to close the metrics...
+                    clientFunction.consume(esRequest, new FutureActionListener<>(requestMetrics, respConverter, handler), headers);
+                }
         );
     }
 
@@ -130,13 +176,14 @@ class BaseRestClient {
      * @param <ReqES>    the request ElasticSearch type
      * @param <RespData> the response DataObject type
      */
-    <ReqData extends BaseRequest, ReqES extends ActionRequest, RespData> void prepareRequestBlocking(
+    private <ReqData extends BaseRequest, ReqES extends ActionRequest, RespData> void prepareRequestBlocking(
+            RequestMetrics metrics,
             ReqData request,
             Converter<ReqData, ReqES> converter,
             Handler<AsyncResult<RespData>> handler,
             TriConsumer<ReqES, Header[], Future<RespData>> consumer) {
 
-        prepareRequest(request, converter, handler, (esRequest, headers) ->
+        prepareRequest(metrics, request, converter, handler, (esRequest, headers) ->
                 vertx.executeBlocking(future -> {
                     try {
                         consumer.consume(esRequest, headers, future);
@@ -156,25 +203,22 @@ class BaseRestClient {
      * Request may be <code>null</code>.
      *
      * @param request        the request
-     * @param reqConverter   the request converter
      * @param respConverter  the response converter
      * @param handler        the result handler
      * @param clientFunction the client function that executes the simple blocking request
      * @param <ReqData>      the request DataObject type
-     * @param <ReqES>        the request ElasticSearch type
      * @param <RespES>       the response ElasticSearch Type
      * @param <RespData>     the response DataObject type
      */
-    <ReqData extends BaseRequest, ReqES extends ActionRequest, RespES, RespData> void executeSimpleRequestBlocking(
+    final <ReqData extends BaseRequest, RespES, RespData> void executeSimpleRequestBlocking(
             ReqData request,
-            Converter<ReqData, ReqES> reqConverter,
             Converter<RespES, RespData> respConverter,
             Handler<AsyncResult<RespData>> handler,
             Function<Header[], RespES> clientFunction) {
 
         executeRequestBlocking(
                 request,
-                reqConverter,
+                req -> null,
                 respConverter,
                 handler,
                 (req, headers) -> clientFunction.apply(headers)
@@ -194,24 +238,45 @@ class BaseRestClient {
      * @param reqConverter  the request converter
      * @param respConverter the response converter
      * @param handler       the result handler
-     * @param function      the client function that executes the simple blocking request
+     * @param function      the client function that executes the blocking request
      * @param <ReqData>     the request DataObject type
      * @param <ReqES>       the request ElasticSearch type
      * @param <RespES>      the response ElasticSearch Type
      * @param <RespData>    the response DataObject type
      */
-    <ReqData extends BaseRequest, ReqES extends ActionRequest, RespES, RespData> void executeRequestBlocking(
+    final <ReqData extends BaseRequest, ReqES extends ActionRequest, RespES, RespData> void executeRequestBlocking(
             ReqData request,
             Converter<ReqData, ReqES> reqConverter,
             Converter<RespES, RespData> respConverter,
             Handler<AsyncResult<RespData>> handler,
             BiFunction<ReqES, Header[], RespES> function) {
-
+        RequestMetrics requestMetrics = provider.forClass(request.getClass());
         prepareRequestBlocking(
+                requestMetrics,
                 request,
                 reqConverter,
                 handler,
-                (req, headers, future) -> future.complete(respConverter.convert(function.apply(req, headers)))
+                (req, headers, future) -> {
+                    RespES esResponse;
+                    requestMetrics.startRequest();
+                    try {
+                        esResponse = function.apply(req, headers);
+                    } catch (Exception exc) {
+                        requestMetrics.errorRequest();
+                        future.fail(exc);
+                        return;
+                    }
+                    requestMetrics.endRequest();
+
+                    requestMetrics.startConvertResponseToDataObject();
+                    try {
+                        future.complete(respConverter.convert(esResponse));
+                    } catch (Exception exc) {
+                        requestMetrics.errorConvertResponseToDataObject();
+                        future.fail(exc);
+                    }
+                    requestMetrics.endConvertResponseToDataObject();
+                }
         );
     }
     //endregion

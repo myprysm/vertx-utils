@@ -15,6 +15,7 @@
  */
 package fr.myprysm.vertx.elasticsearch.impl;
 
+import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest;
 import fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse;
@@ -33,8 +34,6 @@ import io.vertx.core.json.JsonObject;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.rest.RestStatus;
@@ -44,7 +43,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
@@ -203,9 +201,11 @@ class CrudIT extends VertxESRestTestCase {
     }
 
     @Test
-    void testExists() throws InterruptedException, IOException {
-        CreateIndexResponse create = esClient().indices().create(new CreateIndexRequest("index"));
-        assertThat(create.isAcknowledged()).isTrue();
+    void testExists() throws InterruptedException {
+        rxClient().indices().rxCreate(new CreateIndexRequest("index"))
+                .test()
+                .await()
+                .assertNoErrors();
         {
             rxClient().rxGet(new GetRequest("index", "type", "id"))
                     .test()

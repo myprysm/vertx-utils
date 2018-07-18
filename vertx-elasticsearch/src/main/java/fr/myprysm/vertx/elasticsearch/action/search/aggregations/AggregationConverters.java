@@ -2,6 +2,9 @@ package fr.myprysm.vertx.elasticsearch.action.search.aggregations;
 
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.BucketConverters;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Children;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Filter;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Filters;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.GeoHashGrid;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Range;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Terms;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixConverters;
@@ -9,6 +12,10 @@ import fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixSt
 import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import io.vertx.core.json.JsonObject;
 import org.elasticsearch.join.aggregations.ChildrenAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
+import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.geogrid.GeoGridAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.GeoDistanceAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.IpRangeAggregationBuilder;
@@ -41,6 +48,14 @@ public interface AggregationConverters {
             case IpRangeAggregationBuilder.NAME:
                 return new Range(json);
 
+            case GeoGridAggregationBuilder.NAME:
+                return new GeoHashGrid(json);
+
+            case FilterAggregationBuilder.NAME:
+                return new Filter(json);
+            case FiltersAggregationBuilder.NAME:
+                return new Filters(json);
+
             case ChildrenAggregationBuilder.NAME:
                 return new Children(json);
 
@@ -56,12 +71,25 @@ public interface AggregationConverters {
             return BucketConverters.termsToDataObject((org.elasticsearch.search.aggregations.bucket.terms.Terms) esAggregation);
         } else if (esAggregation instanceof org.elasticsearch.search.aggregations.bucket.range.Range) {
             return BucketConverters.rangeToDataObject((org.elasticsearch.search.aggregations.bucket.range.Range) esAggregation);
-        } else if (esAggregation instanceof org.elasticsearch.join.aggregations.Children) {
-            return BucketConverters.childrenToDataObject((org.elasticsearch.join.aggregations.Children) esAggregation);
-        } else if (esAggregation instanceof org.elasticsearch.search.aggregations.matrix.stats.MatrixStats) {
+        } else if (esAggregation instanceof org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid) {
+            return BucketConverters.geoHashGridToDataObject((org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid) esAggregation);
+        } else if (esAggregation instanceof org.elasticsearch.search.aggregations.bucket.filter.Filter) {
+            return BucketConverters.singleBucketAggregationToDataObject(new Filter(), (SingleBucketAggregation) esAggregation);
+        } else if (esAggregation instanceof org.elasticsearch.search.aggregations.bucket.filter.Filters) {
+            return BucketConverters.filtersToDataObject((org.elasticsearch.search.aggregations.bucket.filter.Filters) esAggregation);
+        }
+
+        // parent join plugin
+        else if (esAggregation instanceof org.elasticsearch.join.aggregations.Children) {
+            return BucketConverters.singleBucketAggregationToDataObject(new Children(), (SingleBucketAggregation) esAggregation);
+        }
+
+
+        // matrix plugin
+        else if (esAggregation instanceof org.elasticsearch.search.aggregations.matrix.stats.MatrixStats) {
             return MatrixConverters.matrixStatsToDataObject((org.elasticsearch.search.aggregations.matrix.stats.MatrixStats) esAggregation);
         }
-        // Let some space for other implementations
+        // let some space for other implementations
         else {
             return aggregationToDataObjectRaw(esAggregation);
         }

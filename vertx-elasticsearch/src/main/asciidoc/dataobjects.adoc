@@ -1,5 +1,535 @@
 = Cheatsheets
 
+[[AcknowledgedResponse]]
+== AcknowledgedResponse
+
+++++
+ Response that indicates whether it has been acknowledged.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Aggregation]]
+== Aggregation
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Alias]]
+== Alias
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[BaseRequest]]
+== BaseRequest
+
+++++
+ Base DataObject request.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[Bucket]]
+== Bucket
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[BulkRequest]]
+== BulkRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[requests]]`requests`|`Array of link:dataobjects.html#DocWriteRequest[DocWriteRequest]`|-
+|===
+
+[[BulkResponse]]
+== BulkResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[BulkResponseItem]]
+== BulkResponseItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Children]]
+== Children
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ClearScrollRequest]]
+== ClearScrollRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[scrollIds]]`scrollIds`|`Array of String`|-
+|===
+
+[[ClearScrollResponse]]
+== ClearScrollResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ClusterUpdateSettingsRequest]]
+== ClusterUpdateSettingsRequest
+
+++++
+ ClusterUpdateSettingsRequest DataObject.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[ClusterUpdateSettingsResponse]]
+== ClusterUpdateSettingsResponse
+
+++++
+ ClusterUpdateSettingsResponse.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Clusters]]
+== Clusters
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[CompletionEntry]]
+== CompletionEntry
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[length]]`length`|`Number (int)`|-
+|[[offset]]`offset`|`Number (int)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[CompletionOption]]
+== CompletionOption
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[highlighted]]`highlighted`|`String`|-
+|[[score]]`score`|`Number (float)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[CompletionSuggestion]]
+== CompletionSuggestion
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[CreateIndexRequest]]
+== CreateIndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[mappings]]`mappings`|`Json object`|-
+|===
+
+[[CreateIndexResponse]]
+== CreateIndexResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[DeleteIndexRequest]]
+== DeleteIndexRequest
+
+++++
+ DeleteIndexRequest.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[DeleteIndexResponse]]
+== DeleteIndexResponse
+
+++++
+ DeleteIndexResponse.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[DeleteRequest]]
+== DeleteRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[DeleteResponse]]
+== DeleteResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[DocWriteRequest]]
+== DocWriteRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[DocWriteResponse]]
+== DocWriteResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[DocumentField]]
+== DocumentField
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ElasticsearchClientOptions]]
+== ElasticsearchClientOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Entry]]
+== Entry
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Explanation]]
+== Explanation
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Failure]]
+== Failure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[FetchSourceContext]]
+== FetchSourceContext
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Filter]]
+== Filter
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Filters]]
+== Filters
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[GeoHashGrid]]
+== GeoHashGrid
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[GetFailure]]
+== GetFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[GetIndexRequest]]
+== GetIndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[GetRequest]]
+== GetRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[GetRequestItem]]
+== GetRequestItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[GetResponse]]
+== GetResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[HttpHost]]
+== HttpHost
+
+++++
+ HttpHost.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[IndexRequest]]
+== IndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[IndexResponse]]
+== IndexResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[MainResponse]]
+== MainResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
 [[MatrixStats]]
 == MatrixStats
 
@@ -8,9 +538,456 @@
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[data]]`data`|`Json object`|-
-|[[metaData]]`metaData`|`Json object`|-
-|[[name]]`name`|`String`|-
+|===
+
+[[MatrixStatsResult]]
+== MatrixStatsResult
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[MultiGetRequest]]
+== MultiGetRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[items]]`items`|`Array of link:dataobjects.html#GetRequestItem[GetRequestItem]`|-
+|===
+
+[[MultiGetResponse]]
+== MultiGetResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[MultiSearchRequest]]
+== MultiSearchRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[requests]]`requests`|`Array of link:dataobjects.html#SearchRequest[SearchRequest]`|-
+|===
+
+[[MultiSearchResponse]]
+== MultiSearchResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[MultiSearchResponseItem]]
+== MultiSearchResponseItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[failure]]`failure`|`Boolean`|-
+|===
+
+[[NestedIdentity]]
+== NestedIdentity
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Option]]
+== Option
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[PhraseEntry]]
+== PhraseEntry
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[length]]`length`|`Number (int)`|-
+|[[offset]]`offset`|`Number (int)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[PhraseOption]]
+== PhraseOption
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[highlighted]]`highlighted`|`String`|-
+|[[score]]`score`|`Number (float)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[PhraseSuggestion]]
+== PhraseSuggestion
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[PutMappingRequest]]
+== PutMappingRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[indices]]`indices`|`Array of String`|-
+|===
+
+[[PutMappingResponse]]
+== PutMappingResponse
+
+++++
+ PutMappingResponse.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Range]]
+== Range
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[RangeBucket]]
+== RangeBucket
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[RefreshRequest]]
+== RefreshRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[indexs]]`indexs`|`Array of String`|-
+|===
+
+[[RefreshResponse]]
+== RefreshResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ReplicationResponse]]
+== ReplicationResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ScoreDoc]]
+== ScoreDoc
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Script]]
+== Script
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[SearchHit]]
+== SearchHit
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[SearchHits]]
+== SearchHits
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[SearchRequest]]
+== SearchRequest
+
+++++
+ SearchRequest
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[indices]]`indices`|`Array of String`|-
+|[[source]]`source`|`Json object`|-
+|[[types]]`types`|`Array of String`|-
+|===
+
+[[SearchResponse]]
+== SearchResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[SearchScrollRequest]]
+== SearchScrollRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|===
+
+[[ShardFailure]]
+== ShardFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ShardId]]
+== ShardId
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ShardInfo]]
+== ShardInfo
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[ShardInfoFailure]]
+== ShardInfoFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[SingleBucketAggregation]]
+== SingleBucketAggregation
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Suggestion]]
+== Suggestion
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[TermEntry]]
+== TermEntry
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[length]]`length`|`Number (int)`|-
+|[[offset]]`offset`|`Number (int)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[TermOption]]
+== TermOption
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[highlighted]]`highlighted`|`String`|-
+|[[score]]`score`|`Number (float)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[TermSuggestion]]
+== TermSuggestion
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[Terms]]
+== Terms
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[TermsBucket]]
+== TermsBucket
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===
+
+[[UpdateRequest]]
+== UpdateRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
 |[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[UpdateResponse]]
+== UpdateResponse
+
+++++
+ Update response from Elasticsearch.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
 |===
 
