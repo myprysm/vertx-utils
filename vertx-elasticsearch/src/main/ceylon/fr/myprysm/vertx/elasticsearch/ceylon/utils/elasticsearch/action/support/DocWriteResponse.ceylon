@@ -15,10 +15,6 @@ import ceylon.collection {
   HashMap
 }
 import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.support {
-  ShardId,
-  shardId_=shardId,
-  ShardInfo,
-  shardInfo_=shardInfo,
   ReplicationResponse
 }
 import io.vertx.core.json {
@@ -26,47 +22,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.DocWriteResponse */
-shared class DocWriteResponse(
-  shared Boolean? forcedRefresh = null,
-  shared String? id = null,
-  shared String? index = null,
-  shared Integer? primaryTerm = null,
-  shared String? result = null,
-  shared Integer? seqNo = null,
-  shared ShardId? shardId = null,
-  ShardInfo? shardInfo = null,
-  shared String? type = null,
-  shared Integer? version = null) extends ReplicationResponse(
-  shardInfo) satisfies BaseDataObject {
+shared class DocWriteResponse() extends ReplicationResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists forcedRefresh) {
-      json.put("forcedRefresh", forcedRefresh);
-    }
-    if (exists id) {
-      json.put("id", id);
-    }
-    if (exists index) {
-      json.put("index", index);
-    }
-    if (exists primaryTerm) {
-      json.put("primaryTerm", primaryTerm);
-    }
-    if (exists result) {
-      json.put("result", result);
-    }
-    if (exists seqNo) {
-      json.put("seqNo", seqNo);
-    }
-    if (exists shardId) {
-      json.put("shardId", shardId.toJson());
-    }
-    if (exists type) {
-      json.put("type", type);
-    }
-    if (exists version) {
-      json.put("version", version);
-    }
     return json;
   }
 }
@@ -74,27 +32,7 @@ shared class DocWriteResponse(
 shared object docWriteResponse {
 
   shared DocWriteResponse fromJson(JsonObject json) {
-    Boolean? forcedRefresh = json.getBooleanOrNull("forcedRefresh");
-    String? id = json.getStringOrNull("id");
-    String? index = json.getStringOrNull("index");
-    Integer? primaryTerm = json.getIntegerOrNull("primaryTerm");
-    String? result = json.getStringOrNull("result");
-    Integer? seqNo = json.getIntegerOrNull("seqNo");
-    ShardId? shardId = if (exists tmp = json.getObjectOrNull("shardId")) then shardId_.fromJson(tmp) else null;
-    ShardInfo? shardInfo = if (exists tmp = json.getObjectOrNull("shardInfo")) then shardInfo_.fromJson(tmp) else null;
-    String? type = json.getStringOrNull("type");
-    Integer? version = json.getIntegerOrNull("version");
     return DocWriteResponse {
-      forcedRefresh = forcedRefresh;
-      id = id;
-      index = index;
-      primaryTerm = primaryTerm;
-      result = result;
-      seqNo = seqNo;
-      shardId = shardId;
-      shardInfo = shardInfo;
-      type = type;
-      version = version;
     };
   }
 

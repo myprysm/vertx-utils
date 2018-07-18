@@ -8,10 +8,6 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search {
-  MultiSearchResponseItem,
-  multiSearchResponseItem_=multiSearchResponseItem
-}
 import fr.myprysm.vertx.elasticsearch.action.search {
   MultiSearchResponse_=MultiSearchResponse
 }
@@ -23,13 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.MultiSearchResponse */
-shared class MultiSearchResponse(
-  shared {MultiSearchResponseItem*}? responses = null) satisfies BaseDataObject {
+shared class MultiSearchResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists responses) {
-      json.put("responses", JsonArray(responses.map(multiSearchResponseItem_.toJson)));
-    }
     return json;
   }
 }
@@ -37,9 +29,7 @@ shared class MultiSearchResponse(
 shared object multiSearchResponse {
 
   shared MultiSearchResponse fromJson(JsonObject json) {
-    {MultiSearchResponseItem*}? responses = json.getArrayOrNull("responses")?.objects?.map(multiSearchResponseItem_.fromJson);
     return MultiSearchResponse {
-      responses = responses;
     };
   }
 

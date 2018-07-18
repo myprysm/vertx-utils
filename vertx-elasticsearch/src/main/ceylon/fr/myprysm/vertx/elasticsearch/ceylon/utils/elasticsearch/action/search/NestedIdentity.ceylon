@@ -8,10 +8,6 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search {
-  NestedIdentity,
-  nestedIdentity_=nestedIdentity
-}
 import fr.myprysm.vertx.elasticsearch.action.search {
   NestedIdentity_=NestedIdentity
 }
@@ -23,21 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.NestedIdentity */
-shared class NestedIdentity(
-  shared NestedIdentity? child = null,
-  shared String? field = null,
-  shared Integer? offset = null) satisfies BaseDataObject {
+shared class NestedIdentity() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists child) {
-      json.put("child", child.toJson());
-    }
-    if (exists field) {
-      json.put("field", field);
-    }
-    if (exists offset) {
-      json.put("offset", offset);
-    }
     return json;
   }
 }
@@ -45,13 +29,7 @@ shared class NestedIdentity(
 shared object nestedIdentity {
 
   shared NestedIdentity fromJson(JsonObject json) {
-    NestedIdentity? child = if (exists tmp = json.getObjectOrNull("child")) then this.fromJson(tmp) else null;
-    String? field = json.getStringOrNull("field");
-    Integer? offset = json.getIntegerOrNull("offset");
     return NestedIdentity {
-      child = child;
-      field = field;
-      offset = offset;
     };
   }
 

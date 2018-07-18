@@ -6,22 +6,21 @@ import org.elasticsearch.action.support.WriteRequest.RefreshPolicy
 import org.elasticsearch.index.VersionType
 
 fun IndexRequest(
-  headers: Map<String, String>? = null,
-  id: String? = null,
-  index: String? = null,
-  opType: OpType? = null,
-  parent: String? = null,
-  pipeline: String? = null,
-  refreshPolicy: RefreshPolicy? = null,
-  routing: String? = null,
-  source: io.vertx.core.json.JsonObject? = null,
-  timeout: Long? = null,
-  type: String? = null,
-  version: Long? = null,
-  versionType: VersionType? = null): IndexRequest = fr.myprysm.vertx.elasticsearch.action.index.IndexRequest().apply {
+        headers: Map<String, String>? = null,
+        id: String? = null,
+        index: String? = null,
+        opType: OpType? = null,
+        parent: String? = null,
+        refreshPolicy: RefreshPolicy? = null,
+        routing: String? = null,
+        type: String? = null,
+        version: Long? = null,
+        versionType: VersionType? = null): IndexRequest = fr.myprysm.vertx.elasticsearch.action.index.IndexRequest(io.vertx.core.json.JsonObject()).apply {
 
   if (headers != null) {
-    this.setHeaders(headers)
+      for (item in headers) {
+          this.addHeader(item.key, item.value)
+      }
   }
   if (id != null) {
     this.setId(id)
@@ -35,20 +34,11 @@ fun IndexRequest(
   if (parent != null) {
     this.setParent(parent)
   }
-  if (pipeline != null) {
-    this.setPipeline(pipeline)
-  }
   if (refreshPolicy != null) {
     this.setRefreshPolicy(refreshPolicy)
   }
   if (routing != null) {
     this.setRouting(routing)
-  }
-  if (source != null) {
-    this.setSource(source)
-  }
-  if (timeout != null) {
-    this.setTimeout(timeout)
   }
   if (type != null) {
     this.setType(type)

@@ -14,16 +14,8 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search {
-  SearchHit,
-  searchHit_=searchHit
-}
 import ceylon.collection {
   HashMap
-}
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.support {
-  ScoreDoc,
-  scoreDoc_=scoreDoc
 }
 import io.vertx.core.json {
   JsonObject_=JsonObject,
@@ -31,23 +23,23 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.CompletionOption */
 shared class CompletionOption(
-  Boolean? collateMatch = null,
-  shared ScoreDoc? doc = null,
-  String? highlighted = null,
-  shared SearchHit? hit = null,
-  Float? score = null,
-  String? text = null) extends Option(
-  collateMatch,
-  highlighted,
-  score,
-  text) satisfies BaseDataObject {
+  shared Boolean? collateMatch = null,
+  shared String? highlighted = null,
+  shared Float? score = null,
+  shared String? text = null) extends Option() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists doc) {
-      json.put("doc", doc.toJson());
+    if (exists collateMatch) {
+      json.put("collateMatch", collateMatch);
     }
-    if (exists hit) {
-      json.put("hit", hit.toJson());
+    if (exists highlighted) {
+      json.put("highlighted", highlighted);
+    }
+    if (exists score) {
+      json.put("score", score);
+    }
+    if (exists text) {
+      json.put("text", text);
     }
     return json;
   }
@@ -57,16 +49,12 @@ shared object completionOption {
 
   shared CompletionOption fromJson(JsonObject json) {
     Boolean? collateMatch = json.getBooleanOrNull("collateMatch");
-    ScoreDoc? doc = if (exists tmp = json.getObjectOrNull("doc")) then scoreDoc_.fromJson(tmp) else null;
     String? highlighted = json.getStringOrNull("highlighted");
-    SearchHit? hit = if (exists tmp = json.getObjectOrNull("hit")) then searchHit_.fromJson(tmp) else null;
     Float? score = json.getFloatOrNull("score");
     String? text = json.getStringOrNull("text");
     return CompletionOption {
       collateMatch = collateMatch;
-      doc = doc;
       highlighted = highlighted;
-      hit = hit;
       score = score;
       text = text;
     };

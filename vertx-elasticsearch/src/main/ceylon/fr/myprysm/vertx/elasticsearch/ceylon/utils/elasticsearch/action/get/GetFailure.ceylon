@@ -22,23 +22,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.get.GetFailure */
-shared class GetFailure(
-  String? cause = null,
-  shared String? id = null,
-  shared String? index = null,
-  shared String? type = null) extends Failure(
-  cause) satisfies BaseDataObject {
+shared class GetFailure() extends Failure() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists id) {
-      json.put("id", id);
-    }
-    if (exists index) {
-      json.put("index", index);
-    }
-    if (exists type) {
-      json.put("type", type);
-    }
     return json;
   }
 }
@@ -46,15 +32,7 @@ shared class GetFailure(
 shared object getFailure {
 
   shared GetFailure fromJson(JsonObject json) {
-    String? cause = json.getStringOrNull("cause");
-    String? id = json.getStringOrNull("id");
-    String? index = json.getStringOrNull("index");
-    String? type = json.getStringOrNull("type");
     return GetFailure {
-      cause = cause;
-      id = id;
-      index = index;
-      type = type;
     };
   }
 

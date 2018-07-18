@@ -8,25 +8,17 @@ import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettings
  * ClusterUpdateSettingsRequest DataObject.
  *
  * @param headers  Add a header to the request.
- * @param persistentSettings 
- * @param transientSettings 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest original] using Vert.x codegen.
  */
 fun ClusterUpdateSettingsRequest(
-  headers: Map<String, String>? = null,
-  persistentSettings: io.vertx.core.json.JsonObject? = null,
-  transientSettings: io.vertx.core.json.JsonObject? = null): ClusterUpdateSettingsRequest = fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest().apply {
+        headers: Map<String, String>? = null): ClusterUpdateSettingsRequest = fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest(io.vertx.core.json.JsonObject()).apply {
 
   if (headers != null) {
-    this.setHeaders(headers)
-  }
-  if (persistentSettings != null) {
-    this.setPersistentSettings(persistentSettings)
-  }
-  if (transientSettings != null) {
-    this.setTransientSettings(transientSettings)
+      for (item in headers) {
+          this.addHeader(item.key, item.value)
+      }
   }
 }
 

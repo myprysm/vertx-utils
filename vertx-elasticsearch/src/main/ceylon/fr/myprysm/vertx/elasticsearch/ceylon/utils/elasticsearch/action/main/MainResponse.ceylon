@@ -19,33 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.main.MainResponse */
-shared class MainResponse(
-  shared Boolean? available = null,
-  shared String? build = null,
-  shared String? clusterName = null,
-  shared String? clusterUuid = null,
-  shared String? nodeName = null,
-  shared String? version = null) satisfies BaseDataObject {
+shared class MainResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists available) {
-      json.put("available", available);
-    }
-    if (exists build) {
-      json.put("build", build);
-    }
-    if (exists clusterName) {
-      json.put("clusterName", clusterName);
-    }
-    if (exists clusterUuid) {
-      json.put("clusterUuid", clusterUuid);
-    }
-    if (exists nodeName) {
-      json.put("nodeName", nodeName);
-    }
-    if (exists version) {
-      json.put("version", version);
-    }
     return json;
   }
 }
@@ -53,19 +29,7 @@ shared class MainResponse(
 shared object mainResponse {
 
   shared MainResponse fromJson(JsonObject json) {
-    Boolean? available = json.getBooleanOrNull("available");
-    String? build = json.getStringOrNull("build");
-    String? clusterName = json.getStringOrNull("clusterName");
-    String? clusterUuid = json.getStringOrNull("clusterUuid");
-    String? nodeName = json.getStringOrNull("nodeName");
-    String? version = json.getStringOrNull("version");
     return MainResponse {
-      available = available;
-      build = build;
-      clusterName = clusterName;
-      clusterUuid = clusterUuid;
-      nodeName = nodeName;
-      version = version;
     };
   }
 

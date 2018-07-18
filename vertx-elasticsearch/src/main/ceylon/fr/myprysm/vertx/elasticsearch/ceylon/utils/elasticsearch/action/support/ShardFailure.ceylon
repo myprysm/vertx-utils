@@ -22,23 +22,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.ShardFailure */
-shared class ShardFailure(
-  String? cause = null,
-  shared String? index = null,
-  shared Integer? shardId = null,
-  shared String? status = null) extends Failure(
-  cause) satisfies BaseDataObject {
+shared class ShardFailure() extends Failure() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists index) {
-      json.put("index", index);
-    }
-    if (exists shardId) {
-      json.put("shardId", shardId);
-    }
-    if (exists status) {
-      json.put("status", status);
-    }
     return json;
   }
 }
@@ -46,15 +32,7 @@ shared class ShardFailure(
 shared object shardFailure {
 
   shared ShardFailure fromJson(JsonObject json) {
-    String? cause = json.getStringOrNull("cause");
-    String? index = json.getStringOrNull("index");
-    Integer? shardId = json.getIntegerOrNull("shardId");
-    String? status = json.getStringOrNull("status");
     return ShardFailure {
-      cause = cause;
-      index = index;
-      shardId = shardId;
-      status = status;
     };
   }
 

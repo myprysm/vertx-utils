@@ -24,34 +24,44 @@ import io.vertx.core.json {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.delete.DeleteRequest */
 shared class DeleteRequest(
   Map<String, String>? headers = null,
-  String? id = null,
-  String? index = null,
-  String? opType = null,
-  String? parent = null,
-  String? refreshPolicy = null,
-  String? routing = null,
-  shared Integer? timeout = null,
-  String? type = null,
-  Integer? version = null,
-  String? versionType = null,
-  shared Integer? waitForActiveShards = null) extends DocWriteRequest(
-  headers,
-  id,
-  index,
-  opType,
-  parent,
-  refreshPolicy,
-  routing,
-  type,
-  version,
-  versionType) satisfies BaseDataObject {
+  shared String? id = null,
+  shared String? index = null,
+  shared String? opType = null,
+  shared String? parent = null,
+  shared String? refreshPolicy = null,
+  shared String? routing = null,
+  shared String? type = null,
+  shared Integer? version = null,
+  shared String? versionType = null) extends DocWriteRequest(
+  headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists timeout) {
-      json.put("timeout", timeout);
+    if (exists id) {
+      json.put("id", id);
     }
-    if (exists waitForActiveShards) {
-      json.put("waitForActiveShards", waitForActiveShards);
+    if (exists index) {
+      json.put("index", index);
+    }
+    if (exists opType) {
+      json.put("opType", opType);
+    }
+    if (exists parent) {
+      json.put("parent", parent);
+    }
+    if (exists refreshPolicy) {
+      json.put("refreshPolicy", refreshPolicy);
+    }
+    if (exists routing) {
+      json.put("routing", routing);
+    }
+    if (exists type) {
+      json.put("type", type);
+    }
+    if (exists version) {
+      json.put("version", version);
+    }
+    if (exists versionType) {
+      json.put("versionType", versionType);
     }
     return json;
   }
@@ -67,11 +77,9 @@ shared object deleteRequest {
     String? parent = json.getStringOrNull("parent");
     String? refreshPolicy = json.getStringOrNull("refreshPolicy");
     String? routing = json.getStringOrNull("routing");
-    Integer? timeout = json.getIntegerOrNull("timeout");
     String? type = json.getStringOrNull("type");
     Integer? version = json.getIntegerOrNull("version");
     String? versionType = json.getStringOrNull("versionType");
-    Integer? waitForActiveShards = json.getIntegerOrNull("waitForActiveShards");
     return DeleteRequest {
       headers = headers;
       id = id;
@@ -80,11 +88,9 @@ shared object deleteRequest {
       parent = parent;
       refreshPolicy = refreshPolicy;
       routing = routing;
-      timeout = timeout;
       type = type;
       version = version;
       versionType = versionType;
-      waitForActiveShards = waitForActiveShards;
     };
   }
 

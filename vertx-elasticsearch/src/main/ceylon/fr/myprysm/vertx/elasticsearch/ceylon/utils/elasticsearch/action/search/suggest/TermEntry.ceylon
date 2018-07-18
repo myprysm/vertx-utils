@@ -1,6 +1,4 @@
 import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.suggest {
-  TermOption,
-  termOption_=termOption,
   Entry
 }
 import fr.myprysm.vertx.elasticsearch.action.search.suggest {
@@ -25,18 +23,19 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.TermEntry */
 shared class TermEntry(
-  Integer? length = null,
-  Integer? offset = null,
-  " Get the suggestion entry options.\n"
-  shared {TermOption*}? options = null,
-  String? text = null) extends Entry(
-  length,
-  offset,
-  text) satisfies BaseDataObject {
+  shared Integer? length = null,
+  shared Integer? offset = null,
+  shared String? text = null) extends Entry() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists options) {
-      json.put("options", JsonArray(options.map(termOption_.toJson)));
+    if (exists length) {
+      json.put("length", length);
+    }
+    if (exists offset) {
+      json.put("offset", offset);
+    }
+    if (exists text) {
+      json.put("text", text);
     }
     return json;
   }
@@ -47,12 +46,10 @@ shared object termEntry {
   shared TermEntry fromJson(JsonObject json) {
     Integer? length = json.getIntegerOrNull("length");
     Integer? offset = json.getIntegerOrNull("offset");
-    {TermOption*}? options = json.getArrayOrNull("options")?.objects?.map(termOption_.fromJson);
     String? text = json.getStringOrNull("text");
     return TermEntry {
       length = length;
       offset = offset;
-      options = options;
       text = text;
     };
   }

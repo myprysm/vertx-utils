@@ -20,13 +20,9 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse */
 " Response that indicates whether it has been acknowledged.\n"
-shared class AcknowledgedResponse(
-  shared Boolean? acknowledged = null) satisfies BaseDataObject {
+shared class AcknowledgedResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists acknowledged) {
-      json.put("acknowledged", acknowledged);
-    }
     return json;
   }
 }
@@ -34,9 +30,7 @@ shared class AcknowledgedResponse(
 shared object acknowledgedResponse {
 
   shared AcknowledgedResponse fromJson(JsonObject json) {
-    Boolean? acknowledged = json.getBooleanOrNull("acknowledged");
     return AcknowledgedResponse {
-      acknowledged = acknowledged;
     };
   }
 

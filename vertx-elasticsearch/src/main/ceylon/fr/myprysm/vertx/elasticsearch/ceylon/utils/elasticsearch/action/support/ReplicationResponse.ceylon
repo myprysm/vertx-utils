@@ -14,22 +14,14 @@ import fr.myprysm.vertx.elasticsearch.action.support {
 import ceylon.collection {
   HashMap
 }
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.support {
-  ShardInfo,
-  shardInfo_=shardInfo
-}
 import io.vertx.core.json {
   JsonObject_=JsonObject,
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.ReplicationResponse */
-shared class ReplicationResponse(
-  shared ShardInfo? shardInfo = null) satisfies BaseDataObject {
+shared class ReplicationResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists shardInfo) {
-      json.put("shardInfo", shardInfo.toJson());
-    }
     return json;
   }
 }
@@ -37,9 +29,7 @@ shared class ReplicationResponse(
 shared object replicationResponse {
 
   shared ReplicationResponse fromJson(JsonObject json) {
-    ShardInfo? shardInfo = if (exists tmp = json.getObjectOrNull("shardInfo")) then shardInfo_.fromJson(tmp) else null;
     return ReplicationResponse {
-      shardInfo = shardInfo;
     };
   }
 

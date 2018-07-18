@@ -19,13 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.Failure */
-shared class Failure(
-  shared String? cause = null) satisfies BaseDataObject {
+shared class Failure() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists cause) {
-      json.put("cause", cause);
-    }
     return json;
   }
 }
@@ -33,9 +29,7 @@ shared class Failure(
 shared object failure {
 
   shared Failure fromJson(JsonObject json) {
-    String? cause = json.getStringOrNull("cause");
     return Failure {
-      cause = cause;
     };
   }
 

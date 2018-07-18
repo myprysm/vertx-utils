@@ -22,15 +22,7 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixStats */
-shared class MatrixStats(
-  JsonObject? data = null,
-  JsonObject? metaData = null,
-  String? name = null,
-  String? type = null) extends Aggregation(
-  data,
-  metaData,
-  name,
-  type) satisfies BaseDataObject {
+shared class MatrixStats() extends Aggregation() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     return json;
@@ -40,15 +32,7 @@ shared class MatrixStats(
 shared object matrixStats {
 
   shared MatrixStats fromJson(JsonObject json) {
-    JsonObject? data = json.getObjectOrNull("data");
-    JsonObject? metaData = json.getObjectOrNull("metaData");
-    String? name = json.getStringOrNull("name");
-    String? type = json.getStringOrNull("type");
     return MatrixStats {
-      data = data;
-      metaData = metaData;
-      name = name;
-      type = type;
     };
   }
 

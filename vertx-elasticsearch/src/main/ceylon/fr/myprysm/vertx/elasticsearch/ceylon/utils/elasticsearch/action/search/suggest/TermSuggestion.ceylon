@@ -1,6 +1,4 @@
 import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.suggest {
-  TermEntry,
-  termEntry_=termEntry,
   Suggestion
 }
 import fr.myprysm.vertx.elasticsearch.action.search.suggest {
@@ -24,18 +22,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.TermSuggestion */
-shared class TermSuggestion(
-  " Get the suggestion entries.\n"
-  shared {TermEntry*}? entries = null,
-  String? name = null,
-  String? type = null) extends Suggestion(
-  name,
-  type) satisfies BaseDataObject {
+shared class TermSuggestion() extends Suggestion() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists entries) {
-      json.put("entries", JsonArray(entries.map(termEntry_.toJson)));
-    }
     return json;
   }
 }
@@ -43,13 +32,7 @@ shared class TermSuggestion(
 shared object termSuggestion {
 
   shared TermSuggestion fromJson(JsonObject json) {
-    {TermEntry*}? entries = json.getArrayOrNull("entries")?.objects?.map(termEntry_.fromJson);
-    String? name = json.getStringOrNull("name");
-    String? type = json.getStringOrNull("type");
     return TermSuggestion {
-      entries = entries;
-      name = name;
-      type = type;
     };
   }
 

@@ -24,18 +24,10 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest */
 " ClusterUpdateSettingsRequest DataObject.\n"
 shared class ClusterUpdateSettingsRequest(
-  Map<String, String>? headers = null,
-  shared JsonObject? persistentSettings = null,
-  shared JsonObject? transientSettings = null) extends BaseRequest(
+  Map<String, String>? headers = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists persistentSettings) {
-      json.put("persistentSettings", persistentSettings);
-    }
-    if (exists transientSettings) {
-      json.put("transientSettings", transientSettings);
-    }
     return json;
   }
 }
@@ -44,12 +36,8 @@ shared object clusterUpdateSettingsRequest {
 
   shared ClusterUpdateSettingsRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
-    JsonObject? persistentSettings = json.getObjectOrNull("persistentSettings");
-    JsonObject? transientSettings = json.getObjectOrNull("transientSettings");
     return ClusterUpdateSettingsRequest {
       headers = headers;
-      persistentSettings = persistentSettings;
-      transientSettings = transientSettings;
     };
   }
 

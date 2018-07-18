@@ -19,21 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.Clusters */
-shared class Clusters(
-  shared Integer? skipped = null,
-  shared Integer? successful = null,
-  shared Integer? total = null) satisfies BaseDataObject {
+shared class Clusters() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists skipped) {
-      json.put("skipped", skipped);
-    }
-    if (exists successful) {
-      json.put("successful", successful);
-    }
-    if (exists total) {
-      json.put("total", total);
-    }
     return json;
   }
 }
@@ -41,13 +29,7 @@ shared class Clusters(
 shared object clusters {
 
   shared Clusters fromJson(JsonObject json) {
-    Integer? skipped = json.getIntegerOrNull("skipped");
-    Integer? successful = json.getIntegerOrNull("successful");
-    Integer? total = json.getIntegerOrNull("total");
     return Clusters {
-      skipped = skipped;
-      successful = successful;
-      total = total;
     };
   }
 

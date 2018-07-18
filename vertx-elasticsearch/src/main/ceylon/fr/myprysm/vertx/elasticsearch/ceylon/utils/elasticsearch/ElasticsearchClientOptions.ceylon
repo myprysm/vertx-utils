@@ -11,10 +11,6 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
-import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch {
-  HttpHost,
-  httpHost_=httpHost
-}
 import ceylon.collection {
   HashMap
 }
@@ -23,29 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.ElasticsearchClientOptions */
-shared class ElasticsearchClientOptions(
-  shared Map<String, String>? defaultHeaders = null,
-  shared {HttpHost*}? hosts = null,
-  shared Integer? maxRetryTimeout = null,
-  shared String? pathPrefix = null,
-  shared Boolean? useNativeAsyncAPI = null) satisfies BaseDataObject {
+shared class ElasticsearchClientOptions() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists defaultHeaders) {
-      json.put("defaultHeaders", JsonObject(defaultHeaders));
-    }
-    if (exists hosts) {
-      json.put("hosts", JsonArray(hosts.map(httpHost_.toJson)));
-    }
-    if (exists maxRetryTimeout) {
-      json.put("maxRetryTimeout", maxRetryTimeout);
-    }
-    if (exists pathPrefix) {
-      json.put("pathPrefix", pathPrefix);
-    }
-    if (exists useNativeAsyncAPI) {
-      json.put("useNativeAsyncAPI", useNativeAsyncAPI);
-    }
     return json;
   }
 }
@@ -53,17 +29,7 @@ shared class ElasticsearchClientOptions(
 shared object elasticsearchClientOptions {
 
   shared ElasticsearchClientOptions fromJson(JsonObject json) {
-    Map<String, String>? defaultHeaders = if (exists tmp = json.getObjectOrNull("defaultHeaders")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
-    {HttpHost*}? hosts = json.getArrayOrNull("hosts")?.objects?.map(httpHost_.fromJson);
-    Integer? maxRetryTimeout = json.getIntegerOrNull("maxRetryTimeout");
-    String? pathPrefix = json.getStringOrNull("pathPrefix");
-    Boolean? useNativeAsyncAPI = json.getBooleanOrNull("useNativeAsyncAPI");
     return ElasticsearchClientOptions {
-      defaultHeaders = defaultHeaders;
-      hosts = hosts;
-      maxRetryTimeout = maxRetryTimeout;
-      pathPrefix = pathPrefix;
-      useNativeAsyncAPI = useNativeAsyncAPI;
     };
   }
 

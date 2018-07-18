@@ -19,17 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.ShardId */
-shared class ShardId(
-  shared Integer? id = null,
-  shared String? index = null) satisfies BaseDataObject {
+shared class ShardId() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists id) {
-      json.put("id", id);
-    }
-    if (exists index) {
-      json.put("index", index);
-    }
     return json;
   }
 }
@@ -37,11 +29,7 @@ shared class ShardId(
 shared object shardId {
 
   shared ShardId fromJson(JsonObject json) {
-    Integer? id = json.getIntegerOrNull("id");
-    String? index = json.getStringOrNull("index");
     return ShardId {
-      id = id;
-      index = index;
     };
   }
 

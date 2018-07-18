@@ -1,41 +1,20 @@
 package fr.myprysm.vertx.elasticsearch.kotlin.action.admin.indices.create
 
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest
-import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.Alias
 
 fun CreateIndexRequest(
-  aliases: Iterable<fr.myprysm.vertx.elasticsearch.action.admin.indices.create.Alias>? = null,
-  cause: String? = null,
-  headers: Map<String, String>? = null,
-  index: String? = null,
-  mappings: Map<String, io.vertx.core.json.JsonObject>? = null,
-  settings: io.vertx.core.json.JsonObject? = null,
-  timeout: Long? = null,
-  waitForActiveShards: Int? = null): CreateIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest().apply {
+        headers: Map<String, String>? = null,
+        mappings: Map<String, io.vertx.core.json.JsonObject>? = null): CreateIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest(io.vertx.core.json.JsonObject()).apply {
 
-  if (aliases != null) {
-    this.setAliases(aliases.toSet())
-  }
-  if (cause != null) {
-    this.setCause(cause)
-  }
   if (headers != null) {
-    this.setHeaders(headers)
-  }
-  if (index != null) {
-    this.setIndex(index)
+      for (item in headers) {
+          this.addHeader(item.key, item.value)
+      }
   }
   if (mappings != null) {
-    this.setMappings(mappings)
-  }
-  if (settings != null) {
-    this.setSettings(settings)
-  }
-  if (timeout != null) {
-    this.setTimeout(timeout)
-  }
-  if (waitForActiveShards != null) {
-    this.setWaitForActiveShards(waitForActiveShards)
+      for (item in mappings) {
+          this.addMapping(item.key, item.value)
+      }
   }
 }
 

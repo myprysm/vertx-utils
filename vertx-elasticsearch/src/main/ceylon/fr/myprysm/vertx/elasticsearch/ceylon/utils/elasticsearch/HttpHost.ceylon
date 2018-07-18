@@ -20,21 +20,9 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.HttpHost */
 " HttpHost.\n"
-shared class HttpHost(
-  shared String? hostname = null,
-  shared Integer? port = null,
-  shared String? protocol = null) satisfies BaseDataObject {
+shared class HttpHost() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists hostname) {
-      json.put("hostname", hostname);
-    }
-    if (exists port) {
-      json.put("port", port);
-    }
-    if (exists protocol) {
-      json.put("protocol", protocol);
-    }
     return json;
   }
 }
@@ -42,13 +30,7 @@ shared class HttpHost(
 shared object httpHost {
 
   shared HttpHost fromJson(JsonObject json) {
-    String? hostname = json.getStringOrNull("hostname");
-    Integer? port = json.getIntegerOrNull("port");
-    String? protocol = json.getStringOrNull("protocol");
     return HttpHost {
-      hostname = hostname;
-      port = port;
-      protocol = protocol;
     };
   }
 

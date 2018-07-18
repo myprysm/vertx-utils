@@ -23,19 +23,23 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.TermOption */
 shared class TermOption(
-  Boolean? collateMatch = null,
-  shared Integer? freq = null,
-  String? highlighted = null,
-  Float? score = null,
-  String? text = null) extends Option(
-  collateMatch,
-  highlighted,
-  score,
-  text) satisfies BaseDataObject {
+  shared Boolean? collateMatch = null,
+  shared String? highlighted = null,
+  shared Float? score = null,
+  shared String? text = null) extends Option() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists freq) {
-      json.put("freq", freq);
+    if (exists collateMatch) {
+      json.put("collateMatch", collateMatch);
+    }
+    if (exists highlighted) {
+      json.put("highlighted", highlighted);
+    }
+    if (exists score) {
+      json.put("score", score);
+    }
+    if (exists text) {
+      json.put("text", text);
     }
     return json;
   }
@@ -45,13 +49,11 @@ shared object termOption {
 
   shared TermOption fromJson(JsonObject json) {
     Boolean? collateMatch = json.getBooleanOrNull("collateMatch");
-    Integer? freq = json.getIntegerOrNull("freq");
     String? highlighted = json.getStringOrNull("highlighted");
     Float? score = json.getFloatOrNull("score");
     String? text = json.getStringOrNull("text");
     return TermOption {
       collateMatch = collateMatch;
-      freq = freq;
       highlighted = highlighted;
       score = score;
       text = text;

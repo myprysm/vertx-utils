@@ -3,10 +3,7 @@ package fr.myprysm.vertx.elasticsearch.kotlin.action.support
 import fr.myprysm.vertx.elasticsearch.action.support.Failure
 
 fun Failure(
-  cause: String? = null): Failure = fr.myprysm.vertx.elasticsearch.action.support.Failure().apply {
+): Failure = fr.myprysm.vertx.elasticsearch.action.support.Failure(io.vertx.core.json.JsonObject()).apply {
 
-  if (cause != null) {
-    this.setCause(cause)
-  }
 }
 

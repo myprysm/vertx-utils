@@ -1,51 +1,14 @@
 package fr.myprysm.vertx.elasticsearch.kotlin.action.support
 
 import fr.myprysm.vertx.elasticsearch.action.support.DocWriteRequest
-import org.elasticsearch.action.DocWriteRequest.OpType
-import org.elasticsearch.action.support.WriteRequest.RefreshPolicy
-import org.elasticsearch.index.VersionType
 
 fun DocWriteRequest(
-  headers: Map<String, String>? = null,
-  id: String? = null,
-  index: String? = null,
-  opType: OpType? = null,
-  parent: String? = null,
-  refreshPolicy: RefreshPolicy? = null,
-  routing: String? = null,
-  type: String? = null,
-  version: Long? = null,
-  versionType: VersionType? = null): DocWriteRequest = fr.myprysm.vertx.elasticsearch.action.support.DocWriteRequest().apply {
+        headers: Map<String, String>? = null): DocWriteRequest = fr.myprysm.vertx.elasticsearch.action.support.DocWriteRequest(io.vertx.core.json.JsonObject()).apply {
 
   if (headers != null) {
-    this.setHeaders(headers)
-  }
-  if (id != null) {
-    this.setId(id)
-  }
-  if (index != null) {
-    this.setIndex(index)
-  }
-  if (opType != null) {
-    this.setOpType(opType)
-  }
-  if (parent != null) {
-    this.setParent(parent)
-  }
-  if (refreshPolicy != null) {
-    this.setRefreshPolicy(refreshPolicy)
-  }
-  if (routing != null) {
-    this.setRouting(routing)
-  }
-  if (type != null) {
-    this.setType(type)
-  }
-  if (version != null) {
-    this.setVersion(version)
-  }
-  if (versionType != null) {
-    this.setVersionType(versionType)
+      for (item in headers) {
+          this.addHeader(item.key, item.value)
+      }
   }
 }
 

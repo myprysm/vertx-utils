@@ -23,19 +23,9 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse */
 " ClusterUpdateSettingsResponse.\n"
-shared class ClusterUpdateSettingsResponse(
-  Boolean? acknowledged = null,
-  shared JsonObject? persistentSettings = null,
-  shared JsonObject? transientSettings = null) extends AcknowledgedResponse(
-  acknowledged) satisfies BaseDataObject {
+shared class ClusterUpdateSettingsResponse() extends AcknowledgedResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists persistentSettings) {
-      json.put("persistentSettings", persistentSettings);
-    }
-    if (exists transientSettings) {
-      json.put("transientSettings", transientSettings);
-    }
     return json;
   }
 }
@@ -43,13 +33,7 @@ shared class ClusterUpdateSettingsResponse(
 shared object clusterUpdateSettingsResponse {
 
   shared ClusterUpdateSettingsResponse fromJson(JsonObject json) {
-    Boolean? acknowledged = json.getBooleanOrNull("acknowledged");
-    JsonObject? persistentSettings = json.getObjectOrNull("persistentSettings");
-    JsonObject? transientSettings = json.getObjectOrNull("transientSettings");
     return ClusterUpdateSettingsResponse {
-      acknowledged = acknowledged;
-      persistentSettings = persistentSettings;
-      transientSettings = transientSettings;
     };
   }
 

@@ -6,21 +6,21 @@ import org.elasticsearch.action.support.WriteRequest.RefreshPolicy
 import org.elasticsearch.index.VersionType
 
 fun DeleteRequest(
-  headers: Map<String, String>? = null,
-  id: String? = null,
-  index: String? = null,
-  opType: OpType? = null,
-  parent: String? = null,
-  refreshPolicy: RefreshPolicy? = null,
-  routing: String? = null,
-  timeout: Long? = null,
-  type: String? = null,
-  version: Long? = null,
-  versionType: VersionType? = null,
-  waitForActiveShards: Int? = null): DeleteRequest = fr.myprysm.vertx.elasticsearch.action.delete.DeleteRequest().apply {
+        headers: Map<String, String>? = null,
+        id: String? = null,
+        index: String? = null,
+        opType: OpType? = null,
+        parent: String? = null,
+        refreshPolicy: RefreshPolicy? = null,
+        routing: String? = null,
+        type: String? = null,
+        version: Long? = null,
+        versionType: VersionType? = null): DeleteRequest = fr.myprysm.vertx.elasticsearch.action.delete.DeleteRequest(io.vertx.core.json.JsonObject()).apply {
 
   if (headers != null) {
-    this.setHeaders(headers)
+      for (item in headers) {
+          this.addHeader(item.key, item.value)
+      }
   }
   if (id != null) {
     this.setId(id)
@@ -40,9 +40,6 @@ fun DeleteRequest(
   if (routing != null) {
     this.setRouting(routing)
   }
-  if (timeout != null) {
-    this.setTimeout(timeout)
-  }
   if (type != null) {
     this.setType(type)
   }
@@ -51,9 +48,6 @@ fun DeleteRequest(
   }
   if (versionType != null) {
     this.setVersionType(versionType)
-  }
-  if (waitForActiveShards != null) {
-    this.setWaitForActiveShards(waitForActiveShards)
   }
 }
 

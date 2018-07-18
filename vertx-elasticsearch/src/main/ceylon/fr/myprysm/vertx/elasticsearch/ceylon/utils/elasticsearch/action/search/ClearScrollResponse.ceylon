@@ -19,21 +19,9 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.ClearScrollResponse */
-shared class ClearScrollResponse(
-  shared Integer? numFreed = null,
-  shared String? status = null,
-  shared Boolean? succeeded = null) satisfies BaseDataObject {
+shared class ClearScrollResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
-    if (exists numFreed) {
-      json.put("numFreed", numFreed);
-    }
-    if (exists status) {
-      json.put("status", status);
-    }
-    if (exists succeeded) {
-      json.put("succeeded", succeeded);
-    }
     return json;
   }
 }
@@ -41,13 +29,7 @@ shared class ClearScrollResponse(
 shared object clearScrollResponse {
 
   shared ClearScrollResponse fromJson(JsonObject json) {
-    Integer? numFreed = json.getIntegerOrNull("numFreed");
-    String? status = json.getStringOrNull("status");
-    Boolean? succeeded = json.getBooleanOrNull("succeeded");
     return ClearScrollResponse {
-      numFreed = numFreed;
-      status = status;
-      succeeded = succeeded;
     };
   }
 

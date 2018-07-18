@@ -23,9 +23,7 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexResponse */
 " DeleteIndexResponse.\n"
-shared class DeleteIndexResponse(
-  Boolean? acknowledged = null) extends AcknowledgedResponse(
-  acknowledged) satisfies BaseDataObject {
+shared class DeleteIndexResponse() extends AcknowledgedResponse() satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     return json;
@@ -35,9 +33,7 @@ shared class DeleteIndexResponse(
 shared object deleteIndexResponse {
 
   shared DeleteIndexResponse fromJson(JsonObject json) {
-    Boolean? acknowledged = json.getBooleanOrNull("acknowledged");
     return DeleteIndexResponse {
-      acknowledged = acknowledged;
     };
   }
 

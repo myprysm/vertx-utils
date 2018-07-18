@@ -15,10 +15,6 @@ import ceylon.collection {
   HashMap
 }
 import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.support {
-  FetchSourceContext,
-  fetchSourceContext_=fetchSourceContext,
-  Script,
-  script_=script,
   DocWriteRequest
 }
 import io.vertx.core.json {
@@ -27,67 +23,45 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.update.UpdateRequest */
 shared class UpdateRequest(
-  shared Boolean? detectNoop = null,
-  shared JsonObject? doc = null,
-  shared Boolean? docAsUpsert = null,
-  shared FetchSourceContext? fetchSourceContext = null,
-  shared {String*}? fields = null,
   Map<String, String>? headers = null,
-  String? id = null,
-  String? index = null,
-  String? opType = null,
-  String? parent = null,
-  String? refreshPolicy = null,
-  shared Integer? retryOnConflict = null,
-  String? routing = null,
-  shared Script? script = null,
-  shared Boolean? scriptedUpsert = null,
-  String? type = null,
-  shared JsonObject? upsert = null,
-  Integer? version = null,
-  String? versionType = null,
-  shared Integer? waitForActiveShards = null) extends DocWriteRequest(
-  headers,
-  id,
-  index,
-  opType,
-  parent,
-  refreshPolicy,
-  routing,
-  type,
-  version,
-  versionType) satisfies BaseDataObject {
+  shared String? id = null,
+  shared String? index = null,
+  shared String? opType = null,
+  shared String? parent = null,
+  shared String? refreshPolicy = null,
+  shared String? routing = null,
+  shared String? type = null,
+  shared Integer? version = null,
+  shared String? versionType = null) extends DocWriteRequest(
+  headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists detectNoop) {
-      json.put("detectNoop", detectNoop);
+    if (exists id) {
+      json.put("id", id);
     }
-    if (exists doc) {
-      json.put("doc", doc);
+    if (exists index) {
+      json.put("index", index);
     }
-    if (exists docAsUpsert) {
-      json.put("docAsUpsert", docAsUpsert);
+    if (exists opType) {
+      json.put("opType", opType);
     }
-    if (exists fetchSourceContext) {
-      json.put("fetchSourceContext", fetchSourceContext.toJson());
+    if (exists parent) {
+      json.put("parent", parent);
     }
-    if (exists fields) {
-      json.put("fields", JsonArray(fields));
+    if (exists refreshPolicy) {
+      json.put("refreshPolicy", refreshPolicy);
     }
-    if (exists retryOnConflict) {
-      json.put("retryOnConflict", retryOnConflict);
+    if (exists routing) {
+      json.put("routing", routing);
     }
-    if (exists script) {
-      json.put("script", script.toJson());
+    if (exists type) {
+      json.put("type", type);
     }
-    if (exists scriptedUpsert) {
-      json.put("scriptedUpsert", scriptedUpsert);
+    if (exists version) {
+      json.put("version", version);
     }
-    if (exists upsert) {
-      json.put("upsert", upsert);
-    }
-    if (exists waitForActiveShards) {
-      json.put("waitForActiveShards", waitForActiveShards);
+    if (exists versionType) {
+      json.put("versionType", versionType);
     }
     return json;
   }
@@ -96,47 +70,27 @@ shared class UpdateRequest(
 shared object updateRequest {
 
   shared UpdateRequest fromJson(JsonObject json) {
-    Boolean? detectNoop = json.getBooleanOrNull("detectNoop");
-    JsonObject? doc = json.getObjectOrNull("doc");
-    Boolean? docAsUpsert = json.getBooleanOrNull("docAsUpsert");
-    FetchSourceContext? fetchSourceContext = if (exists tmp = json.getObjectOrNull("fetchSourceContext")) then fetchSourceContext_.fromJson(tmp) else null;
-    {String*}? fields = json.getArrayOrNull("fields")?.strings;
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
     String? id = json.getStringOrNull("id");
     String? index = json.getStringOrNull("index");
     String? opType = json.getStringOrNull("opType");
     String? parent = json.getStringOrNull("parent");
     String? refreshPolicy = json.getStringOrNull("refreshPolicy");
-    Integer? retryOnConflict = json.getIntegerOrNull("retryOnConflict");
     String? routing = json.getStringOrNull("routing");
-    Script? script = if (exists tmp = json.getObjectOrNull("script")) then script_.fromJson(tmp) else null;
-    Boolean? scriptedUpsert = json.getBooleanOrNull("scriptedUpsert");
     String? type = json.getStringOrNull("type");
-    JsonObject? upsert = json.getObjectOrNull("upsert");
     Integer? version = json.getIntegerOrNull("version");
     String? versionType = json.getStringOrNull("versionType");
-    Integer? waitForActiveShards = json.getIntegerOrNull("waitForActiveShards");
     return UpdateRequest {
-      detectNoop = detectNoop;
-      doc = doc;
-      docAsUpsert = docAsUpsert;
-      fetchSourceContext = fetchSourceContext;
-      fields = fields;
       headers = headers;
       id = id;
       index = index;
       opType = opType;
       parent = parent;
       refreshPolicy = refreshPolicy;
-      retryOnConflict = retryOnConflict;
       routing = routing;
-      script = script;
-      scriptedUpsert = scriptedUpsert;
       type = type;
-      upsert = upsert;
       version = version;
       versionType = versionType;
-      waitForActiveShards = waitForActiveShards;
     };
   }
 

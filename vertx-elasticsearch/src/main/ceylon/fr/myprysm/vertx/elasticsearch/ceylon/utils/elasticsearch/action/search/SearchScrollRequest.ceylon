@@ -23,18 +23,10 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest */
 shared class SearchScrollRequest(
-  Map<String, String>? headers = null,
-  shared Integer? keepAlive = null,
-  shared String? scrollId = null) extends BaseRequest(
+  Map<String, String>? headers = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists keepAlive) {
-      json.put("keepAlive", keepAlive);
-    }
-    if (exists scrollId) {
-      json.put("scrollId", scrollId);
-    }
     return json;
   }
 }
@@ -43,12 +35,8 @@ shared object searchScrollRequest {
 
   shared SearchScrollRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
-    Integer? keepAlive = json.getIntegerOrNull("keepAlive");
-    String? scrollId = json.getStringOrNull("scrollId");
     return SearchScrollRequest {
       headers = headers;
-      keepAlive = keepAlive;
-      scrollId = scrollId;
     };
   }
 
