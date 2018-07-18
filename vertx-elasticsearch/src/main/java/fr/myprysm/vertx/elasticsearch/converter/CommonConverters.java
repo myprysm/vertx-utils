@@ -2,7 +2,6 @@ package fr.myprysm.vertx.elasticsearch.converter;
 
 import fr.myprysm.vertx.elasticsearch.HttpHost;
 import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
-import fr.myprysm.vertx.elasticsearch.support.SupportSearchPlugin;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import org.apache.commons.lang3.BooleanUtils;
@@ -11,7 +10,6 @@ import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.ParseField;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.ContextParser;
 import org.elasticsearch.common.xcontent.LoggingDeprecationHandler;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
@@ -20,7 +18,6 @@ import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.plugins.spi.NamedXContentProvider;
-import org.elasticsearch.search.SearchModule;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.adjacency.AdjacencyMatrixAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.adjacency.ParsedAdjacencyMatrix;
@@ -115,7 +112,6 @@ import org.elasticsearch.search.suggest.term.TermSuggestion;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,11 +129,7 @@ import static java.util.stream.Collectors.toList;
 public final class CommonConverters {
 
     private static final NamedXContentRegistry registry = new NamedXContentRegistry(
-            Stream.of(
-                    getDefaultNamedXContents().stream(),
-                    getProvidedNamedXContents().stream(),
-                    getSearchNamedXContents().stream()
-            )
+            Stream.of(getDefaultNamedXContents().stream(), getProvidedNamedXContents().stream())
                     .flatMap(Function.identity()).collect(toList()));
 
     private CommonConverters() {
@@ -322,7 +314,9 @@ public final class CommonConverters {
     }
 
     /**
-     * Loads and returns the {@link NamedXContentRegistry.Entry} parsers provided by plugins.
+     * Loads and returns the {@link NamedXContentRegistry.Entry} parsers provided by content providers.
+     *
+     * @return the entries
      */
     private static List<NamedXContentRegistry.Entry> getProvidedNamedXContents() {
         List<NamedXContentRegistry.Entry> entries = new ArrayList<>();
@@ -332,7 +326,4 @@ public final class CommonConverters {
         return entries;
     }
 
-    private static List<NamedXContentRegistry.Entry> getSearchNamedXContents() {
-        return new SearchModule(Settings.EMPTY, false, Arrays.asList(new SupportSearchPlugin())).getNamedXContents();
-    }
 }

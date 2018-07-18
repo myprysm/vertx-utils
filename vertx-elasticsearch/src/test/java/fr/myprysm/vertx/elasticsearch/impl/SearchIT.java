@@ -16,6 +16,7 @@ import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Range;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.RangeBucket;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Terms;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.TermsBucket;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixStats;
 import fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseEntry;
 import fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseOption;
 import fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseSuggestion;
@@ -38,6 +39,7 @@ import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.matrix.stats.MatrixStatsAggregationBuilder;
 import org.elasticsearch.search.aggregations.support.ValueType;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -47,6 +49,7 @@ import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -306,41 +309,41 @@ class SearchIT extends VertxESRestTestCase {
                 });
     }
 
-//    @Test
-//    void testSearchWithMatrixStats() throws InterruptedException {
-//        SearchRequest searchRequest = new SearchRequest("index");
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//        searchSourceBuilder.aggregation(new MatrixStatsAggregationBuilder("agg1").fields(Arrays.asList("num", "num2")));
-//        searchSourceBuilder.size(0);
-//        searchRequest.source(searchSourceBuilder);
-//        rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
-//                .test()
-//                .await()
-//                .assertNoErrors()
-//                .assertValue(searchResponse -> {
-//                    assertSearchHeader(searchResponse);
-//                    assertThat(searchResponse.getSuggest()).isNull();
-//                    assertThat(searchResponse.getProfileResults()).isNull();
-//                    assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(5L);
-//                    assertThat(searchResponse.getHits().getHits()).isEmpty();
-//                    assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
-//                    assertEquals(1, searchResponse.getAggregations().asList().size());
-//                    MatrixStats matrixStats = searchResponse.getAggregations().get("agg1");
-//                    assertEquals(5, matrixStats.getFieldCount("num"));
-//                    assertEquals(56d, matrixStats.getMean("num"), 0d);
-//                    assertEquals(1830d, matrixStats.getVariance("num"), 0d);
-//                    assertEquals(0.09340198804973057, matrixStats.getSkewness("num"), 0d);
-//                    assertEquals(1.2741646510794589, matrixStats.getKurtosis("num"), 0d);
-//                    assertEquals(5, matrixStats.getFieldCount("num2"));
-//                    assertEquals(29d, matrixStats.getMean("num2"), 0d);
-//                    assertEquals(330d, matrixStats.getVariance("num2"), 0d);
-//                    assertEquals(-0.13568039346585542, matrixStats.getSkewness("num2"), 1.0e-16);
-//                    assertEquals(1.3517561983471074, matrixStats.getKurtosis("num2"), 0d);
-//                    assertEquals(-767.5, matrixStats.getCovariance("num", "num2"), 0d);
-//                    assertEquals(-0.9876336291667923, matrixStats.getCorrelation("num", "num2"), 0d);
-//                    return true;
-//                });
-//    }
+    @Test
+    void testSearchWithMatrixStats() throws InterruptedException {
+        SearchRequest searchRequest = new SearchRequest("index");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(new MatrixStatsAggregationBuilder("agg1").fields(Arrays.asList("num", "num2")));
+        searchSourceBuilder.size(0);
+        searchRequest.source(searchSourceBuilder);
+        rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                .test()
+                .await()
+                .assertNoErrors()
+                .assertValue(searchResponse -> {
+                    assertSearchHeader(searchResponse);
+                    assertThat(searchResponse.getSuggest()).isNull();
+                    assertThat(searchResponse.getProfileResults()).isNull();
+                    assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(5L);
+                    assertThat(searchResponse.getHits().getHits()).isEmpty();
+                    assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                    assertThat(searchResponse.getAggregations()).hasSize(1);
+                    MatrixStats matrixStats = searchResponse.getAggregationByName("agg1");
+                    assertThat(matrixStats.getFieldCount("num")).isEqualTo(5L);
+                    assertThat(matrixStats.getMean("num")).isEqualTo(56D);
+                    assertThat(matrixStats.getVariance("num")).isEqualTo(1830D);
+                    assertThat(matrixStats.getSkewness("num")).isEqualTo(0.09340198804973057D);
+                    assertThat(matrixStats.getKurtosis("num")).isEqualTo(1.2741646510794589D);
+                    assertThat(matrixStats.getFieldCount("num2")).isEqualTo(5L);
+                    assertThat(matrixStats.getMean("num2")).isEqualTo(29D);
+                    assertThat(matrixStats.getVariance("num2")).isEqualTo(330D);
+                    assertThat(matrixStats.getSkewness("num2")).isEqualTo(-0.13568039346585542D);
+                    assertThat(matrixStats.getKurtosis("num2")).isEqualTo(1.3517561983471074D);
+                    assertThat(matrixStats.getCovariance("num", "num2")).isEqualTo(-767.5D);
+                    assertThat(matrixStats.getCorrelation("num", "num2")).isEqualTo(-0.9876336291667923D);
+                    return true;
+                });
+    }
 
 
     @Test

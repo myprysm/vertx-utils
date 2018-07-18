@@ -4,6 +4,8 @@ import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.BucketCo
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Children;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Range;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Terms;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixConverters;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.matrix.MatrixStats;
 import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import io.vertx.core.json.JsonObject;
 import org.elasticsearch.join.aggregations.ChildrenAggregationBuilder;
@@ -15,6 +17,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.DoubleTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
+import org.elasticsearch.search.aggregations.matrix.stats.MatrixStatsAggregationBuilder;
 
 import static org.elasticsearch.search.aggregations.Aggregation.TYPED_KEYS_DELIMITER;
 
@@ -41,6 +44,8 @@ public interface AggregationConverters {
             case ChildrenAggregationBuilder.NAME:
                 return new Children(json);
 
+            case MatrixStatsAggregationBuilder.NAME:
+                return new MatrixStats(json);
             default:
                 return new Aggregation(json);
         }
@@ -53,6 +58,8 @@ public interface AggregationConverters {
             return BucketConverters.rangeToDataObject((org.elasticsearch.search.aggregations.bucket.range.Range) esAggregation);
         } else if (esAggregation instanceof org.elasticsearch.join.aggregations.Children) {
             return BucketConverters.childrenToDataObject((org.elasticsearch.join.aggregations.Children) esAggregation);
+        } else if (esAggregation instanceof org.elasticsearch.search.aggregations.matrix.stats.MatrixStats) {
+            return MatrixConverters.matrixStatsToDataObject((org.elasticsearch.search.aggregations.matrix.stats.MatrixStats) esAggregation);
         }
         // Let some space for other implementations
         else {
