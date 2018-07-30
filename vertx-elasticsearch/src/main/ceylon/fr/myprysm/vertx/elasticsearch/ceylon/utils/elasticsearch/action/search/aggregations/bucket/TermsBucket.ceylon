@@ -1,3 +1,7 @@
+import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.aggregations {
+  Aggregation,
+  aggregation_=aggregation
+}
 import ceylon.json {
   JsonObject=Object,
   JsonArray=Array,
@@ -22,9 +26,19 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.TermsBucket */
-shared class TermsBucket() extends Bucket() satisfies BaseDataObject {
+shared class TermsBucket(
+  Map<String, Aggregation>? aggregations = null,
+  Integer? docCount = null,
+  shared Integer? docCountError = null,
+  String? key = null) extends Bucket(
+  aggregations,
+  docCount,
+  key) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
+    if (exists docCountError) {
+      json.put("docCountError", docCountError);
+    }
     return json;
   }
 }
@@ -32,7 +46,15 @@ shared class TermsBucket() extends Bucket() satisfies BaseDataObject {
 shared object termsBucket {
 
   shared TermsBucket fromJson(JsonObject json) {
+    Map<String, Aggregation>? aggregations = if (exists tmp = json.getObjectOrNull("aggregations")) then HashMap { for(key->val in tmp) if (is JsonObject val) key->aggregation_.fromJson(val) } else null;
+    Integer? docCount = json.getIntegerOrNull("docCount");
+    Integer? docCountError = json.getIntegerOrNull("docCountError");
+    String? key = json.getStringOrNull("key");
     return TermsBucket {
+      aggregations = aggregations;
+      docCount = docCount;
+      docCountError = docCountError;
+      key = key;
     };
   }
 

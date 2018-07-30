@@ -7,12 +7,16 @@ import fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappin
  *
  * PutMappingResponse.
  *
+ * @param acknowledged
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse original] using Vert.x codegen.
  */
 fun PutMappingResponse(
-): PutMappingResponse = fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse(io.vertx.core.json.JsonObject()).apply {
+        acknowledged: Boolean? = null): PutMappingResponse = fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse().apply {
 
+    if (acknowledged != null) {
+        this.setAcknowledged(acknowledged)
+    }
 }
 

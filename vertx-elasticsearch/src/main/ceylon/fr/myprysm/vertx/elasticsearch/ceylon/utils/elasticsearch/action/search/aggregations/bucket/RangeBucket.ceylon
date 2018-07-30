@@ -1,3 +1,7 @@
+import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.aggregations {
+  Aggregation,
+  aggregation_=aggregation
+}
 import ceylon.json {
   JsonObject=Object,
   JsonArray=Array,
@@ -22,9 +26,23 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.RangeBucket */
-shared class RangeBucket() extends Bucket() satisfies BaseDataObject {
+shared class RangeBucket(
+  Map<String, Aggregation>? aggregations = null,
+  Integer? docCount = null,
+  shared String? fromAsString = null,
+  String? key = null,
+  shared String? toAsString = null) extends Bucket(
+  aggregations,
+  docCount,
+  key) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
+    if (exists fromAsString) {
+      json.put("fromAsString", fromAsString);
+    }
+    if (exists toAsString) {
+      json.put("toAsString", toAsString);
+    }
     return json;
   }
 }
@@ -32,7 +50,17 @@ shared class RangeBucket() extends Bucket() satisfies BaseDataObject {
 shared object rangeBucket {
 
   shared RangeBucket fromJson(JsonObject json) {
+    Map<String, Aggregation>? aggregations = if (exists tmp = json.getObjectOrNull("aggregations")) then HashMap { for(key->val in tmp) if (is JsonObject val) key->aggregation_.fromJson(val) } else null;
+    Integer? docCount = json.getIntegerOrNull("docCount");
+    String? fromAsString = json.getStringOrNull("fromAsString");
+    String? key = json.getStringOrNull("key");
+    String? toAsString = json.getStringOrNull("toAsString");
     return RangeBucket {
+      aggregations = aggregations;
+      docCount = docCount;
+      fromAsString = fromAsString;
+      key = key;
+      toAsString = toAsString;
     };
   }
 

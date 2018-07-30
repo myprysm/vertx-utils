@@ -28,10 +28,14 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest */
 shared class MultiSearchRequest(
   Map<String, String>? headers = null,
+  shared Integer? maxConcurrentSearchRequests = null,
   shared {SearchRequest*}? requests = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
+    if (exists maxConcurrentSearchRequests) {
+      json.put("maxConcurrentSearchRequests", maxConcurrentSearchRequests);
+    }
     if (exists requests) {
       json.put("requests", JsonArray(requests.map(searchRequest_.toJson)));
     }
@@ -43,9 +47,11 @@ shared object multiSearchRequest {
 
   shared MultiSearchRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
+    Integer? maxConcurrentSearchRequests = json.getIntegerOrNull("maxConcurrentSearchRequests");
     {SearchRequest*}? requests = json.getArrayOrNull("requests")?.objects?.map(searchRequest_.fromJson);
     return MultiSearchRequest {
       headers = headers;
+      maxConcurrentSearchRequests = maxConcurrentSearchRequests;
       requests = requests;
     };
   }

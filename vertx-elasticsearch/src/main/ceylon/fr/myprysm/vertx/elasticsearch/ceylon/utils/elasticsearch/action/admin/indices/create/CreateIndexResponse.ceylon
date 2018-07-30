@@ -22,9 +22,19 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexResponse */
-shared class CreateIndexResponse() extends AcknowledgedResponse() satisfies BaseDataObject {
+shared class CreateIndexResponse(
+  Boolean? acknowledged = null,
+  shared String? index = null,
+  shared Boolean? shardsAcknowledged = null) extends AcknowledgedResponse(
+  acknowledged) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
+    if (exists index) {
+      json.put("index", index);
+    }
+    if (exists shardsAcknowledged) {
+      json.put("shardsAcknowledged", shardsAcknowledged);
+    }
     return json;
   }
 }
@@ -32,7 +42,13 @@ shared class CreateIndexResponse() extends AcknowledgedResponse() satisfies Base
 shared object createIndexResponse {
 
   shared CreateIndexResponse fromJson(JsonObject json) {
+    Boolean? acknowledged = json.getBooleanOrNull("acknowledged");
+    String? index = json.getStringOrNull("index");
+    Boolean? shardsAcknowledged = json.getBooleanOrNull("shardsAcknowledged");
     return CreateIndexResponse {
+      acknowledged = acknowledged;
+      index = index;
+      shardsAcknowledged = shardsAcknowledged;
     };
   }
 

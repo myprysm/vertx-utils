@@ -19,9 +19,21 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.ScoreDoc */
-shared class ScoreDoc() satisfies BaseDataObject {
+shared class ScoreDoc(
+  shared Integer? doc = null,
+  shared Float? score = null,
+  shared Integer? shardIndex = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists doc) {
+      json.put("doc", doc);
+    }
+    if (exists score) {
+      json.put("score", score);
+    }
+    if (exists shardIndex) {
+      json.put("shardIndex", shardIndex);
+    }
     return json;
   }
 }
@@ -29,7 +41,13 @@ shared class ScoreDoc() satisfies BaseDataObject {
 shared object scoreDoc {
 
   shared ScoreDoc fromJson(JsonObject json) {
+    Integer? doc = json.getIntegerOrNull("doc");
+    Float? score = json.getFloatOrNull("score");
+    Integer? shardIndex = json.getIntegerOrNull("shardIndex");
     return ScoreDoc {
+      doc = doc;
+      score = score;
+      shardIndex = shardIndex;
     };
   }
 

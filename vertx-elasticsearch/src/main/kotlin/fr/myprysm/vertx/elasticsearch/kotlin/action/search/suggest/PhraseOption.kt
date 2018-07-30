@@ -6,7 +6,7 @@ fun PhraseOption(
         collateMatch: Boolean? = null,
         highlighted: String? = null,
         score: Float? = null,
-        text: String? = null): PhraseOption = fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseOption(io.vertx.core.json.JsonObject()).apply {
+        text: String? = null): PhraseOption = fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseOption().apply {
 
   if (collateMatch != null) {
     this.setCollateMatch(collateMatch)

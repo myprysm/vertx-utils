@@ -7,12 +7,26 @@ import fr.myprysm.vertx.elasticsearch.HttpHost
  *
  * HttpHost.
  *
+ * @param hostname
+ * @param port
+ * @param protocol
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.HttpHost original] using Vert.x codegen.
  */
 fun HttpHost(
-): HttpHost = fr.myprysm.vertx.elasticsearch.HttpHost(io.vertx.core.json.JsonObject()).apply {
+        hostname: String? = null,
+        port: Int? = null,
+        protocol: String? = null): HttpHost = fr.myprysm.vertx.elasticsearch.HttpHost().apply {
 
+    if (hostname != null) {
+        this.setHostname(hostname)
+    }
+    if (port != null) {
+        this.setPort(port)
+    }
+    if (protocol != null) {
+        this.setProtocol(protocol)
+    }
 }
 

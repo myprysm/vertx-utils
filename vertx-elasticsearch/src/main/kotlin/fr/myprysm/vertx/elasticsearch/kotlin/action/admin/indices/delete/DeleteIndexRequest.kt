@@ -8,17 +8,20 @@ import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexReq
  * DeleteIndexRequest.
  *
  * @param headers  Add a header to the request.
+ * @param indices
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest original] using Vert.x codegen.
  */
 fun DeleteIndexRequest(
-        headers: Map<String, String>? = null): DeleteIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest(io.vertx.core.json.JsonObject()).apply {
+        headers: Map<String, String>? = null,
+        indices: Iterable<String>? = null): DeleteIndexRequest = fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest().apply {
 
   if (headers != null) {
-      for (item in headers) {
-          this.addHeader(item.key, item.value)
-      }
+      this.setHeaders(headers)
+  }
+    if (indices != null) {
+        this.setIndices(indices.toList())
   }
 }
 

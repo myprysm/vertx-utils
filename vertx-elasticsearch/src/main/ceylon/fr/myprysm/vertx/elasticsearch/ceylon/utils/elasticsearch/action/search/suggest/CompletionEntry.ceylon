@@ -1,4 +1,6 @@
 import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search.suggest {
+  CompletionOption,
+  completionOption_=completionOption,
   Entry
 }
 import fr.myprysm.vertx.elasticsearch.action.search.suggest {
@@ -23,19 +25,18 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.CompletionEntry */
 shared class CompletionEntry(
-  shared Integer? length = null,
-  shared Integer? offset = null,
-  shared String? text = null) extends Entry() satisfies BaseDataObject {
+  Integer? length = null,
+  Integer? offset = null,
+  " Get the suggestion entry options.\n"
+  shared {CompletionOption*}? options = null,
+  String? text = null) extends Entry(
+  length,
+  offset,
+  text) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists length) {
-      json.put("length", length);
-    }
-    if (exists offset) {
-      json.put("offset", offset);
-    }
-    if (exists text) {
-      json.put("text", text);
+    if (exists options) {
+      json.put("options", JsonArray(options.map(completionOption_.toJson)));
     }
     return json;
   }
@@ -46,10 +47,12 @@ shared object completionEntry {
   shared CompletionEntry fromJson(JsonObject json) {
     Integer? length = json.getIntegerOrNull("length");
     Integer? offset = json.getIntegerOrNull("offset");
+    {CompletionOption*}? options = json.getArrayOrNull("options")?.objects?.map(completionOption_.fromJson);
     String? text = json.getStringOrNull("text");
     return CompletionEntry {
       length = length;
       offset = offset;
+      options = options;
       text = text;
     };
   }

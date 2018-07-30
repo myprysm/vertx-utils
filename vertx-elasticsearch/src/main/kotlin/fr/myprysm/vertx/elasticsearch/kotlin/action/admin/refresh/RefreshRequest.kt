@@ -4,17 +4,19 @@ import fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest
 
 fun RefreshRequest(
         headers: Map<String, String>? = null,
-        indexs: Iterable<String>? = null): RefreshRequest = fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest(io.vertx.core.json.JsonObject()).apply {
+        indexs: Iterable<String>? = null,
+        indices: Iterable<String>? = null): RefreshRequest = fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest().apply {
 
   if (headers != null) {
-      for (item in headers) {
-          this.addHeader(item.key, item.value)
-      }
+      this.setHeaders(headers)
   }
   if (indexs != null) {
     for (item in indexs) {
       this.addIndex(item)
     }
   }
+    if (indices != null) {
+        this.setIndices(indices.toList())
+    }
 }
 

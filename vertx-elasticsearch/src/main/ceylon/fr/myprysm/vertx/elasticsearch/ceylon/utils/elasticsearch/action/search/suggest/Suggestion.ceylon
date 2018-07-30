@@ -19,9 +19,17 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.Suggestion */
-shared class Suggestion() satisfies BaseDataObject {
+shared class Suggestion(
+  shared String? name = null,
+  shared String? type = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists name) {
+      json.put("name", name);
+    }
+    if (exists type) {
+      json.put("type", type);
+    }
     return json;
   }
 }
@@ -29,7 +37,11 @@ shared class Suggestion() satisfies BaseDataObject {
 shared object suggestion {
 
   shared Suggestion fromJson(JsonObject json) {
+    String? name = json.getStringOrNull("name");
+    String? type = json.getStringOrNull("type");
     return Suggestion {
+      name = name;
+      type = type;
     };
   }
 

@@ -19,9 +19,25 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.indices.create.Alias */
-shared class Alias() satisfies BaseDataObject {
+shared class Alias(
+  shared String? filter = null,
+  shared String? indexRouting = null,
+  shared String? name = null,
+  shared String? searchRouting = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists filter) {
+      json.put("filter", filter);
+    }
+    if (exists indexRouting) {
+      json.put("indexRouting", indexRouting);
+    }
+    if (exists name) {
+      json.put("name", name);
+    }
+    if (exists searchRouting) {
+      json.put("searchRouting", searchRouting);
+    }
     return json;
   }
 }
@@ -29,7 +45,15 @@ shared class Alias() satisfies BaseDataObject {
 shared object alias {
 
   shared Alias fromJson(JsonObject json) {
+    String? filter = json.getStringOrNull("filter");
+    String? indexRouting = json.getStringOrNull("indexRouting");
+    String? name = json.getStringOrNull("name");
+    String? searchRouting = json.getStringOrNull("searchRouting");
     return Alias {
+      filter = filter;
+      indexRouting = indexRouting;
+      name = name;
+      searchRouting = searchRouting;
     };
   }
 

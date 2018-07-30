@@ -24,12 +24,16 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.refresh.RefreshRequest */
 shared class RefreshRequest(
   Map<String, String>? headers = null,
-  shared {String*}? indexs = null) extends BaseRequest(
+  shared {String*}? indexs = null,
+  shared {String*}? indices = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     if (exists indexs) {
       json.put("indexs", JsonArray(indexs));
+    }
+    if (exists indices) {
+      json.put("indices", JsonArray(indices));
     }
     return json;
   }
@@ -40,9 +44,11 @@ shared object refreshRequest {
   shared RefreshRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
     {String*}? indexs = json.getArrayOrNull("indexs")?.strings;
+    {String*}? indices = json.getArrayOrNull("indices")?.strings;
     return RefreshRequest {
       headers = headers;
       indexs = indexs;
+      indices = indices;
     };
   }
 

@@ -8,6 +8,10 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
+import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.search {
+  SearchHit,
+  searchHit_=searchHit
+}
 import fr.myprysm.vertx.elasticsearch.action.search {
   SearchHits_=SearchHits
 }
@@ -19,9 +23,21 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.SearchHits */
-shared class SearchHits() satisfies BaseDataObject {
+shared class SearchHits(
+  shared {SearchHit*}? hits = null,
+  shared Float? maxScore = null,
+  shared Integer? totalHits = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists hits) {
+      json.put("hits", JsonArray(hits.map(searchHit_.toJson)));
+    }
+    if (exists maxScore) {
+      json.put("maxScore", maxScore);
+    }
+    if (exists totalHits) {
+      json.put("totalHits", totalHits);
+    }
     return json;
   }
 }
@@ -29,7 +45,13 @@ shared class SearchHits() satisfies BaseDataObject {
 shared object searchHits {
 
   shared SearchHits fromJson(JsonObject json) {
+    {SearchHit*}? hits = json.getArrayOrNull("hits")?.objects?.map(searchHit_.fromJson);
+    Float? maxScore = json.getFloatOrNull("maxScore");
+    Integer? totalHits = json.getIntegerOrNull("totalHits");
     return SearchHits {
+      hits = hits;
+      maxScore = maxScore;
+      totalHits = totalHits;
     };
   }
 

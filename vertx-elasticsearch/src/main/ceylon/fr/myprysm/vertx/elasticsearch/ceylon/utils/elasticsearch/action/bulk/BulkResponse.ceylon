@@ -1,3 +1,7 @@
+import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.bulk {
+  BulkResponseItem,
+  bulkResponseItem_=bulkResponseItem
+}
 import ceylon.json {
   JsonObject=Object,
   JsonArray=Array,
@@ -19,9 +23,25 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.bulk.BulkResponse */
-shared class BulkResponse() satisfies BaseDataObject {
+shared class BulkResponse(
+  shared Boolean? errors = null,
+  shared {BulkResponseItem*}? items = null,
+  shared String? status = null,
+  shared Integer? took = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists errors) {
+      json.put("errors", errors);
+    }
+    if (exists items) {
+      json.put("items", JsonArray(items.map(bulkResponseItem_.toJson)));
+    }
+    if (exists status) {
+      json.put("status", status);
+    }
+    if (exists took) {
+      json.put("took", took);
+    }
     return json;
   }
 }
@@ -29,7 +49,15 @@ shared class BulkResponse() satisfies BaseDataObject {
 shared object bulkResponse {
 
   shared BulkResponse fromJson(JsonObject json) {
+    Boolean? errors = json.getBooleanOrNull("errors");
+    {BulkResponseItem*}? items = json.getArrayOrNull("items")?.objects?.map(bulkResponseItem_.fromJson);
+    String? status = json.getStringOrNull("status");
+    Integer? took = json.getIntegerOrNull("took");
     return BulkResponse {
+      errors = errors;
+      items = items;
+      status = status;
+      took = took;
     };
   }
 

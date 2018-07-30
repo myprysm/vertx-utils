@@ -11,6 +11,12 @@ import io.vertx.lang.ceylon {
   Converter,
   ToJava
 }
+import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action.get {
+  GetFailure,
+  getFailure_=getFailure,
+  GetResponse,
+  getResponse_=getResponse
+}
 import ceylon.collection {
   HashMap
 }
@@ -19,9 +25,17 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.get.MultiGetResponse */
-shared class MultiGetResponse() satisfies BaseDataObject {
+shared class MultiGetResponse(
+  shared {GetFailure*}? failures = null,
+  shared {GetResponse*}? responses = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists failures) {
+      json.put("failures", JsonArray(failures.map(getFailure_.toJson)));
+    }
+    if (exists responses) {
+      json.put("responses", JsonArray(responses.map(getResponse_.toJson)));
+    }
     return json;
   }
 }
@@ -29,7 +43,11 @@ shared class MultiGetResponse() satisfies BaseDataObject {
 shared object multiGetResponse {
 
   shared MultiGetResponse fromJson(JsonObject json) {
+    {GetFailure*}? failures = json.getArrayOrNull("failures")?.objects?.map(getFailure_.fromJson);
+    {GetResponse*}? responses = json.getArrayOrNull("responses")?.objects?.map(getResponse_.fromJson);
     return MultiGetResponse {
+      failures = failures;
+      responses = responses;
     };
   }
 

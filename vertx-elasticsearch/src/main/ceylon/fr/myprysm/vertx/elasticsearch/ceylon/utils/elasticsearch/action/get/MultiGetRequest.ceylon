@@ -28,12 +28,24 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.get.MultiGetRequest */
 shared class MultiGetRequest(
   Map<String, String>? headers = null,
-  shared {GetRequestItem*}? items = null) extends BaseRequest(
+  shared {GetRequestItem*}? items = null,
+  shared String? preference = null,
+  shared Boolean? realTime = null,
+  shared Boolean? refresh = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     if (exists items) {
       json.put("items", JsonArray(items.map(getRequestItem_.toJson)));
+    }
+    if (exists preference) {
+      json.put("preference", preference);
+    }
+    if (exists realTime) {
+      json.put("realTime", realTime);
+    }
+    if (exists refresh) {
+      json.put("refresh", refresh);
     }
     return json;
   }
@@ -44,9 +56,15 @@ shared object multiGetRequest {
   shared MultiGetRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
     {GetRequestItem*}? items = json.getArrayOrNull("items")?.objects?.map(getRequestItem_.fromJson);
+    String? preference = json.getStringOrNull("preference");
+    Boolean? realTime = json.getBooleanOrNull("realTime");
+    Boolean? refresh = json.getBooleanOrNull("refresh");
     return MultiGetRequest {
       headers = headers;
       items = items;
+      preference = preference;
+      realTime = realTime;
+      refresh = refresh;
     };
   }
 

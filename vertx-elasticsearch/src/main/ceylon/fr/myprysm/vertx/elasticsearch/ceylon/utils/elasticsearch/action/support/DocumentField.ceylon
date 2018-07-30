@@ -19,9 +19,17 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.DocumentField */
-shared class DocumentField() satisfies BaseDataObject {
+shared class DocumentField(
+  shared String? name = null,
+  shared JsonArray? values = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists name) {
+      json.put("name", name);
+    }
+    if (exists values) {
+      json.put("values", values);
+    }
     return json;
   }
 }
@@ -29,7 +37,11 @@ shared class DocumentField() satisfies BaseDataObject {
 shared object documentField {
 
   shared DocumentField fromJson(JsonObject json) {
+    String? name = json.getStringOrNull("name");
+    JsonArray? values = json.getArrayOrNull("values");
     return DocumentField {
+      name = name;
+      values = values;
     };
   }
 

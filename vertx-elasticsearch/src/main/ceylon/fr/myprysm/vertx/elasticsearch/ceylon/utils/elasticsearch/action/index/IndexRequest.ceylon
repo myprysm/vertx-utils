@@ -24,44 +24,38 @@ import io.vertx.core.json {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.index.IndexRequest */
 shared class IndexRequest(
   Map<String, String>? headers = null,
-  shared String? id = null,
-  shared String? index = null,
-  shared String? opType = null,
-  shared String? parent = null,
-  shared String? refreshPolicy = null,
-  shared String? routing = null,
-  shared String? type = null,
-  shared Integer? version = null,
-  shared String? versionType = null) extends DocWriteRequest(
-  headers) satisfies BaseDataObject {
+  String? id = null,
+  String? index = null,
+  String? opType = null,
+  String? parent = null,
+  shared String? pipeline = null,
+  String? refreshPolicy = null,
+  String? routing = null,
+  shared JsonObject? source = null,
+  shared Integer? timeout = null,
+  String? type = null,
+  Integer? version = null,
+  String? versionType = null) extends DocWriteRequest(
+  headers,
+  id,
+  index,
+  opType,
+  parent,
+  refreshPolicy,
+  routing,
+  type,
+  version,
+  versionType) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists id) {
-      json.put("id", id);
+    if (exists pipeline) {
+      json.put("pipeline", pipeline);
     }
-    if (exists index) {
-      json.put("index", index);
+    if (exists source) {
+      json.put("source", source);
     }
-    if (exists opType) {
-      json.put("opType", opType);
-    }
-    if (exists parent) {
-      json.put("parent", parent);
-    }
-    if (exists refreshPolicy) {
-      json.put("refreshPolicy", refreshPolicy);
-    }
-    if (exists routing) {
-      json.put("routing", routing);
-    }
-    if (exists type) {
-      json.put("type", type);
-    }
-    if (exists version) {
-      json.put("version", version);
-    }
-    if (exists versionType) {
-      json.put("versionType", versionType);
+    if (exists timeout) {
+      json.put("timeout", timeout);
     }
     return json;
   }
@@ -75,8 +69,11 @@ shared object indexRequest {
     String? index = json.getStringOrNull("index");
     String? opType = json.getStringOrNull("opType");
     String? parent = json.getStringOrNull("parent");
+    String? pipeline = json.getStringOrNull("pipeline");
     String? refreshPolicy = json.getStringOrNull("refreshPolicy");
     String? routing = json.getStringOrNull("routing");
+    JsonObject? source = json.getObjectOrNull("source");
+    Integer? timeout = json.getIntegerOrNull("timeout");
     String? type = json.getStringOrNull("type");
     Integer? version = json.getIntegerOrNull("version");
     String? versionType = json.getStringOrNull("versionType");
@@ -86,8 +83,11 @@ shared object indexRequest {
       index = index;
       opType = opType;
       parent = parent;
+      pipeline = pipeline;
       refreshPolicy = refreshPolicy;
       routing = routing;
+      source = source;
+      timeout = timeout;
       type = type;
       version = version;
       versionType = versionType;

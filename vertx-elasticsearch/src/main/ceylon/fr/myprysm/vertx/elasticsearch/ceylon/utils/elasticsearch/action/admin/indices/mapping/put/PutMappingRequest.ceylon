@@ -24,12 +24,24 @@ import fr.myprysm.vertx.elasticsearch.ceylon.utils.elasticsearch.action {
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest */
 shared class PutMappingRequest(
   Map<String, String>? headers = null,
-  shared {String*}? indices = null) extends BaseRequest(
+  shared {String*}? indices = null,
+  shared JsonObject? source = null,
+  shared Integer? timeout = null,
+  shared String? type = null) extends BaseRequest(
   headers) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     if (exists indices) {
       json.put("indices", JsonArray(indices));
+    }
+    if (exists source) {
+      json.put("source", source);
+    }
+    if (exists timeout) {
+      json.put("timeout", timeout);
+    }
+    if (exists type) {
+      json.put("type", type);
     }
     return json;
   }
@@ -40,9 +52,15 @@ shared object putMappingRequest {
   shared PutMappingRequest fromJson(JsonObject json) {
     Map<String, String>? headers = if (exists tmp = json.getObjectOrNull("headers")) then HashMap { for(key->val in tmp) if (is String val) key->val } else null;
     {String*}? indices = json.getArrayOrNull("indices")?.strings;
+    JsonObject? source = json.getObjectOrNull("source");
+    Integer? timeout = json.getIntegerOrNull("timeout");
+    String? type = json.getStringOrNull("type");
     return PutMappingRequest {
       headers = headers;
       indices = indices;
+      source = source;
+      timeout = timeout;
+      type = type;
     };
   }
 

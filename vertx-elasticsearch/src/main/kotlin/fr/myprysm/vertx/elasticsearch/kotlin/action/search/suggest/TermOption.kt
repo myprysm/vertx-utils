@@ -4,13 +4,17 @@ import fr.myprysm.vertx.elasticsearch.action.search.suggest.TermOption
 
 fun TermOption(
         collateMatch: Boolean? = null,
+        freq: Int? = null,
         highlighted: String? = null,
         score: Float? = null,
-        text: String? = null): TermOption = fr.myprysm.vertx.elasticsearch.action.search.suggest.TermOption(io.vertx.core.json.JsonObject()).apply {
+        text: String? = null): TermOption = fr.myprysm.vertx.elasticsearch.action.search.suggest.TermOption().apply {
 
   if (collateMatch != null) {
     this.setCollateMatch(collateMatch)
   }
+    if (freq != null) {
+        this.setFreq(freq)
+    }
   if (highlighted != null) {
     this.setHighlighted(highlighted)
   }

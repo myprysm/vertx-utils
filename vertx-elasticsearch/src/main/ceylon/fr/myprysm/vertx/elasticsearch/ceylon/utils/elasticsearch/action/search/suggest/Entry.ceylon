@@ -19,9 +19,21 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.Entry */
-shared class Entry() satisfies BaseDataObject {
+shared class Entry(
+  shared Integer? length = null,
+  shared Integer? offset = null,
+  shared String? text = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists length) {
+      json.put("length", length);
+    }
+    if (exists offset) {
+      json.put("offset", offset);
+    }
+    if (exists text) {
+      json.put("text", text);
+    }
     return json;
   }
 }
@@ -29,7 +41,13 @@ shared class Entry() satisfies BaseDataObject {
 shared object entry {
 
   shared Entry fromJson(JsonObject json) {
+    Integer? length = json.getIntegerOrNull("length");
+    Integer? offset = json.getIntegerOrNull("offset");
+    String? text = json.getStringOrNull("text");
     return Entry {
+      length = length;
+      offset = offset;
+      text = text;
     };
   }
 

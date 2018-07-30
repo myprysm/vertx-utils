@@ -23,24 +23,16 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.suggest.PhraseOption */
 shared class PhraseOption(
-  shared Boolean? collateMatch = null,
-  shared String? highlighted = null,
-  shared Float? score = null,
-  shared String? text = null) extends Option() satisfies BaseDataObject {
+  Boolean? collateMatch = null,
+  String? highlighted = null,
+  Float? score = null,
+  String? text = null) extends Option(
+  collateMatch,
+  highlighted,
+  score,
+  text) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
-    if (exists collateMatch) {
-      json.put("collateMatch", collateMatch);
-    }
-    if (exists highlighted) {
-      json.put("highlighted", highlighted);
-    }
-    if (exists score) {
-      json.put("score", score);
-    }
-    if (exists text) {
-      json.put("text", text);
-    }
     return json;
   }
 }

@@ -19,9 +19,25 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.search.aggregations.Aggregation */
-shared class Aggregation() satisfies BaseDataObject {
+shared class Aggregation(
+  shared JsonObject? data = null,
+  shared JsonObject? metaData = null,
+  shared String? name = null,
+  shared String? type = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists data) {
+      json.put("data", data);
+    }
+    if (exists metaData) {
+      json.put("metaData", metaData);
+    }
+    if (exists name) {
+      json.put("name", name);
+    }
+    if (exists type) {
+      json.put("type", type);
+    }
     return json;
   }
 }
@@ -29,7 +45,15 @@ shared class Aggregation() satisfies BaseDataObject {
 shared object aggregation {
 
   shared Aggregation fromJson(JsonObject json) {
+    JsonObject? data = json.getObjectOrNull("data");
+    JsonObject? metaData = json.getObjectOrNull("metaData");
+    String? name = json.getStringOrNull("name");
+    String? type = json.getStringOrNull("type");
     return Aggregation {
+      data = data;
+      metaData = metaData;
+      name = name;
+      type = type;
     };
   }
 

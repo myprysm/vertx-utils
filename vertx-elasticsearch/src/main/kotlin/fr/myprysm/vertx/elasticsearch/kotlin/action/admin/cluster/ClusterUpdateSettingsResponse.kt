@@ -7,12 +7,26 @@ import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettings
  *
  * ClusterUpdateSettingsResponse.
  *
+ * @param acknowledged
+ * @param persistentSettings
+ * @param transientSettings
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse original] using Vert.x codegen.
  */
 fun ClusterUpdateSettingsResponse(
-): ClusterUpdateSettingsResponse = fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse(io.vertx.core.json.JsonObject()).apply {
+        acknowledged: Boolean? = null,
+        persistentSettings: io.vertx.core.json.JsonObject? = null,
+        transientSettings: io.vertx.core.json.JsonObject? = null): ClusterUpdateSettingsResponse = fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse().apply {
 
+    if (acknowledged != null) {
+        this.setAcknowledged(acknowledged)
+    }
+    if (persistentSettings != null) {
+        this.setPersistentSettings(persistentSettings)
+    }
+    if (transientSettings != null) {
+        this.setTransientSettings(transientSettings)
+    }
 }
 

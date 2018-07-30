@@ -5,17 +5,25 @@ import fr.myprysm.vertx.elasticsearch.action.get.GetRequestItem
 
 fun MultiGetRequest(
         headers: Map<String, String>? = null,
-        items: Iterable<fr.myprysm.vertx.elasticsearch.action.get.GetRequestItem>? = null): MultiGetRequest = fr.myprysm.vertx.elasticsearch.action.get.MultiGetRequest(io.vertx.core.json.JsonObject()).apply {
+        items: Iterable<fr.myprysm.vertx.elasticsearch.action.get.GetRequestItem>? = null,
+        preference: String? = null,
+        realTime: Boolean? = null,
+        refresh: Boolean? = null): MultiGetRequest = fr.myprysm.vertx.elasticsearch.action.get.MultiGetRequest().apply {
 
   if (headers != null) {
-      for (item in headers) {
-          this.addHeader(item.key, item.value)
-      }
+      this.setHeaders(headers)
   }
   if (items != null) {
-      for (item in items) {
-          this.addItem(item)
-      }
+      this.setItems(items.toList())
+  }
+    if (preference != null) {
+        this.setPreference(preference)
+    }
+    if (realTime != null) {
+        this.setRealTime(realTime)
+    }
+    if (refresh != null) {
+        this.setRefresh(refresh)
   }
 }
 

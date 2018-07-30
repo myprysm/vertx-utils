@@ -5,17 +5,17 @@ import fr.myprysm.vertx.elasticsearch.action.search.SearchRequest
 
 fun MultiSearchRequest(
         headers: Map<String, String>? = null,
-        requests: Iterable<fr.myprysm.vertx.elasticsearch.action.search.SearchRequest>? = null): MultiSearchRequest = fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest(io.vertx.core.json.JsonObject()).apply {
+        maxConcurrentSearchRequests: Int? = null,
+        requests: Iterable<fr.myprysm.vertx.elasticsearch.action.search.SearchRequest>? = null): MultiSearchRequest = fr.myprysm.vertx.elasticsearch.action.search.MultiSearchRequest().apply {
 
   if (headers != null) {
-      for (item in headers) {
-          this.addHeader(item.key, item.value)
-      }
+      this.setHeaders(headers)
+  }
+    if (maxConcurrentSearchRequests != null) {
+        this.setMaxConcurrentSearchRequests(maxConcurrentSearchRequests)
   }
   if (requests != null) {
-      for (item in requests) {
-          this.addRequest(item)
-      }
+      this.setRequests(requests.toList())
   }
 }
 

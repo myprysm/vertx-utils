@@ -12,6 +12,7 @@
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
 |===
 
 [[Aggregation]]
@@ -22,6 +23,10 @@
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[Alias]]
@@ -32,6 +37,10 @@
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[filter]]`filter`|`String`|-
+|[[indexRouting]]`indexRouting`|`String`|-
+|[[name]]`name`|`String`|-
+|[[searchRouting]]`searchRouting`|`String`|-
 |===
 
 [[BaseRequest]]
@@ -60,6 +69,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[key]]`key`|`String`|-
 |===
 
 [[BulkRequest]]
@@ -74,7 +86,10 @@ Add a header to the request.
 +++
 Add a header to the request.
 +++
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
 |[[requests]]`requests`|`Array of link:dataobjects.html#DocWriteRequest[DocWriteRequest]`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
 |===
 
 [[BulkResponse]]
@@ -85,6 +100,10 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[errors]]`errors`|`Boolean`|-
+|[[items]]`items`|`Array of link:dataobjects.html#BulkResponseItem[BulkResponseItem]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[took]]`took`|`Number (long)`|-
 |===
 
 [[BulkResponseItem]]
@@ -95,6 +114,14 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[failed]]`failed`|`Boolean`|-
+|[[failure]]`failure`|`String`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (Long)`|-
 |===
 
 [[Children]]
@@ -105,6 +132,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[data]]`data`|`Json object`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[ClearScrollRequest]]
@@ -130,6 +163,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[numFreed]]`numFreed`|`Number (int)`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[succeeded]]`succeeded`|`Boolean`|-
 |===
 
 [[ClusterUpdateSettingsRequest]]
@@ -148,6 +184,8 @@ Add a header to the request.
 +++
 Add a header to the request.
 +++
+|[[persistentSettings]]`persistentSettings`|`Json object`|-
+|[[transientSettings]]`transientSettings`|`Json object`|-
 |===
 
 [[ClusterUpdateSettingsResponse]]
@@ -162,6 +200,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
+|[[persistentSettings]]`persistentSettings`|`Json object`|-
+|[[transientSettings]]`transientSettings`|`Json object`|-
 |===
 
 [[Clusters]]
@@ -172,6 +213,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[skipped]]`skipped`|`Number (int)`|-
+|[[successful]]`successful`|`Number (int)`|-
+|[[total]]`total`|`Number (int)`|-
 |===
 
 [[CompletionEntry]]
@@ -184,6 +228,10 @@ Add a header to the request.
 ^|Name | Type ^| Description
 |[[length]]`length`|`Number (int)`|-
 |[[offset]]`offset`|`Number (int)`|-
+|[[options]]`options`|`Array of link:dataobjects.html#CompletionOption[CompletionOption]`|
++++
+Get the suggestion entry options.
++++
 |[[text]]`text`|`String`|-
 |===
 
@@ -196,7 +244,9 @@ Add a header to the request.
 |===
 ^|Name | Type ^| Description
 |[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[doc]]`doc`|`link:dataobjects.html#ScoreDoc[ScoreDoc]`|-
 |[[highlighted]]`highlighted`|`String`|-
+|[[hit]]`hit`|`link:dataobjects.html#SearchHit[SearchHit]`|-
 |[[score]]`score`|`Number (float)`|-
 |[[text]]`text`|`String`|-
 |===
@@ -209,6 +259,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[entries]]`entries`|`Array of link:dataobjects.html#CompletionEntry[CompletionEntry]`|
++++
+Get the suggestion entries.
++++
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[CreateIndexRequest]]
@@ -219,11 +275,17 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aliases]]`aliases`|`Array of link:dataobjects.html#Alias[Alias]`|-
+|[[cause]]`cause`|`String`|-
 |[[headers]]`headers`|`String`|
 +++
 Add a header to the request.
 +++
+|[[index]]`index`|`String`|-
 |[[mappings]]`mappings`|`Json object`|-
+|[[settings]]`settings`|`Json object`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
 |===
 
 [[CreateIndexResponse]]
@@ -234,6 +296,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
+|[[index]]`index`|`String`|-
+|[[shardsAcknowledged]]`shardsAcknowledged`|`Boolean`|-
 |===
 
 [[DeleteIndexRequest]]
@@ -252,6 +317,7 @@ Add a header to the request.
 +++
 Add a header to the request.
 +++
+|[[indices]]`indices`|`Array of String`|-
 |===
 
 [[DeleteIndexResponse]]
@@ -266,6 +332,7 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
 |===
 
 [[DeleteRequest]]
@@ -286,9 +353,11 @@ Add a header to the request.
 |[[parent]]`parent`|`String`|-
 |[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
 |[[routing]]`routing`|`String`|-
+|[[timeout]]`timeout`|`Number (long)`|-
 |[[type]]`type`|`String`|-
 |[[version]]`version`|`Number (long)`|-
 |[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
 |===
 
 [[DeleteResponse]]
@@ -299,196 +368,20 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
 |===
 
 [[DocWriteRequest]]
 == DocWriteRequest
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|[[headers]]`headers`|`String`|
-+++
-Add a header to the request.
-+++
-|===
-
-[[DocWriteResponse]]
-== DocWriteResponse
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[DocumentField]]
-== DocumentField
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[ElasticsearchClientOptions]]
-== ElasticsearchClientOptions
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[Entry]]
-== Entry
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[Explanation]]
-== Explanation
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[Failure]]
-== Failure
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[FetchSourceContext]]
-== FetchSourceContext
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[Filter]]
-== Filter
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[Filters]]
-== Filters
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[GeoHashGrid]]
-== GeoHashGrid
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[GetFailure]]
-== GetFailure
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[GetIndexRequest]]
-== GetIndexRequest
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|[[headers]]`headers`|`String`|
-+++
-Add a header to the request.
-+++
-|===
-
-[[GetRequest]]
-== GetRequest
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|[[headers]]`headers`|`String`|
-+++
-Add a header to the request.
-+++
-|===
-
-[[GetRequestItem]]
-== GetRequestItem
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[GetResponse]]
-== GetResponse
-
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[HttpHost]]
-== HttpHost
-
-++++
- HttpHost.
-++++
-'''
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|===
-
-[[IndexRequest]]
-== IndexRequest
 
 
 [cols=">25%,^25%,50%"]
@@ -510,6 +403,304 @@ Add a header to the request.
 |[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
 |===
 
+[[DocWriteResponse]]
+== DocWriteResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[DocumentField]]
+== DocumentField
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[name]]`name`|`String`|-
+|[[values]]`values`|`Json array`|-
+|===
+
+[[ElasticsearchClientOptions]]
+== ElasticsearchClientOptions
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[defaultHeaders]]`defaultHeaders`|`String`|-
+|[[hosts]]`hosts`|`Array of link:dataobjects.html#HttpHost[HttpHost]`|-
+|[[maxRetryTimeout]]`maxRetryTimeout`|`Number (int)`|-
+|[[pathPrefix]]`pathPrefix`|`String`|-
+|[[useNativeAsyncAPI]]`useNativeAsyncAPI`|`Boolean`|-
+|===
+
+[[Entry]]
+== Entry
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[length]]`length`|`Number (int)`|-
+|[[offset]]`offset`|`Number (int)`|-
+|[[text]]`text`|`String`|-
+|===
+
+[[Explanation]]
+== Explanation
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[description]]`description`|`String`|-
+|[[details]]`details`|`Array of link:dataobjects.html#Explanation[Explanation]`|-
+|[[match]]`match`|`Boolean`|-
+|[[value]]`value`|`Number (float)`|-
+|===
+
+[[Failure]]
+== Failure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|===
+
+[[FetchSourceContext]]
+== FetchSourceContext
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[excludes]]`excludes`|`Array of String`|-
+|[[fetchSource]]`fetchSource`|`Boolean`|-
+|[[includes]]`includes`|`Array of String`|-
+|===
+
+[[Filter]]
+== Filter
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[data]]`data`|`Json object`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[Filters]]
+== Filters
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#Bucket[Bucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[GeoHashGrid]]
+== GeoHashGrid
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#Bucket[Bucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[GetFailure]]
+== GetFailure
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[GetIndexRequest]]
+== GetIndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[features]]`features`|`Array of link:enums.html#Feature[Feature]`|-
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[includeDefaults]]`includeDefaults`|`Boolean`|-
+|[[indices]]`indices`|`Array of String`|-
+|[[local]]`local`|`Boolean`|-
+|[[masterNodeTimeout]]`masterNodeTimeout`|`Number (long)`|-
+|[[types]]`types`|`Array of String`|-
+|===
+
+[[GetRequest]]
+== GetRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[parent]]`parent`|`String`|-
+|[[preference]]`preference`|`String`|-
+|[[realTime]]`realTime`|`Boolean`|-
+|[[refresh]]`refresh`|`Boolean`|-
+|[[routing]]`routing`|`String`|-
+|[[storedFields]]`storedFields`|`Array of String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[GetRequestItem]]
+== GetRequestItem
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[parent]]`parent`|`String`|-
+|[[routing]]`routing`|`String`|-
+|[[storedFields]]`storedFields`|`Array of String`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
+[[GetResponse]]
+== GetResponse
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[exists]]`exists`|`Boolean`|-
+|[[fields]]`fields`|`link:dataobjects.html#DocumentField[DocumentField]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[source]]`source`|`Json object`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|===
+
+[[Histogram]]
+== Histogram
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#Bucket[Bucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
+|===
+
+[[HttpHost]]
+== HttpHost
+
+++++
+ HttpHost.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[hostname]]`hostname`|`String`|-
+|[[port]]`port`|`Number (Integer)`|-
+|[[protocol]]`protocol`|`String`|-
+|===
+
+[[IndexRequest]]
+== IndexRequest
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[headers]]`headers`|`String`|
++++
+Add a header to the request.
++++
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
+|[[parent]]`parent`|`String`|-
+|[[pipeline]]`pipeline`|`String`|-
+|[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[routing]]`routing`|`String`|-
+|[[source]]`source`|`Json object`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
+|[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|===
+
 [[IndexResponse]]
 == IndexResponse
 
@@ -518,6 +709,17 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
 |===
 
 [[MainResponse]]
@@ -528,6 +730,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[available]]`available`|`Boolean`|-
+|[[build]]`build`|`String`|-
+|[[clusterName]]`clusterName`|`String`|-
+|[[clusterUuid]]`clusterUuid`|`String`|-
+|[[nodeName]]`nodeName`|`String`|-
+|[[version]]`version`|`String`|-
 |===
 
 [[MatrixStats]]
@@ -538,6 +746,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[data]]`data`|`Json object`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[results]]`results`|`link:dataobjects.html#MatrixStatsResult[MatrixStatsResult]`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[MatrixStatsResult]]
@@ -548,6 +762,29 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[correlation]]`correlation`|`Number (Double)`|-
+|[[count]]`count`|`Number (Long)`|-
+|[[covariance]]`covariance`|`Number (Double)`|-
+|[[kurtosis]]`kurtosis`|`Number (Double)`|-
+|[[mean]]`mean`|`Number (Double)`|-
+|[[name]]`name`|`String`|-
+|[[skewness]]`skewness`|`Number (Double)`|-
+|[[variance]]`variance`|`Number (Double)`|-
+|===
+
+[[MultiBucketsAggregation]]
+== MultiBucketsAggregation
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#Bucket[Bucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[MultiGetRequest]]
@@ -563,6 +800,9 @@ Add a header to the request.
 Add a header to the request.
 +++
 |[[items]]`items`|`Array of link:dataobjects.html#GetRequestItem[GetRequestItem]`|-
+|[[preference]]`preference`|`String`|-
+|[[realTime]]`realTime`|`Boolean`|-
+|[[refresh]]`refresh`|`Boolean`|-
 |===
 
 [[MultiGetResponse]]
@@ -573,6 +813,8 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[failures]]`failures`|`Array of link:dataobjects.html#GetFailure[GetFailure]`|-
+|[[responses]]`responses`|`Array of link:dataobjects.html#GetResponse[GetResponse]`|-
 |===
 
 [[MultiSearchRequest]]
@@ -587,6 +829,7 @@ Add a header to the request.
 +++
 Add a header to the request.
 +++
+|[[maxConcurrentSearchRequests]]`maxConcurrentSearchRequests`|`Number (Integer)`|-
 |[[requests]]`requests`|`Array of link:dataobjects.html#SearchRequest[SearchRequest]`|-
 |===
 
@@ -598,6 +841,7 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[responses]]`responses`|`Array of link:dataobjects.html#MultiSearchResponseItem[MultiSearchResponseItem]`|-
 |===
 
 [[MultiSearchResponseItem]]
@@ -608,7 +852,8 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[failure]]`failure`|`Boolean`|-
+|[[failure]]`failure`|`link:dataobjects.html#Failure[Failure]`|-
+|[[response]]`response`|`link:dataobjects.html#SearchResponse[SearchResponse]`|-
 |===
 
 [[NestedIdentity]]
@@ -619,6 +864,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[child]]`child`|`link:dataobjects.html#NestedIdentity[NestedIdentity]`|-
+|[[field]]`field`|`String`|-
+|[[offset]]`offset`|`Number (int)`|-
 |===
 
 [[Option]]
@@ -629,6 +877,10 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[highlighted]]`highlighted`|`String`|-
+|[[score]]`score`|`Number (float)`|-
+|[[text]]`text`|`String`|-
 |===
 
 [[PhraseEntry]]
@@ -641,6 +893,10 @@ Add a header to the request.
 ^|Name | Type ^| Description
 |[[length]]`length`|`Number (int)`|-
 |[[offset]]`offset`|`Number (int)`|-
+|[[options]]`options`|`Array of link:dataobjects.html#PhraseOption[PhraseOption]`|
++++
+Get the suggestion entry options.
++++
 |[[text]]`text`|`String`|-
 |===
 
@@ -666,6 +922,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[entries]]`entries`|`Array of link:dataobjects.html#PhraseEntry[PhraseEntry]`|
++++
+Get the suggestion entries.
++++
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[PutMappingRequest]]
@@ -681,6 +943,9 @@ Add a header to the request.
 Add a header to the request.
 +++
 |[[indices]]`indices`|`Array of String`|-
+|[[source]]`source`|`Json object`|-
+|[[timeout]]`timeout`|`Number (long)`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[PutMappingResponse]]
@@ -695,6 +960,7 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[acknowledged]]`acknowledged`|`Boolean`|-
 |===
 
 [[Range]]
@@ -705,6 +971,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#RangeBucket[RangeBucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[RangeBucket]]
@@ -715,6 +986,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[fromAsString]]`fromAsString`|`String`|-
+|[[key]]`key`|`String`|-
+|[[toAsString]]`toAsString`|`String`|-
 |===
 
 [[RefreshRequest]]
@@ -730,6 +1006,7 @@ Add a header to the request.
 Add a header to the request.
 +++
 |[[indexs]]`indexs`|`Array of String`|-
+|[[indices]]`indices`|`Array of String`|-
 |===
 
 [[RefreshResponse]]
@@ -740,6 +1017,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[failedShards]]`failedShards`|`Number (int)`|-
+|[[shardFailures]]`shardFailures`|`Array of link:dataobjects.html#ShardFailure[ShardFailure]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[successfulShards]]`successfulShards`|`Number (int)`|-
+|[[totalShards]]`totalShards`|`Number (int)`|-
 |===
 
 [[ReplicationResponse]]
@@ -750,6 +1032,7 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
 |===
 
 [[ScoreDoc]]
@@ -760,6 +1043,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[doc]]`doc`|`Number (int)`|-
+|[[score]]`score`|`Number (float)`|-
+|[[shardIndex]]`shardIndex`|`Number (int)`|-
 |===
 
 [[Script]]
@@ -770,6 +1056,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[idOrCode]]`idOrCode`|`String`|-
+|[[lang]]`lang`|`String`|-
+|[[options]]`options`|`String`|-
+|[[params]]`params`|`Json object`|-
+|[[type]]`type`|`link:enums.html#ScriptType[ScriptType]`|-
 |===
 
 [[SearchHit]]
@@ -780,6 +1071,19 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[clusterAlias]]`clusterAlias`|`String`|-
+|[[explanation]]`explanation`|`link:dataobjects.html#Explanation[Explanation]`|-
+|[[fields]]`fields`|`link:dataobjects.html#DocumentField[DocumentField]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[innerHits]]`innerHits`|`link:dataobjects.html#SearchHits[SearchHits]`|-
+|[[matchedQueries]]`matchedQueries`|`Array of String`|-
+|[[nestedIdentity]]`nestedIdentity`|`link:dataobjects.html#NestedIdentity[NestedIdentity]`|-
+|[[score]]`score`|`Number (float)`|-
+|[[sortValues]]`sortValues`|`Json array`|-
+|[[source]]`source`|`Json object`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
 |===
 
 [[SearchHits]]
@@ -790,6 +1094,9 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[hits]]`hits`|`Array of link:dataobjects.html#SearchHit[SearchHit]`|-
+|[[maxScore]]`maxScore`|`Number (float)`|-
+|[[totalHits]]`totalHits`|`Number (long)`|-
 |===
 
 [[SearchRequest]]
@@ -804,11 +1111,20 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[allowPartialSearchResults]]`allowPartialSearchResults`|`Boolean`|-
+|[[batchedReduceSize]]`batchedReduceSize`|`Number (int)`|-
 |[[headers]]`headers`|`String`|
 +++
 Add a header to the request.
 +++
 |[[indices]]`indices`|`Array of String`|-
+|[[keepAlive]]`keepAlive`|`Number (Long)`|-
+|[[maxConcurrentShardRequests]]`maxConcurrentShardRequests`|`Number (int)`|-
+|[[preFilterShardSize]]`preFilterShardSize`|`Number (int)`|-
+|[[preference]]`preference`|`String`|-
+|[[requestCache]]`requestCache`|`Boolean`|-
+|[[routing]]`routing`|`String`|-
+|[[searchType]]`searchType`|`link:enums.html#SearchType[SearchType]`|-
 |[[source]]`source`|`Json object`|-
 |[[types]]`types`|`Array of String`|-
 |===
@@ -821,6 +1137,21 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[clusters]]`clusters`|`link:dataobjects.html#Clusters[Clusters]`|-
+|[[failedShards]]`failedShards`|`Number (int)`|-
+|[[hits]]`hits`|`link:dataobjects.html#SearchHits[SearchHits]`|-
+|[[numReducePhases]]`numReducePhases`|`Number (int)`|-
+|[[profileResults]]`profileResults`|`Json object`|-
+|[[scrollId]]`scrollId`|`String`|-
+|[[shardFailures]]`shardFailures`|`Array of link:dataobjects.html#ShardFailure[ShardFailure]`|-
+|[[skippedShards]]`skippedShards`|`Number (int)`|-
+|[[successfulShards]]`successfulShards`|`Number (int)`|-
+|[[suggest]]`suggest`|`link:dataobjects.html#Suggestion[Suggestion]`|-
+|[[terminatedEarly]]`terminatedEarly`|`Boolean`|-
+|[[timedOut]]`timedOut`|`Boolean`|-
+|[[tookInMillis]]`tookInMillis`|`Number (long)`|-
+|[[totalShards]]`totalShards`|`Number (int)`|-
 |===
 
 [[SearchScrollRequest]]
@@ -835,6 +1166,8 @@ Add a header to the request.
 +++
 Add a header to the request.
 +++
+|[[keepAlive]]`keepAlive`|`Number (Long)`|-
+|[[scrollId]]`scrollId`|`String`|-
 |===
 
 [[ShardFailure]]
@@ -845,6 +1178,10 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|[[index]]`index`|`String`|-
+|[[shardId]]`shardId`|`Number (int)`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
 |===
 
 [[ShardId]]
@@ -855,6 +1192,8 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[id]]`id`|`Number (int)`|-
+|[[index]]`index`|`String`|-
 |===
 
 [[ShardInfo]]
@@ -865,6 +1204,10 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[failed]]`failed`|`Number (int)`|-
+|[[failures]]`failures`|`Array of link:dataobjects.html#ShardInfoFailure[ShardInfoFailure]`|-
+|[[successful]]`successful`|`Number (int)`|-
+|[[total]]`total`|`Number (int)`|-
 |===
 
 [[ShardInfoFailure]]
@@ -875,6 +1218,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[cause]]`cause`|`String`|-
+|[[nodeId]]`nodeId`|`String`|-
+|[[primary]]`primary`|`Boolean`|-
+|[[shardId]]`shardId`|`String`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
 |===
 
 [[SingleBucketAggregation]]
@@ -885,6 +1233,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[data]]`data`|`Json object`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[Suggestion]]
@@ -895,6 +1249,8 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[TermEntry]]
@@ -907,6 +1263,10 @@ Add a header to the request.
 ^|Name | Type ^| Description
 |[[length]]`length`|`Number (int)`|-
 |[[offset]]`offset`|`Number (int)`|-
+|[[options]]`options`|`Array of link:dataobjects.html#TermOption[TermOption]`|
++++
+Get the suggestion entry options.
++++
 |[[text]]`text`|`String`|-
 |===
 
@@ -919,6 +1279,7 @@ Add a header to the request.
 |===
 ^|Name | Type ^| Description
 |[[collateMatch]]`collateMatch`|`Boolean`|-
+|[[freq]]`freq`|`Number (int)`|-
 |[[highlighted]]`highlighted`|`String`|-
 |[[score]]`score`|`Number (float)`|-
 |[[text]]`text`|`String`|-
@@ -932,6 +1293,12 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[entries]]`entries`|`Array of link:dataobjects.html#TermEntry[TermEntry]`|
++++
+Get the suggestion entries.
++++
+|[[name]]`name`|`String`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[Terms]]
@@ -942,6 +1309,13 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[buckets]]`buckets`|`link:dataobjects.html#TermsBucket[TermsBucket]`|-
+|[[data]]`data`|`Json object`|-
+|[[docCountError]]`docCountError`|`Number (long)`|-
+|[[metaData]]`metaData`|`Json object`|-
+|[[name]]`name`|`String`|-
+|[[sumOfOtherDocCounts]]`sumOfOtherDocCounts`|`Number (long)`|-
+|[[type]]`type`|`String`|-
 |===
 
 [[TermsBucket]]
@@ -952,6 +1326,10 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[aggregations]]`aggregations`|`link:dataobjects.html#Aggregation[Aggregation]`|-
+|[[docCount]]`docCount`|`Number (long)`|-
+|[[docCountError]]`docCountError`|`Number (long)`|-
+|[[key]]`key`|`String`|-
 |===
 
 [[UpdateRequest]]
@@ -962,6 +1340,11 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[detectNoop]]`detectNoop`|`Boolean`|-
+|[[doc]]`doc`|`Json object`|-
+|[[docAsUpsert]]`docAsUpsert`|`Boolean`|-
+|[[fetchSourceContext]]`fetchSourceContext`|`link:dataobjects.html#FetchSourceContext[FetchSourceContext]`|-
+|[[fields]]`fields`|`Array of String`|-
 |[[headers]]`headers`|`String`|
 +++
 Add a header to the request.
@@ -971,10 +1354,15 @@ Add a header to the request.
 |[[opType]]`opType`|`link:enums.html#OpType[OpType]`|-
 |[[parent]]`parent`|`String`|-
 |[[refreshPolicy]]`refreshPolicy`|`link:enums.html#RefreshPolicy[RefreshPolicy]`|-
+|[[retryOnConflict]]`retryOnConflict`|`Number (int)`|-
 |[[routing]]`routing`|`String`|-
+|[[script]]`script`|`link:dataobjects.html#Script[Script]`|-
+|[[scriptedUpsert]]`scriptedUpsert`|`Boolean`|-
 |[[type]]`type`|`String`|-
+|[[upsert]]`upsert`|`Json object`|-
 |[[version]]`version`|`Number (long)`|-
 |[[versionType]]`versionType`|`link:enums.html#VersionType[VersionType]`|-
+|[[waitForActiveShards]]`waitForActiveShards`|`Number (Integer)`|-
 |===
 
 [[UpdateResponse]]
@@ -989,5 +1377,17 @@ Add a header to the request.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
+|[[forcedRefresh]]`forcedRefresh`|`Boolean`|-
+|[[getResult]]`getResult`|`link:dataobjects.html#GetResponse[GetResponse]`|-
+|[[id]]`id`|`String`|-
+|[[index]]`index`|`String`|-
+|[[primaryTerm]]`primaryTerm`|`Number (long)`|-
+|[[result]]`result`|`link:enums.html#Result[Result]`|-
+|[[seqNo]]`seqNo`|`Number (long)`|-
+|[[shardId]]`shardId`|`link:dataobjects.html#ShardId[ShardId]`|-
+|[[shardInfo]]`shardInfo`|`link:dataobjects.html#ShardInfo[ShardInfo]`|-
+|[[status]]`status`|`link:enums.html#RestStatus[RestStatus]`|-
+|[[type]]`type`|`String`|-
+|[[version]]`version`|`Number (long)`|-
 |===
 

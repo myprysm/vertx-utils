@@ -23,7 +23,9 @@ import io.vertx.core.json {
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse */
 " PutMappingResponse.\n"
-shared class PutMappingResponse() extends AcknowledgedResponse() satisfies BaseDataObject {
+shared class PutMappingResponse(
+  Boolean? acknowledged = null) extends AcknowledgedResponse(
+  acknowledged) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = super.toJson();
     return json;
@@ -33,7 +35,9 @@ shared class PutMappingResponse() extends AcknowledgedResponse() satisfies BaseD
 shared object putMappingResponse {
 
   shared PutMappingResponse fromJson(JsonObject json) {
+    Boolean? acknowledged = json.getBooleanOrNull("acknowledged");
     return PutMappingResponse {
+      acknowledged = acknowledged;
     };
   }
 

@@ -19,9 +19,21 @@ import io.vertx.core.json {
   JsonArray_=JsonArray
 }
 /* Generated from fr.myprysm.vertx.elasticsearch.action.support.FetchSourceContext */
-shared class FetchSourceContext() satisfies BaseDataObject {
+shared class FetchSourceContext(
+  shared {String*}? excludes = null,
+  shared Boolean? fetchSource = null,
+  shared {String*}? includes = null) satisfies BaseDataObject {
   shared actual default JsonObject toJson() {
     value json = JsonObject();
+    if (exists excludes) {
+      json.put("excludes", JsonArray(excludes));
+    }
+    if (exists fetchSource) {
+      json.put("fetchSource", fetchSource);
+    }
+    if (exists includes) {
+      json.put("includes", JsonArray(includes));
+    }
     return json;
   }
 }
@@ -29,7 +41,13 @@ shared class FetchSourceContext() satisfies BaseDataObject {
 shared object fetchSourceContext {
 
   shared FetchSourceContext fromJson(JsonObject json) {
+    {String*}? excludes = json.getArrayOrNull("excludes")?.strings;
+    Boolean? fetchSource = json.getBooleanOrNull("fetchSource");
+    {String*}? includes = json.getArrayOrNull("includes")?.strings;
     return FetchSourceContext {
+      excludes = excludes;
+      fetchSource = fetchSource;
+      includes = includes;
     };
   }
 
