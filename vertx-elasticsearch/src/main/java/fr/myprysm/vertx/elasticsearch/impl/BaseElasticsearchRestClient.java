@@ -23,7 +23,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -76,22 +75,6 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
     }
 
     /**
-     * Build a client with the provided client holder.
-     *
-     * @param vertx  the current vertx instance
-     * @param holder the Elasticsearch client holder
-     */
-    BaseElasticsearchRestClient(Vertx vertx, ClientHolder holder) {
-        super(vertx, UUID.randomUUID().toString());
-        requireNonNull(holder);
-        this.holder = holder;
-        this.client = holder.client();
-        Pair<IndicesClient, ClusterClient> clients = getClients();
-        indicesClient = clients.getLeft();
-        clusterClient = clients.getRight();
-    }
-
-    /**
      * Get the indices and cluster clients.
      *
      * @return the clients
@@ -124,7 +107,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
 
     @Override
     public void ping(Handler<AsyncResult<Boolean>> handler) {
-        ping(null, handler);
+        ping(new BaseRequest(), handler);
     }
 
     @Override
@@ -134,7 +117,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
 
     @Override
     public void info(Handler<AsyncResult<MainResponse>> handler) {
-        info(null, handler);
+        info(new BaseRequest(), handler);
     }
 
     @Override
@@ -224,17 +207,6 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
         ClientHolder(ElasticsearchClientOptions config, Runnable closeRunner) {
             this.config = config;
             this.closeRunner = closeRunner;
-        }
-
-        /**
-         * Build a new holder with the provided client.
-         *
-         * @param client the client
-         */
-        ClientHolder(RestHighLevelClient client) {
-            this.client = requireNonNull(client);
-            config = null;
-            closeRunner = null;
         }
 
         /**

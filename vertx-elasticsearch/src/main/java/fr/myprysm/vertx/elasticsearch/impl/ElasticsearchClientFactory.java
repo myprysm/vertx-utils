@@ -6,12 +6,10 @@ import fr.myprysm.vertx.elasticsearch.ElasticsearchClientOptionsValidation;
 import fr.myprysm.vertx.validation.ValidationResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Vertx Elasticsearch client factory.
  */
-@Slf4j
 public final class ElasticsearchClientFactory {
 
     /**
@@ -44,25 +42,5 @@ public final class ElasticsearchClientFactory {
         }
 
     }
-
-    /**
-     * Create a new client from the client holder.
-     * <p>
-     * Used for tests.
-     *
-     * @param vertx          the vertx instance
-     * @param useNativeAsync whether to use the native ES async API
-     * @param holder         custom Client Holder
-     * @return the client
-     */
-    static ElasticsearchClient create(Vertx vertx, boolean useNativeAsync, BaseElasticsearchRestClient.ClientHolder holder) {
-        if (useNativeAsync) {
-            return new NativeAsyncElasticsearchRestClientImpl(vertx, holder);
-        } else {
-            return new VertxAsyncElasticsearchRestClientImpl(vertx, holder);
-        }
-
-    }
-
 
 }

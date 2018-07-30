@@ -62,10 +62,14 @@ class BaseRestClient {
         } else if (metricsProviders.size() == 1) {
             provider = metricsProviders.iterator().next();
         } else {
-            provider = metricsProviders.stream()
-                    .filter(p -> !(p instanceof DummyMetricsProvider))
-                    .findFirst()
-                    .orElse(new DummyMetricsProvider());
+            MetricsProvider found = new DummyMetricsProvider();
+            for (MetricsProvider p : metricsProviders) {
+                if (!(p instanceof DummyMetricsProvider)) {
+                    found = p;
+                    break;
+                }
+            }
+            provider = found;
         }
 
         provider.setName(name);
@@ -147,6 +151,11 @@ class BaseRestClient {
             Converter<RespES, RespData> respConverter,
             Handler<AsyncResult<RespData>> handler,
             TriConsumer<ReqES, ActionListener<RespES>, Header[]> clientFunction) {
+        requireNonNull(request, "The request cannot be null, provide at least an empty BaseRequest.");
+        requireNonNull(reqConverter, "The request converter cannot be null.");
+        requireNonNull(respConverter, "The response converter cannot be null.");
+        requireNonNull(handler, "The response handler cannot be null.");
+        requireNonNull(clientFunction, "The client function cannot be null.");
 
         RequestMetrics requestMetrics = provider.forClass(request.getClass());
         prepareRequest(
@@ -166,12 +175,12 @@ class BaseRestClient {
     /**
      * Prepares a request and executes the provided {@link TriConsumer} on a worker thread.
      * <p>
-     * The consumer accepts the ElasticSearch Request, the headers and a future that expects the DataObject Response.
+     * The clientFunction accepts the ElasticSearch Request, the headers and a future that expects the DataObject Response.
      *
      * @param request    the request data object
      * @param converter  the request converter
      * @param handler    the result  handler
-     * @param consumer   the consumer
+     * @param clientFunction   the clientFunction
      * @param <ReqData>  the request DataObject type
      * @param <ReqES>    the request ElasticSearch type
      * @param <RespData> the response DataObject type
@@ -181,12 +190,12 @@ class BaseRestClient {
             ReqData request,
             Converter<ReqData, ReqES> converter,
             Handler<AsyncResult<RespData>> handler,
-            TriConsumer<ReqES, Header[], Future<RespData>> consumer) {
+            TriConsumer<ReqES, Header[], Future<RespData>> clientFunction) {
 
         prepareRequest(metrics, request, converter, handler, (esRequest, headers) ->
                 vertx.executeBlocking(future -> {
                     try {
-                        consumer.consume(esRequest, headers, future);
+                        clientFunction.consume(esRequest, headers, future);
                     } catch (Exception exc) {
                         future.fail(exc);
                     }
@@ -238,7 +247,7 @@ class BaseRestClient {
      * @param reqConverter  the request converter
      * @param respConverter the response converter
      * @param handler       the result handler
-     * @param function      the client function that executes the blocking request
+     * @param clientFunction      the client function that executes the blocking request
      * @param <ReqData>     the request DataObject type
      * @param <ReqES>       the request ElasticSearch type
      * @param <RespES>      the response ElasticSearch Type
@@ -249,7 +258,12 @@ class BaseRestClient {
             Converter<ReqData, ReqES> reqConverter,
             Converter<RespES, RespData> respConverter,
             Handler<AsyncResult<RespData>> handler,
-            BiFunction<ReqES, Header[], RespES> function) {
+            BiFunction<ReqES, Header[], RespES> clientFunction) {
+        requireNonNull(request, "The request cannot be null, provide at least an empty BaseRequest.");
+        requireNonNull(reqConverter, "The request converter cannot be null.");
+        requireNonNull(respConverter, "The response converter cannot be null.");
+        requireNonNull(handler, "The response handler cannot be null.");
+        requireNonNull(clientFunction, "The client function cannot be null.");
         RequestMetrics requestMetrics = provider.forClass(request.getClass());
         prepareRequestBlocking(
                 requestMetrics,
@@ -260,7 +274,7 @@ class BaseRestClient {
                     RespES esResponse;
                     requestMetrics.startRequest();
                     try {
-                        esResponse = function.apply(req, headers);
+                        esResponse = clientFunction.apply(req, headers);
                     } catch (Exception exc) {
                         requestMetrics.errorRequest();
                         future.fail(exc);

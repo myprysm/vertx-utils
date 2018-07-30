@@ -53,16 +53,6 @@ class VertxAsyncElasticsearchRestClientImpl extends BaseElasticsearchRestClient 
         super(vertx, options, clientName);
     }
 
-    /**
-     * Build a new client with the provided holder.
-     *
-     * @param vertx  the current vertx instance
-     * @param holder the elasticsearch client holder
-     */
-    VertxAsyncElasticsearchRestClientImpl(Vertx vertx, ClientHolder holder) {
-        super(vertx, holder);
-    }
-
     @Override
     Pair<IndicesClient, ClusterClient> getClients() {
         return Pair.of(
