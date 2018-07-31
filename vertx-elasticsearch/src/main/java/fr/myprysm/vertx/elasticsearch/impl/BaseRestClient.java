@@ -1,9 +1,9 @@
 package fr.myprysm.vertx.elasticsearch.impl;
 
 import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
-import fr.myprysm.vertx.elasticsearch.action.FutureActionListener;
 import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import fr.myprysm.vertx.elasticsearch.converter.Converter;
+import fr.myprysm.vertx.elasticsearch.listener.FutureActionListener;
 import fr.myprysm.vertx.elasticsearch.metrics.DummyMetricsProvider;
 import fr.myprysm.vertx.elasticsearch.metrics.RequestMetrics;
 import fr.myprysm.vertx.elasticsearch.metrics.spi.MetricsProvider;
@@ -18,6 +18,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.ServiceHelper;
 import io.vertx.core.Vertx;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.ActionRequest;
@@ -31,6 +32,7 @@ import static java.util.Objects.requireNonNull;
  * <p>
  * Provides the helpers for Async and Blocking execution models with the Elasticsearch client interfaces.
  */
+@Slf4j
 class BaseRestClient {
 
     /**
@@ -38,7 +40,7 @@ class BaseRestClient {
      */
     private final Vertx vertx;
     private final String name;
-    private MetricsProvider provider;
+    private static MetricsProvider provider;
 
     /**
      * Build a new client with the vertx instance.
@@ -57,26 +59,28 @@ class BaseRestClient {
     }
 
     private void initMetrics(String name) {
-        Collection<MetricsProvider> metricsProviders = ServiceHelper.loadFactories(MetricsProvider.class);
-        MetricsProvider provider;
-        if (metricsProviders.isEmpty()) {
-            provider = new DummyMetricsProvider();
-        } else if (metricsProviders.size() == 1) {
-            provider = metricsProviders.iterator().next();
-        } else {
-            MetricsProvider found = new DummyMetricsProvider();
-            for (MetricsProvider p : metricsProviders) {
-                if (!(p instanceof DummyMetricsProvider)) {
-                    found = p;
-                    break;
-                }
-            }
-            provider = found;
-        }
+        if (provider == null) {
+            Collection<MetricsProvider> metricsProviders = ServiceHelper.loadFactories(MetricsProvider.class);
+            if (metricsProviders.isEmpty()) {
+                provider = new DummyMetricsProvider();
+            } else if (metricsProviders.size() == 1) {
+                provider = metricsProviders.iterator().next();
+            } else {
+                MetricsProvider found = new DummyMetricsProvider();
+                for (MetricsProvider p : metricsProviders) {
+                    if (!(p instanceof DummyMetricsProvider)) {
+                        found = p;
 
-        provider.setName(name);
-        provider.init();
-        this.provider = provider;
+                        break;
+                    }
+                }
+                provider = found;
+            }
+
+            provider.setName(name);
+            provider.init();
+            log.debug("Metrics [{}][{}] initialized.", name, provider.getClass());
+        }
     }
 
     /**
@@ -89,6 +93,7 @@ class BaseRestClient {
     }
 
     //region Client Request Utils
+
 
     /**
      * Prepares a request and apply the provided {@link BiConsumer}.
@@ -112,21 +117,18 @@ class BaseRestClient {
             Handler<AsyncResult<RespData>> handler,
             SafeBiConsumer<ReqES, Header[]> consumer
     ) {
-        ReqES esRequest = null;
-        Header[] headers = new Header[]{};
+        ReqES esRequest;
+        Header[] headers;
 
         metrics.startConvertRequestToES();
-        if (request != null) {
-
-            try {
-                esRequest = converter.convert(request);
-            } catch (Exception exc) {
-                metrics.errorConvertRequestToES();
-                handler.handle(Future.failedFuture(exc));
-                return;
-            }
-            headers = CommonConverters.headersFromRequest(request);
+        try {
+            esRequest = converter.convert(request);
+        } catch (Exception exc) {
+            metrics.errorConvertRequestToES();
+            handler.handle(Future.failedFuture(exc));
+            return;
         }
+        headers = CommonConverters.headersFromRequest(request);
         metrics.endConvertRequestToES();
 
         consumer.consume(esRequest, headers);
@@ -275,8 +277,9 @@ class BaseRestClient {
                     try {
                         esResponse = clientFunction.apply(req, headers);
                     } catch (Exception exc) {
-                        requestMetrics.errorRequest();
                         future.fail(exc);
+                        requestMetrics.errorRequest();
+                        requestMetrics.endRequest();
                         return;
                     }
                     requestMetrics.endRequest();

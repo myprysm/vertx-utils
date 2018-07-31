@@ -142,9 +142,11 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
             LocalMap<String, ClientHolder> map = vertx().sharedData().getLocalMap(DS_LOCAL_MAP_NAME);
             ClientHolder theHolder = map.get(clientName);
             if (theHolder == null) {
+                log.debug("Creating client [{}]", clientName);
                 theHolder = new ClientHolder(config, () -> removeFromMap(map, clientName));
                 map.put(clientName, theHolder);
             } else {
+                log.debug("Reusing client [{}]", clientName);
                 theHolder.incRefCount();
             }
             return theHolder;
@@ -191,10 +193,6 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
          * The number of remaining clients.
          */
         private int refCount = 1;
-        /**
-         * Lock for synchronization.
-         */
-        private final Object lock = new Object();
 
         /**
          * Build a new holder with the options and the close hook.
@@ -231,6 +229,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
                 }
 
                 client = new RestHighLevelClient(builder);
+                log.info("Built new client");
             }
             return client;
         }
