@@ -29,15 +29,19 @@ import me.xdrop.jrand.JRand;
 import me.xdrop.jrand.model.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 public abstract class VertxESIntegrationTestCase extends VertxESTestCase {
 
@@ -180,9 +184,15 @@ public abstract class VertxESIntegrationTestCase extends VertxESTestCase {
                 .getMetrics()
                 .entrySet()
                 .stream()
+                .map(e -> Pair.of(e.getKey(), e.getValue()))
+                .sorted(comparing(Pair::getKey))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> Helper.convertMetric(e.getValue(), TimeUnit.SECONDS, TimeUnit.MILLISECONDS)));
+                        e -> Helper.convertMetric(e.getValue(), TimeUnit.SECONDS, TimeUnit.MILLISECONDS),
+                        (u, v) -> {
+                            throw new IllegalStateException(String.format("Duplicate key %s", u));
+                        },
+                        LinkedHashMap::new));
         System.out.println(new JsonObject(map));
     }
 
