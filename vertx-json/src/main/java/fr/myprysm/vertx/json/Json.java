@@ -57,13 +57,24 @@ public class Json {
     }
 
     /**
-     * Converts a {@link JsonObject} to a {@link Map}
+     * Converts a {@link JsonObject} to a {@link Map}.
      *
      * @param json the object to convert
      * @return the map
      */
     public static Map<String, Object> convert(JsonObject json) {
         return mapper.convertValue(json, new TypeReference<Map<String, Object>>() {
+        });
+    }
+
+    /**
+     * Converts a {@link JsonObject} to a {@link Map} with <code>null</code> values.
+     *
+     * @param json the object to convert
+     * @return the map
+     */
+    public static Map<String, Object> convertWithNullValues(JsonObject json) {
+        return io.vertx.core.json.Json.mapper.convertValue(json, new TypeReference<Map<String, Object>>() {
         });
     }
 

@@ -25,7 +25,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @DisplayName("Json/Jackson test")
 @ExtendWith(VertxExtension.class)
@@ -36,6 +37,18 @@ class JsonTest {
     void itShouldConvertJsonObjectToMap() {
         JsonObject json = new JsonObject().put("foo", "bar").put("hello", 123);
         assertThat(json.getMap()).isEqualTo(Json.convert(json));
+    }
+
+    @Test
+    @DisplayName("It should should not convert null values")
+    void itShouldNotConvertNullValues() {
+        assertThat(Json.convert(new JsonObject().put("nullEntry", (String) null))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("It should should convert null values")
+    void itShouldConvertNullValues() {
+        assertThat(Json.convertWithNullValues(new JsonObject().put("nullEntry", (String) null))).containsEntry("nullEntry", null);
     }
 
     @Test
