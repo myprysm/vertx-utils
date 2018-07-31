@@ -17,11 +17,24 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@DataObject(generateConverter = true)
+@DataObject
 public class ClusterUpdateSettingsResponse extends AcknowledgedResponse {
 
     private JsonObject transientSettings;
     private JsonObject persistentSettings;
+
+    /**
+     * Build a new {@link ClusterUpdateSettingsResponse} will all attributes.
+     *
+     * @param acknowledged       acknowledged
+     * @param transientSettings  transient settings
+     * @param persistentSettings persistent settings
+     */
+    public ClusterUpdateSettingsResponse(boolean acknowledged, JsonObject transientSettings, JsonObject persistentSettings) {
+        super(acknowledged);
+        this.transientSettings = transientSettings;
+        this.persistentSettings = persistentSettings;
+    }
 
     /**
      * Build a new ClusterUpdateSettingsResponse from another.
