@@ -7,7 +7,7 @@ import fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse
  *
  * Response that indicates whether it has been acknowledged.
  *
- * @param acknowledged
+ * @param acknowledged 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.support.AcknowledgedResponse original] using Vert.x codegen.

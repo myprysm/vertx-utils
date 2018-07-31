@@ -23,6 +23,7 @@ import io.reactivex.Single;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest;
+import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse;
@@ -95,6 +96,56 @@ public class ClusterClient {
   public Single<ClusterUpdateSettingsResponse> rxPutSettings(ClusterUpdateSettingsRequest request) { 
     return new io.vertx.reactivex.core.impl.AsyncResultSingle<ClusterUpdateSettingsResponse>(handler -> {
       putSettings(request, handler);
+    });
+  }
+
+  /**
+   * Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+   * API on elastic.co</a>
+   * @param request the request
+   * @param handler the handler
+   */
+  public void getSettings(BaseRequest request, Handler<AsyncResult<ClusterUpdateSettingsResponse>> handler) { 
+    delegate.getSettings(request, handler);
+  }
+
+  /**
+   * Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+   * API on elastic.co</a>
+   * @param request the request
+   * @return 
+   */
+  public Single<ClusterUpdateSettingsResponse> rxGetSettings(BaseRequest request) { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<ClusterUpdateSettingsResponse>(handler -> {
+      getSettings(request, handler);
+    });
+  }
+
+  /**
+   * Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+   * API on elastic.co</a>
+   * @param handler the handler
+   */
+  public void getSettings(Handler<AsyncResult<ClusterUpdateSettingsResponse>> handler) { 
+    delegate.getSettings(handler);
+  }
+
+  /**
+   * Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+   * <p>
+   * See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+   * API on elastic.co</a>
+   * @return 
+   */
+  public Single<ClusterUpdateSettingsResponse> rxGetSettings() { 
+    return new io.vertx.reactivex.core.impl.AsyncResultSingle<ClusterUpdateSettingsResponse>(handler -> {
+      getSettings(handler);
     });
   }
 

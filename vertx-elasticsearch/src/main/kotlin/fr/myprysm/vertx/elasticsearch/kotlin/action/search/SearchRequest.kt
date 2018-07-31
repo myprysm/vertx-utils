@@ -8,7 +8,7 @@ import org.elasticsearch.action.search.SearchType
  *
  * SearchRequest
  *
- * @param allowPartialSearchResults
+ * @param allowPartialSearchResults 
  * @param batchedReduceSize 
  * @param headers  Add a header to the request.
  * @param indices
@@ -20,7 +20,7 @@ import org.elasticsearch.action.search.SearchType
  * @param routing
  * @param searchType
  * @param source
- * @param types
+ * @param types 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.search.SearchRequest original] using Vert.x codegen.

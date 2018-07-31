@@ -44,5 +44,20 @@ module VertxUtilsElasticsearch
       end
       raise ArgumentError, "Invalid arguments when calling put_settings(#{request})"
     end
+    #  Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+    #  <p>
+    #  See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+    #  API on elastic.co</a>
+    # @param [Hash] request the request
+    # @yield the handler
+    # @return [void]
+    def get_settings(request=nil)
+      if block_given? && request == nil
+        return @j_del.java_method(:getSettings, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      elsif request.class == Hash && block_given?
+        return @j_del.java_method(:getSettings, [Java::FrMyprysmVertxElasticsearchAction::BaseRequest.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::FrMyprysmVertxElasticsearchAction::BaseRequest.new(::Vertx::Util::Utils.to_json_object(request)),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling get_settings(#{request})"
+    end
   end
 end

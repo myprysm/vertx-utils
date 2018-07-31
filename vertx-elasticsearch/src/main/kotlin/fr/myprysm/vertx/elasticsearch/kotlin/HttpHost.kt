@@ -9,7 +9,7 @@ import fr.myprysm.vertx.elasticsearch.HttpHost
  *
  * @param hostname
  * @param port
- * @param protocol
+ * @param protocol 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.HttpHost original] using Vert.x codegen.

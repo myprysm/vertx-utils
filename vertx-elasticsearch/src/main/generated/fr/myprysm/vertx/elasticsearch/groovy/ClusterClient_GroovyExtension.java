@@ -8,4 +8,19 @@ public class ClusterClient_GroovyExtension {
       }
     } : null);
   }
+  public static void getSettings(fr.myprysm.vertx.elasticsearch.ClusterClient j_receiver, java.util.Map<String, Object> request, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.getSettings(request != null ? new fr.myprysm.vertx.elasticsearch.action.BaseRequest(io.vertx.core.impl.ConversionHelper.toJsonObject(request)) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
+  public static void getSettings(fr.myprysm.vertx.elasticsearch.ClusterClient j_receiver, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> handler) {
+    j_receiver.getSettings(handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse>>() {
+      public void handle(io.vertx.core.AsyncResult<fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse> ar) {
+        handler.handle(ar.map(event -> event != null ? io.vertx.core.impl.ConversionHelper.fromJsonObject(event.toJson()) : null));
+      }
+    } : null);
+  }
 }

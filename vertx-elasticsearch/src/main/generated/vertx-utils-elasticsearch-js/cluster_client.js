@@ -21,6 +21,7 @@ var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JClusterClient = Java.type('fr.myprysm.vertx.elasticsearch.ClusterClient');
 var ClusterUpdateSettingsRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest');
+var BaseRequest = Java.type('fr.myprysm.vertx.elasticsearch.action.BaseRequest');
 var ClusterUpdateSettingsResponse = Java.type('fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse');
 
 /**
@@ -53,6 +54,37 @@ var ClusterClient = function(j_val) {
         handler(utils.convReturnDataObject(ar.result()), null);
       } else {
         handler(null, ar.cause());
+      }
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Asynchronously get cluster wide specific settings using the Cluster Update Settings API.
+   <p>
+   See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html"> Cluster Update Settings
+   API on elastic.co</a>
+
+   @public
+   @param request {Object} the request 
+   @param handler {function} the handler 
+   */
+  this.getSettings = function() {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_clusterClient["getSettings(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        __args[0](utils.convReturnDataObject(ar.result()), null);
+      } else {
+        __args[0](null, ar.cause());
+      }
+    });
+    }  else if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_clusterClient["getSettings(fr.myprysm.vertx.elasticsearch.action.BaseRequest,io.vertx.core.Handler)"](__args[0] != null ? new BaseRequest(new JsonObject(Java.asJSONCompatible(__args[0]))) : null, function(ar) {
+      if (ar.succeeded()) {
+        __args[1](utils.convReturnDataObject(ar.result()), null);
+      } else {
+        __args[1](null, ar.cause());
       }
     });
     } else throw new TypeError('function invoked with invalid arguments');

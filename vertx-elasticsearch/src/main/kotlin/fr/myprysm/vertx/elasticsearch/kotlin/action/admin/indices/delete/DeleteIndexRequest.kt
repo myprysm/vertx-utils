@@ -8,7 +8,7 @@ import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexReq
  * DeleteIndexRequest.
  *
  * @param headers  Add a header to the request.
- * @param indices
+ * @param indices 
  *
  * <p/>
  * NOTE: This function has been automatically generated from the [fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest original] using Vert.x codegen.
