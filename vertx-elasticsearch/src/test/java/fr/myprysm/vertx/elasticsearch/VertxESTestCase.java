@@ -51,7 +51,7 @@ public abstract class VertxESTestCase implements VertxTest {
      * @param <V>      the type of the result
      * @throws InterruptedException with {@link TestObserver#await()}
      */
-    <V> void assertSuccessSingle(Single<V> single, Consumer<V> consumer) throws InterruptedException {
+    protected <V> void assertSuccessSingle(Single<V> single, Consumer<V> consumer) throws InterruptedException {
         single.test().await().assertNoErrors().assertValue(v -> {
             consumer.accept(v);
             return true;
@@ -70,7 +70,7 @@ public abstract class VertxESTestCase implements VertxTest {
      * @param <T>            the error type
      * @throws InterruptedException with {@link TestObserver#await()}
      */
-    <V, T extends Throwable> void assertFailure(TestObserver<V> observer, Class<T> exceptionClass, Consumer<T> consumer) throws InterruptedException {
+    protected <V, T extends Throwable> void assertFailure(TestObserver<V> observer, Class<T> exceptionClass, Consumer<T> consumer) throws InterruptedException {
         observer.await().assertError(err -> {
             assertThat(err).isInstanceOf(exceptionClass);
             consumer.accept(exceptionClass.cast(err));

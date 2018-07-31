@@ -21,9 +21,9 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
-import java.io.IOException;
 import java.util.List;
 
+import static fr.myprysm.vertx.elasticsearch.utils.ExceptionUtils.swallowException;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -34,7 +34,7 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
     /**
      * The client holder cache.
      */
-    private static final String DS_LOCAL_MAP_NAME = "__myprysm.ElasticsearchClient.clients";
+    static final String DS_LOCAL_MAP_NAME = "__myprysm.ElasticsearchClient.clients";
 
     /**
      * The Elasticsearch client.
@@ -216,34 +216,39 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
          *
          * @return the client.
          */
-        RestHighLevelClient client() {
-            synchronized (lock) {
-                if (client == null) {
-                    List<HttpHost> hosts = ConverterUtils.convert(config.getHosts(), CommonConverters::httpHostToES);
-                    RestClientBuilder builder = RestClient
-                            .builder(hosts.toArray(new HttpHost[]{}))
-                            .setMaxRetryTimeoutMillis(config.getMaxRetryTimeout());
+        synchronized RestHighLevelClient client() {
+            if (client == null) {
+                List<HttpHost> hosts = ConverterUtils.convert(config.getHosts(), CommonConverters::httpHostToES);
+                RestClientBuilder builder = RestClient
+                        .builder(hosts.toArray(new HttpHost[]{}))
+                        .setMaxRetryTimeoutMillis(config.getMaxRetryTimeout());
 
-                    if (config.getDefaultHeaders().size() > 0) {
-                        builder.setDefaultHeaders(CommonConverters.headersFromMap(config.getDefaultHeaders()));
-                    }
-                    if (config.getPathPrefix() != null) {
-                        builder.setPathPrefix(config.getPathPrefix());
-                    }
-
-                    client = new RestHighLevelClient(builder);
+                if (config.getDefaultHeaders().size() > 0) {
+                    builder.setDefaultHeaders(CommonConverters.headersFromMap(config.getDefaultHeaders()));
                 }
-                return client;
+                if (config.getPathPrefix() != null) {
+                    builder.setPathPrefix(config.getPathPrefix());
+                }
+
+                client = new RestHighLevelClient(builder);
             }
+            return client;
+        }
+
+        /**
+         * Get the client configuration.
+         *
+         * @return the configuration
+         */
+        ElasticsearchClientOptions config() {
+            return new ElasticsearchClientOptions(config);
         }
 
         /**
          * Increase the number of opened clients.
          */
-        void incRefCount() {
-            synchronized (lock) {
-                refCount++;
-            }
+        synchronized void incRefCount() {
+            refCount++;
         }
 
         /**
@@ -251,19 +256,13 @@ public abstract class BaseElasticsearchRestClient extends BaseRestClient impleme
          * <p>
          * Elasticsearch client stays up until no other client uses it.
          */
-        void close() {
-            synchronized (lock) {
-                if (--refCount == 0) {
-                    if (client != null) {
-                        try {
-                            client.close();
-                        } catch (IOException err) {
-                            log.error("An error occured while closing client: ", err);
-                        }
-                    }
-                    if (closeRunner != null) {
-                        closeRunner.run();
-                    }
+        synchronized void close() {
+            if (--refCount == 0) {
+                if (client != null) {
+                    swallowException(() -> client.close());
+                }
+                if (closeRunner != null) {
+                    closeRunner.run();
                 }
             }
         }
