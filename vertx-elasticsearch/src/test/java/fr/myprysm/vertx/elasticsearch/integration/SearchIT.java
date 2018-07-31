@@ -1,4 +1,20 @@
-package fr.myprysm.vertx.elasticsearch.impl;
+/*
+ * Copyright 2018 the original author or the original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package fr.myprysm.vertx.elasticsearch.integration;
 
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.bulk.BulkRequest;
@@ -14,7 +30,9 @@ import fr.myprysm.vertx.elasticsearch.action.search.SearchScrollRequest;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Bucket;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Children;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Filter;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Filters;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.GeoHashGrid;
+import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Histogram;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Range;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.RangeBucket;
 import fr.myprysm.vertx.elasticsearch.action.search.aggregations.bucket.Terms;
@@ -43,7 +61,10 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregator;
 import org.elasticsearch.search.aggregations.bucket.geogrid.GeoGridAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.matrix.stats.MatrixStatsAggregationBuilder;
@@ -63,12 +84,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.search.aggregations.AggregationBuilders.*;
 
-class SearchIT extends VertxESRestTestCase {
+class SearchIT extends VertxESIntegrationTestCase {
 
-    @SuppressWarnings("unchecked")
-    @Override
-    void initES() throws InterruptedException {
+    void initData() throws InterruptedException {
         JsonObject doc1 = new JsonObject("{\"type\":\"type1\", \"num\":10, \"num2\":50}");
         JsonObject doc2 = new JsonObject("{\"type\":\"type1\", \"num\":20, \"num2\":40}");
         JsonObject doc3 = new JsonObject("{\"type\":\"type1\", \"num\":50, \"num2\":35}");
@@ -82,13 +103,6 @@ class SearchIT extends VertxESRestTestCase {
                         .add(new IndexRequest("index", "type", "3").setSource(doc3))
                         .add(new IndexRequest("index", "type", "4").setSource(doc4))
                         .add(new IndexRequest("index", "type", "5").setSource(doc5))
-        )
-                .test()
-                .await()
-                .assertNoErrors();
-
-        rxClient().rxBulk(
-                new BulkRequest().setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
                         .add(new IndexRequest("index1", "type", "1").setSource(new JsonObject("{\"field\":\"value1\"}")))
                         .add(new IndexRequest("index1", "type", "2").setSource(new JsonObject("{\"field\":\"value2\"}")))
                         .add(new IndexRequest("index2", "type", "3").setSource(new JsonObject("{\"field\":\"value1\"}")))
@@ -99,10 +113,12 @@ class SearchIT extends VertxESRestTestCase {
                 .test()
                 .await()
                 .assertNoErrors();
+
     }
 
     @Test
     void testSearchNoQuery() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest("index");
         rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
                 .test()
@@ -135,6 +151,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchMatchQuery() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest("index");
         searchRequest.source(new SearchSourceBuilder().query(new MatchQueryBuilder("num", 10)));
         rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
@@ -165,6 +182,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchWithTermsAgg() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(new TermsAggregationBuilder("agg1", ValueType.STRING).field("type.keyword"));
@@ -198,6 +216,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchWithRangeAgg() throws InterruptedException {
+        initData();
         {
             SearchRequest searchRequest = new SearchRequest();
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -253,6 +272,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchWithTermsAndRangeAgg() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest("index");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         TermsAggregationBuilder agg = new TermsAggregationBuilder("agg1", ValueType.STRING).field("type.keyword");
@@ -318,6 +338,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchWithMatrixStats() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest("index");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(new MatrixStatsAggregationBuilder("agg1").fields(Arrays.asList("num", "num2")));
@@ -463,6 +484,335 @@ class SearchIT extends VertxESRestTestCase {
     }
 
     @Test
+    void testSearchWithHistogram() throws InterruptedException {
+        final String indexName = "products";
+        int docCount = randomIntBetween(10, 100);
+        AtomicLong zero = new AtomicLong();
+        AtomicLong five = new AtomicLong();
+        AtomicLong ten = new AtomicLong();
+        AtomicLong fifteen = new AtomicLong();
+        AtomicLong twenty = new AtomicLong();
+        AtomicLong twentyFive = new AtomicLong();
+        AtomicLong thirty = new AtomicLong();
+        BulkRequest bulkRequest = new BulkRequest().setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
+        for (int id = 1; id <= docCount; id++) {
+            int price = randomIntBetween(5, 30);
+
+            if (price < 5) {
+                zero.getAndIncrement();
+            } else if (price < 10) {
+                five.getAndIncrement();
+            } else if (price < 15) {
+                ten.getAndIncrement();
+            } else if (price < 20) {
+                fifteen.getAndIncrement();
+            } else if (price < 25) {
+                twenty.getAndIncrement();
+            } else if (price < 30) {
+                twentyFive.getAndIncrement();
+            } else if (price < 35) {
+                thirty.getAndIncrement();
+            }
+
+            bulkRequest.add(new IndexRequest(indexName, "doc", String.valueOf(id)).setSource(new JsonObject().put("price", price)));
+        }
+
+
+        rxClient().rxBulk(bulkRequest)
+                .test()
+                .await()
+                .assertNoErrors();
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.aggregation(histogram("prices").field("price").interval(5.0D));
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(docCount);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Histogram histogram = searchResponse.getAggregationByName("prices");
+                        assertThat(histogram.getBuckets()).isNotNull();
+                        assertThat(histogram.getBuckets().size()).isBetween(1, 6);
+
+                        for (Bucket bucket : histogram.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("5.0", "10.0", "15.0", "20.0", "25.0", "30.0");
+                            assertThat(bucket.getDocCount()).isIn(
+                                    five.get(),
+                                    ten.get(),
+                                    fifteen.get(),
+                                    twenty.get(),
+                                    twentyFive.get(),
+                                    thirty.get());
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.aggregation(histogram("prices").field("price").interval(5.0D).minDocCount(0L).extendedBounds(0.0D, 500.0D));
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(docCount);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Histogram histogram = searchResponse.getAggregationByName("prices");
+                        assertThat(histogram.getBuckets()).isNotNull();
+                        assertThat(histogram.getBuckets()).hasSize(101);
+
+                        for (Bucket bucket : histogram.getBuckets().values()) {
+                            assertThat(bucket.getDocCount()).isIn(
+                                    zero.get(),
+                                    five.get(),
+                                    ten.get(),
+                                    fifteen.get(),
+                                    twenty.get(),
+                                    twentyFive.get(),
+                                    thirty.get());
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+
+    }
+
+
+    @Test
+    void testSearchWithDateHistogram() throws InterruptedException {
+        final String indexName = "events";
+        JsonObject mapping = new JsonObject("{\n" +
+                "      \"properties\": {\n" +
+                "        \"timestamp\": {\n" +
+                "          \"type\": \"date\" \n" +
+                "        }\n" +
+                "      }\n" +
+                "    }");
+
+        BulkRequest bulkRequest = new BulkRequest().setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
+                .add(new IndexRequest(indexName, "doc", "1").setSource(new JsonObject().put("timestamp", "2018-07-30T12:37:23")))
+                .add(new IndexRequest(indexName, "doc", "2").setSource(new JsonObject().put("timestamp", "2018-07-31T09:42:45")))
+                .add(new IndexRequest(indexName, "doc", "3").setSource(new JsonObject().put("timestamp", "2018-07-31T11:45:17")))
+                .add(new IndexRequest(indexName, "doc", "4").setSource(new JsonObject().put("timestamp", "2018-07-31T07:29:14")))
+                .add(new IndexRequest(indexName, "doc", "5").setSource(new JsonObject().put("timestamp", "2018-08-02T11:02:57")))
+                .add(new IndexRequest(indexName, "doc", "6").setSource(new JsonObject().put("timestamp", "2018-08-02T14:24:51")));
+        rxClient().indices()
+                .rxCreate(new CreateIndexRequest(indexName).addMapping("doc", mapping))
+                .toCompletable()
+                .andThen(rxClient().rxBulk(bulkRequest))
+                .test()
+                .await()
+                .assertNoErrors();
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.aggregation(dateHistogram("events")
+                    .field("timestamp")
+                    .dateHistogramInterval(DateHistogramInterval.DAY)
+                    .format("yyyy-MM-dd")
+            );
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(6);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Histogram histogram = searchResponse.getAggregationByName("events");
+                        assertThat(histogram.getBuckets()).isNotNull();
+                        assertThat(histogram.getBuckets()).hasSize(4);
+
+                        for (Bucket bucket : histogram.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn(
+                                    "2018-07-30",
+                                    "2018-07-31",
+                                    "2018-08-01",
+                                    "2018-08-02"
+                            );
+
+                            assertThat(bucket.getDocCount()).isIn(
+                                    1L,
+                                    3L,
+                                    0L,
+                                    2L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+
+
+    }
+
+    @Test
+    void testSearchWithFiltersAggregation() throws InterruptedException {
+        final String indexName = "logs-filter-test";
+        JsonObject doc1 = new JsonObject("{ \"body\" : \"warning: page could not be rendered\" }");
+        JsonObject doc2 = new JsonObject("{ \"body\" : \"authentication error\" }");
+        JsonObject doc3 = new JsonObject("{ \"body\" : \"warning: connection timed out\" }");
+        rxClient().rxBulk(new BulkRequest()
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
+                .add(new IndexRequest(indexName, "doc", "1").setSource(doc1))
+                .add(new IndexRequest(indexName, "doc", "2").setSource(doc2))
+                .add(new IndexRequest(indexName, "doc", "3").setSource(doc3))
+        )
+                .test()
+                .await()
+                .assertNoErrors();
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            FiltersAggregationBuilder filters = filters("messages",
+                    new FiltersAggregator.KeyedFilter("errors", matchQuery("body", "error")),
+                    new FiltersAggregator.KeyedFilter("warnings", matchQuery("body", "warning"))
+            );
+            searchSourceBuilder.aggregation(filters);
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(3L);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Filters filtersAgg = searchResponse.getAggregationByName("messages");
+                        assertThat(filtersAgg.getBuckets()).isNotNull();
+                        assertThat(filtersAgg.getBuckets()).hasSize(2);
+
+                        for (Bucket bucket : filtersAgg.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("errors", "warnings");
+                            assertThat(bucket.getDocCount()).isBetween(1L, 2L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+
+        {
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            FiltersAggregationBuilder filters = filters("messages",
+                    matchQuery("body", "error"),
+                    matchQuery("body", "warning")
+            );
+            searchSourceBuilder.aggregation(filters);
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(3L);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Filters filtersAgg = searchResponse.getAggregationByName("messages");
+                        assertThat(filtersAgg.getBuckets()).isNotNull();
+                        assertThat(filtersAgg.getBuckets()).hasSize(2);
+
+                        for (Bucket bucket : filtersAgg.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("0", "1");
+                            assertThat(bucket.getDocCount()).isBetween(1L, 2L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+
+        {
+            rxClient().rxIndex(new IndexRequest(indexName, "doc", "4")
+                    .setSource(new JsonObject("{\"body\": \"info: user Bob logged out\"}"))
+                    .setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
+            )
+                    .test()
+                    .await()
+                    .assertNoErrors();
+
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            FiltersAggregationBuilder filters = filters("messages",
+                    new FiltersAggregator.KeyedFilter("errors", matchQuery("body", "error")),
+                    new FiltersAggregator.KeyedFilter("warnings", matchQuery("body", "warning"))
+            )
+                    .otherBucketKey("other_messages")
+                    .otherBucket(true);
+            searchSourceBuilder.aggregation(filters);
+            searchSourceBuilder.size(0);
+            searchRequest.source(searchSourceBuilder);
+            rxClient().rxSearch(SearchConverters.requestToDataObject(searchRequest))
+                    .test()
+                    .await()
+                    .assertNoErrors()
+                    .assertValue(searchResponse -> {
+                        assertSearchHeader(searchResponse);
+                        assertThat(searchResponse.getSuggest()).isNull();
+                        assertThat(searchResponse.getProfileResults()).isNull();
+                        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(4L);
+                        assertThat(searchResponse.getHits().getHits()).isEmpty();
+                        assertThat(searchResponse.getHits().getMaxScore()).isEqualTo(0F);
+                        assertThat(searchResponse.getAggregations()).hasSize(1);
+                        Filters filtersAgg = searchResponse.getAggregationByName("messages");
+                        assertThat(filtersAgg.getBuckets()).isNotNull();
+                        assertThat(filtersAgg.getBuckets()).hasSize(3);
+
+                        for (Bucket bucket : filtersAgg.getBuckets().values()) {
+                            assertThat(bucket.getKey()).isIn("errors", "warnings", "other_messages");
+                            assertThat(bucket.getDocCount()).isBetween(1L, 2L);
+                            assertThat(bucket.getAggregations()).isNull();
+                        }
+
+                        return true;
+                    });
+        }
+    }
+
+    @Test
     void testSearchWithParentJoin() throws InterruptedException {
         final String indexName = "child_example";
 
@@ -574,6 +924,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testSearchWithSuggest() throws InterruptedException {
+        initData();
         SearchRequest searchRequest = new SearchRequest("index");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.suggest(new SuggestBuilder().addSuggestion("sugg1", new PhraseSuggestionBuilder("type"))
@@ -771,6 +1122,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testMultiSearch() throws InterruptedException {
+        initData();
         MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
         SearchRequest searchRequest1 = new SearchRequest("index1");
         searchRequest1.source().sort("_id", SortOrder.ASC);
@@ -820,6 +1172,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testMultiSearch_withAgg() throws InterruptedException {
+        initData();
         MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
         SearchRequest searchRequest1 = new SearchRequest("index1");
         searchRequest1.source().size(0).aggregation(new TermsAggregationBuilder("name", ValueType.STRING).field("field.keyword")
@@ -877,6 +1230,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testMultiSearch_withQuery() throws InterruptedException {
+        initData();
         MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
         SearchRequest searchRequest1 = new SearchRequest("index1");
         searchRequest1.source().query(new TermsQueryBuilder("field", "value2"));
@@ -964,6 +1318,7 @@ class SearchIT extends VertxESRestTestCase {
 
     @Test
     void testMultiSearch_failure() throws InterruptedException {
+        initData();
         MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
         SearchRequest searchRequest1 = new SearchRequest("index1");
         searchRequest1.source().query(new ScriptQueryBuilder(new Script(ScriptType.INLINE, "invalid", "code", Collections.emptyMap())));

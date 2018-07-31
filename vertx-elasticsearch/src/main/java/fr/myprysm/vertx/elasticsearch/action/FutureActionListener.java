@@ -2,7 +2,6 @@ package fr.myprysm.vertx.elasticsearch.action;
 
 
 import fr.myprysm.vertx.elasticsearch.converter.Converter;
-import fr.myprysm.vertx.elasticsearch.converter.ConverterException;
 import fr.myprysm.vertx.elasticsearch.metrics.RequestMetrics;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -40,7 +39,7 @@ public class FutureActionListener<ResponseType, DataType> implements ActionListe
             handler.handle(Future.succeededFuture(data));
         } catch (Exception exc) {
             metrics.errorConvertResponseToDataObject();
-            handler.handle(Future.failedFuture(new ConverterException(exc)));
+            handler.handle(Future.failedFuture(exc));
         }
         metrics.endConvertResponseToDataObject();
     }

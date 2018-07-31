@@ -22,18 +22,18 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @DataObject
-public class GeoHashGrid extends MultiBucketsAggregation {
+public class Histogram extends MultiBucketsAggregation {
 
-    public GeoHashGrid(MultiBucketsAggregation other) {
+    public Histogram(MultiBucketsAggregation other) {
         super(other);
     }
 
     /**
-     * Build a new <code>GeoHashGrid</code> from a <code>JsonObject</code>.
+     * Build a new <code>Histogram</code> from a <code>JsonObject</code>.
      *
      * @param json the <code>JsonObject</code>
      */
-    public GeoHashGrid(JsonObject json) {
+    public Histogram(JsonObject json) {
         super(json);
     }
 }

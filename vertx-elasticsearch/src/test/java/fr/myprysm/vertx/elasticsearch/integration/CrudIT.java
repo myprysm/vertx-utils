@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.myprysm.vertx.elasticsearch.impl;
+package fr.myprysm.vertx.elasticsearch.integration;
 
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.get.GetIndexRequest;
@@ -54,7 +54,7 @@ import static org.elasticsearch.rest.RestStatus.CREATED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("Duplicates")
-class CrudIT extends VertxESRestTestCase {
+class CrudIT extends VertxESIntegrationTestCase {
 
     @Test
     void testDelete() throws InterruptedException {

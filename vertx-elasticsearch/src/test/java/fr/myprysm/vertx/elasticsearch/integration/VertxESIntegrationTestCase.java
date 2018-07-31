@@ -1,45 +1,36 @@
-package fr.myprysm.vertx.elasticsearch.impl;
+package fr.myprysm.vertx.elasticsearch.integration;
 
 import com.codahale.metrics.SharedMetricRegistries;
 import fr.myprysm.vertx.elasticsearch.ElasticsearchClientOptions;
 import fr.myprysm.vertx.elasticsearch.HttpHost;
+import fr.myprysm.vertx.elasticsearch.VertxESTestCase;
 import fr.myprysm.vertx.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import fr.myprysm.vertx.elasticsearch.reactivex.ElasticsearchClient;
-import fr.myprysm.vertx.test.VertxTest;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.dropwizard.impl.Helper;
+import me.xdrop.jrand.Generator;
 import me.xdrop.jrand.JRand;
+import me.xdrop.jrand.model.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public abstract class VertxESRestTestCase implements VertxTest {
+public abstract class VertxESIntegrationTestCase extends VertxESTestCase {
 
     private static final String TEST_CLIENT_NAME = "vertx-elasticsearch-integration";
-    private static Vertx vertx;
     private ElasticsearchClient nativeClient;
     private static fr.myprysm.vertx.elasticsearch.ElasticsearchClient _nativeAsync;
     private static fr.myprysm.vertx.elasticsearch.ElasticsearchClient _vertxAsync;
     private ElasticsearchClient vertxClient;
 
-    @BeforeAll
-    public static void setUpVertx() {
-        vertx = Vertx.vertx();
-        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
-    }
 
     @BeforeEach
     public void initElasticSearchClient() throws InterruptedException {
@@ -66,12 +57,15 @@ public abstract class VertxESRestTestCase implements VertxTest {
                 stopInit - start));
     }
 
-    void initES() throws InterruptedException {
-
+    /**
+     * Can be overridden to provide data/config to elasticsearch during <code>@BeforeEach</code>, right after the reset.
+     */
+    void initES() {
+        //
     }
 
     /**
-     * Generates a new random in the range (inclusive).
+     * Generates a new random integer in the range (inclusive).
      *
      * @param minInclusive the minimum
      * @param maxInclusive the maximum
@@ -79,6 +73,39 @@ public abstract class VertxESRestTestCase implements VertxTest {
      */
     int randomIntBetween(int minInclusive, int maxInclusive) {
         return JRand.natural().range(minInclusive, maxInclusive).gen();
+    }
+
+    /**
+     * Generates a new random long in the range (inclusive).
+     *
+     * @param minInclusive the minimum
+     * @param maxInclusive the maximum
+     * @return the value
+     */
+    long randomLongBetween(long minInclusive, long maxInclusive) {
+        return new LongGenerator().range(minInclusive, maxInclusive).gen();
+    }
+
+    /**
+     * Generates a new random float in the range (inclusive).
+     *
+     * @param minInclusive the minimum
+     * @param maxInclusive the maximum
+     * @return the value
+     */
+    float randomFloatBetween(float minInclusive, float maxInclusive) {
+        return JRand.flt().range(minInclusive, maxInclusive).gen();
+    }
+
+    /**
+     * Generates a new random double in the range (inclusive).
+     *
+     * @param minInclusive the minimum
+     * @param maxInclusive the maximum
+     * @return the value
+     */
+    double randomDoubleBetween(double minInclusive, double maxInclusive) {
+        return JRand.dbl().range(minInclusive, maxInclusive).gen();
     }
 
     /**
@@ -126,11 +153,9 @@ public abstract class VertxESRestTestCase implements VertxTest {
     }
 
     @AfterAll
-    public static void tearDownVertx() {
+    public static void tearDownClients() {
         _nativeAsync.close();
         _vertxAsync.close();
-        vertx.close();
-        RxJavaPlugins.reset();
     }
 
     @AfterAll
@@ -143,5 +168,75 @@ public abstract class VertxESRestTestCase implements VertxTest {
                         Map.Entry::getKey,
                         e -> Helper.convertMetric(e.getValue(), TimeUnit.SECONDS, TimeUnit.MILLISECONDS)));
         System.out.println(new JsonObject(map));
+    }
+
+    static class LongGenerator extends Generator<Long> {
+        static final ThreadLocalRandom random = ThreadLocalRandom.current();
+
+        private long min;
+        private long max;
+
+        public LongGenerator() {
+            this.max = Long.MAX_VALUE - 1;
+            this.min = 0;
+        }
+
+        /**
+         * Set the minimum value (inclusive)
+         *
+         * @param min The minimum value
+         * @return The same generator
+         */
+        public LongGenerator min(long min) {
+            this.min = min;
+            return this;
+        }
+
+        /**
+         * Set the maximum value to return (inclusive)
+         *
+         * @param max The maximum value to return (inclusive)
+         * @return The same generator
+         */
+        public LongGenerator max(long max) {
+            this.max = max;
+            return this;
+        }
+
+        /**
+         * Set a min/max range
+         *
+         * @param min Minimum value to be returned (inclusive)
+         * @param max Maximum value to be returned (inclusive)
+         * @return The same generator
+         */
+        public LongGenerator range(long min, long max) {
+            min(min);
+            max(max);
+            return this;
+        }
+
+        /**
+         * Set a range starting from 0
+         *
+         * @param max Maximum value to be returned (inclusive)
+         * @return The same generator
+         */
+        public LongGenerator range(long max) {
+            min(0);
+            max(max - 1);
+            return this;
+        }
+
+        public LongGenerator range(Range<Long> rangeOption) {
+            min(rangeOption.getMin());
+            max(rangeOption.getMax());
+            return this;
+        }
+
+        @Override
+        public Long gen() {
+            return random.nextLong(min, max);
+        }
     }
 }
