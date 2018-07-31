@@ -42,7 +42,7 @@
         <vertx.version>3.5.3</vertx.version>
         <logback.version>1.2.3</logback.version>
         <guava.version>25.0-jre</guava.version>
-        <lombok.version>1.16.20</lombok.version>
+        <lombok.version>1.18.2</lombok.version>
         <commons-lang.version>3.7</commons-lang.version>
         <classpath-scanner.version>2.18.1</classpath-scanner.version>
 
