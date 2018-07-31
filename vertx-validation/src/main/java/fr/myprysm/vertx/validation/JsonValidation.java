@@ -554,7 +554,7 @@ public interface JsonValidation extends Function<JsonObject, ValidationResult> {
         requireNonNull(field);
         requireNonNull(value);
         return isLong(field)
-                .and(holds(json -> Long.compare(json.getLong(field), value) > 0, message));
+                .and(holds(json -> json.getLong(field) > value, message));
     }
 
     /**
@@ -582,7 +582,7 @@ public interface JsonValidation extends Function<JsonObject, ValidationResult> {
         requireNonNull(field);
         requireNonNull(value);
         return isLong(field)
-                .and(holds(json -> Long.compare(json.getLong(field), value) >= 0, message));
+                .and(holds(json -> json.getLong(field) >= value, message));
     }
 
     /**
@@ -610,7 +610,7 @@ public interface JsonValidation extends Function<JsonObject, ValidationResult> {
         requireNonNull(field);
         requireNonNull(value);
         return isLong(field)
-                .and(holds(json -> Long.compare(json.getLong(field), value) < 0, message));
+                .and(holds(json -> json.getLong(field) < value, message));
     }
 
     /**
@@ -638,7 +638,7 @@ public interface JsonValidation extends Function<JsonObject, ValidationResult> {
         requireNonNull(field);
         requireNonNull(value);
         return isLong(field)
-                .and(holds(json -> Long.compare(json.getLong(field), value) <= 0, message));
+                .and(holds(json -> json.getLong(field) <= value, message));
     }
 
     /**
