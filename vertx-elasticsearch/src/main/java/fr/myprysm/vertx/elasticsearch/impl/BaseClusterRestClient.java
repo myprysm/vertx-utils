@@ -1,7 +1,12 @@
 package fr.myprysm.vertx.elasticsearch.impl;
 
+import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
+import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import org.elasticsearch.client.ClusterClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 import static java.util.Objects.requireNonNull;
 
@@ -11,20 +16,25 @@ import static java.util.Objects.requireNonNull;
 abstract class BaseClusterRestClient extends BaseRestClient implements fr.myprysm.vertx.elasticsearch.ClusterClient {
 
     /**
-     * The indices client instance.
+     * The indices clusterClient instance.
      */
-    private final ClusterClient client;
+    private final ClusterClient clusterClient;
+    /**
+     * The elasticsearch client instance.
+     */
+    private final RestHighLevelClient client;
 
     /**
-     * Build a new base indices client instance.
+     * Build a new base indices clusterClient instance.
      *
      * @param vertx  the current vertx instance
-     * @param client the Elasticsearch cluster client instance
-     * @param name   the name of the client
+     * @param client the Elasticsearch cluster clusterClient instance
+     * @param name   the name of the clusterClient
      */
-    BaseClusterRestClient(Vertx vertx, ClusterClient client, String name) {
+    BaseClusterRestClient(Vertx vertx, RestHighLevelClient client, String name) {
         super(vertx, name);
         this.client = requireNonNull(client);
+        this.clusterClient = client.cluster();
     }
 
     /**
@@ -32,7 +42,22 @@ abstract class BaseClusterRestClient extends BaseRestClient implements fr.myprys
      *
      * @return the cluster client
      */
-    ClusterClient client() {
+    ClusterClient clusterClient() {
+        return clusterClient;
+    }
+
+    /**
+     * Get the elasticsearch client.
+     *
+     * @return the elasticsearch client
+     */
+    RestHighLevelClient client() {
         return client;
+    }
+
+
+    @Override
+    public void getSettings(Handler<AsyncResult<ClusterUpdateSettingsResponse>> handler) {
+        getSettings(new BaseRequest(), handler);
     }
 }

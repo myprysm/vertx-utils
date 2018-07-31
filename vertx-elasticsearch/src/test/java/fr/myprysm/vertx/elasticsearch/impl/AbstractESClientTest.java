@@ -20,11 +20,13 @@ import com.google.common.collect.ImmutableMap;
 import fr.myprysm.vertx.elasticsearch.ElasticsearchClientOptions;
 import fr.myprysm.vertx.elasticsearch.HttpHost;
 import fr.myprysm.vertx.elasticsearch.reactivex.ElasticsearchClient;
+import fr.myprysm.vertx.validation.ValidationException;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.shareddata.LocalMap;
-import org.apache.commons.lang3.tuple.Pair;
+import io.vertx.junit5.VertxTestContext;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.rest.RestStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,6 +37,7 @@ import java.util.Collections;
 
 import static fr.myprysm.vertx.elasticsearch.impl.BaseElasticsearchRestClient.DS_LOCAL_MAP_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 abstract class AbstractESClientTest extends VertxESUnitTestCase {
 
@@ -47,9 +50,12 @@ abstract class AbstractESClientTest extends VertxESUnitTestCase {
 
     @BeforeEach
     void initClient() {
-        if (rxClient == null) {
-            rxClient = new ElasticsearchClient(getClient(CLIENT_NAME, getOptions()));
-        }
+        rxClient = new ElasticsearchClient(getClient(CLIENT_NAME, getOptions()));
+    }
+
+    @AfterEach
+    void closeClient() {
+        rxClient.close();
     }
 
     final ElasticsearchClient rxClient() {
@@ -72,6 +78,27 @@ abstract class AbstractESClientTest extends VertxESUnitTestCase {
     class BaseElasticsearchRestClientTest {
 
         @Test
+        @DisplayName("It should share rest client and close the local map when no client is running anymore")
+        void itShouldCloseLocalData() {
+            ElasticsearchClient otherClient = new ElasticsearchClient(getClient(CLIENT_NAME, getOptions()));
+            assertThat(vertx.sharedData().getLocalMap(DS_LOCAL_MAP_NAME)).hasSize(1);
+            otherClient.close();
+            assertThat(vertx.sharedData().getLocalMap(DS_LOCAL_MAP_NAME)).hasSize(1);
+            rxClient.close();
+            assertThat(vertx.sharedData().getLocalMap(DS_LOCAL_MAP_NAME)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("It should not create a client with invalid options")
+        void itShouldNotCreateWithInvalidOptions() {
+            ElasticsearchClientOptions options = getOptions().setMaxRetryTimeout(-1);
+            assertThatThrownBy(() -> getClient("bad-retry-timeout", options))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessageContaining("maxRetryTimeout")
+                    .hasMessageContaining("0");
+        }
+
+        @Test
         @DisplayName("It should use path prefix")
         void itShouldUsePathPrefix() throws InterruptedException {
             ElasticsearchClientOptions options = getOptions().setPathPrefix("/prefix-test");
@@ -84,15 +111,16 @@ abstract class AbstractESClientTest extends VertxESUnitTestCase {
 
         @Test
         @DisplayName("It should send default headers")
-        void itShouldSendDefaultHeaders() throws InterruptedException {
+        void itShouldSendDefaultHeaders(VertxTestContext ctx) throws InterruptedException {
             ElasticsearchClientOptions options = getOptions().setDefaultHeaders(ImmutableMap.of("x-custom-header", "x-custom-value"));
             ElasticsearchClient client = new ElasticsearchClient(getClient("test-default-headers", options));
             registerHandler(HttpMethod.HEAD, "/", event -> {
                 setStatus(event, RestStatus.OK).end();
-                assertThat(event.request().headers()).contains(Pair.of("x-custom-header", "x-custom-value"));
+                ctx.verify(() -> assertThat(event.request().headers().contains("x-custom-header", "x-custom-value", true)).isTrue());
             });
             assertSuccessSingle(client.rxPing(), status -> assertThat(status).isTrue());
             client.close();
+            ctx.completeNow();
         }
 
         @Test

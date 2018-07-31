@@ -19,6 +19,7 @@ import fr.myprysm.vertx.elasticsearch.converter.Converter;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  * Indices client working with the Elasticsearch Async API.
@@ -27,12 +28,11 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
 
     /**
      * Build a new client with the official IndicesClient.
-     *
-     * @param vertx  the vertx instance
+     *  @param vertx  the vertx instance
      * @param client the indices client instance
      * @param name   the name of the client
      */
-    NativeAsyncIndicesRestClientImpl(Vertx vertx, org.elasticsearch.client.IndicesClient client, String name) {
+    NativeAsyncIndicesRestClientImpl(Vertx vertx, RestHighLevelClient client, String name) {
         super(vertx, client, name);
     }
 
@@ -43,7 +43,7 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 DeleteIndexConverters::requestToES,
                 DeleteIndexConverters::responseToDataObject,
                 handler,
-                client()::deleteAsync
+                indicesClient()::deleteAsync
         );
     }
 
@@ -54,7 +54,7 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 CreateIndexConverters::requestToES,
                 CreateIndexConverters::responseToDataObject,
                 handler,
-                client()::createAsync
+                indicesClient()::createAsync
         );
     }
 
@@ -65,7 +65,7 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 PutMappingConverters::requestToES,
                 PutMappingConverters::responseToDataObject,
                 handler,
-                client()::putMappingAsync
+                indicesClient()::putMappingAsync
         );
     }
 
@@ -76,7 +76,7 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 RefreshConverters::requestToES,
                 RefreshConverters::responseToDataObject,
                 handler,
-                client()::refreshAsync
+                indicesClient()::refreshAsync
         );
     }
 
@@ -87,7 +87,7 @@ class NativeAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 GetIndexConverters::requestToES,
                 (Converter<Boolean, Boolean>) CommonConverters::objectToBoolean,
                 handler,
-                client()::existsAsync
+                indicesClient()::existsAsync
         );
     }
 }

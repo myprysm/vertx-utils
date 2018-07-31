@@ -1,11 +1,16 @@
 package fr.myprysm.vertx.elasticsearch.impl;
 
+import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsConverters;
 import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsRequest;
 import fr.myprysm.vertx.elasticsearch.action.admin.cluster.ClusterUpdateSettingsResponse;
+import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import org.apache.http.client.methods.HttpGet;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  * Cluster client working with {@link Vertx#executeBlocking(Handler, Handler)}.
@@ -18,7 +23,7 @@ public class VertxAsyncClusterRestClientImpl extends BaseClusterRestClient {
      * @param client the Elasticsearch cluster client instance
      * @param name   the name of the client
      */
-    VertxAsyncClusterRestClientImpl(Vertx vertx, org.elasticsearch.client.ClusterClient client, String name) {
+    VertxAsyncClusterRestClientImpl(Vertx vertx, RestHighLevelClient client, String name) {
         super(vertx, client, name);
     }
 
@@ -29,7 +34,20 @@ public class VertxAsyncClusterRestClientImpl extends BaseClusterRestClient {
                 ClusterUpdateSettingsConverters::requestToES,
                 ClusterUpdateSettingsConverters::responseToDataObject,
                 handler,
-                client()::putSettings
+                clusterClient()::putSettings
+        );
+    }
+
+    @Override
+    public void getSettings(BaseRequest request, Handler<AsyncResult<ClusterUpdateSettingsResponse>> handler) {
+        executeSimpleRequestBlocking(
+                request,
+                ClusterUpdateSettingsResponse::new,
+                handler,
+                headers -> {
+                    Response response = client().getLowLevelClient().performRequest(HttpGet.METHOD_NAME, "/_cluster/settings", headers);
+                    return CommonConverters.responseAsJson(response);
+                }
         );
     }
 }

@@ -18,7 +18,7 @@ import fr.myprysm.vertx.elasticsearch.converter.CommonConverters;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import org.elasticsearch.client.IndicesClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  * Indices client working with {@link Vertx#executeBlocking(Handler, Handler)}.
@@ -31,7 +31,7 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
      * @param client the indices client instance
      * @param name   the name of the client
      */
-    VertxAsyncIndicesRestClientImpl(Vertx vertx, IndicesClient client, String name) {
+    VertxAsyncIndicesRestClientImpl(Vertx vertx, RestHighLevelClient client, String name) {
         super(vertx, client, name);
     }
 
@@ -42,7 +42,7 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 DeleteIndexConverters::requestToES,
                 DeleteIndexConverters::responseToDataObject,
                 handler,
-                client()::delete);
+                indicesClient()::delete);
     }
 
     @Override
@@ -52,7 +52,7 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 CreateIndexConverters::requestToES,
                 CreateIndexConverters::responseToDataObject,
                 handler,
-                client()::create);
+                indicesClient()::create);
     }
 
     @Override
@@ -62,7 +62,7 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 PutMappingConverters::requestToES,
                 PutMappingConverters::responseToDataObject,
                 handler,
-                client()::putMapping);
+                indicesClient()::putMapping);
     }
 
     @Override
@@ -72,7 +72,7 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 RefreshConverters::requestToES,
                 RefreshConverters::responseToDataObject,
                 handler,
-                client()::refresh
+                indicesClient()::refresh
         );
     }
 
@@ -83,6 +83,6 @@ class VertxAsyncIndicesRestClientImpl extends BaseIndicesRestClient {
                 GetIndexConverters::requestToES,
                 CommonConverters::objectToBoolean,
                 handler,
-                client()::exists);
+                indicesClient()::exists);
     }
 }

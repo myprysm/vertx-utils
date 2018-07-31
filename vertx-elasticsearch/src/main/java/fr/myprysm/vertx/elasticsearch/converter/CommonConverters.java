@@ -1,7 +1,10 @@
 package fr.myprysm.vertx.elasticsearch.converter;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import fr.myprysm.vertx.elasticsearch.HttpHost;
 import fr.myprysm.vertx.elasticsearch.action.BaseRequest;
+import fr.myprysm.vertx.json.Json;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import org.apache.commons.lang3.BooleanUtils;
@@ -9,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.lucene.util.BytesRef;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.xcontent.ContextParser;
 import org.elasticsearch.common.xcontent.LoggingDeprecationHandler;
@@ -110,7 +114,6 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.phrase.PhraseSuggestion;
 import org.elasticsearch.search.suggest.term.TermSuggestion;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,6 +135,8 @@ public final class CommonConverters {
             Stream.of(getDefaultNamedXContents().stream(), getProvidedNamedXContents().stream())
                     .flatMap(Function.identity()).collect(toList()));
 
+    public static final ToXContent.Params FLAT_SETTINGS = new ToXContent.MapParams(ImmutableMap.of("flat_settings", "true"));
+
     private CommonConverters() {
         // Service class... need to keep a reference to the XContentRegistry.
     }
@@ -150,7 +155,7 @@ public final class CommonConverters {
                     LoggingDeprecationHandler.INSTANCE,
                     json.toBuffer().getBytes()
             );
-        } catch (IOException exc) {
+        } catch (Exception exc) {
             throw new ConverterException("Unable to convert JsonObject to XContentParser.", exc);
         }
     }
@@ -162,8 +167,19 @@ public final class CommonConverters {
      * @return the JsonObject
      */
     public static JsonObject fromXContent(ToXContent xContent) {
+        return fromXContent(xContent, ToXContent.EMPTY_PARAMS);
+    }
+
+    /**
+     * Convert a {@link ToXContent} object into a {@link JsonObject}.
+     *
+     * @param xContent the content to convert
+     * @param params   the XContent
+     * @return the JsonObject
+     */
+    public static JsonObject fromXContent(ToXContent xContent, ToXContent.Params params) {
         try {
-            BytesRef bytesRef = XContentHelper.toXContent(xContent, XContentType.JSON, false).toBytesRef();
+            BytesRef bytesRef = XContentHelper.toXContent(xContent, XContentType.JSON, params, false).toBytesRef();
             return Buffer
                     .buffer(bytesRef.bytes)
                     .toJsonObject();
@@ -192,6 +208,23 @@ public final class CommonConverters {
         }
     }
 
+
+    /**
+     * Transforms an elasticsearch response into a {@link JsonObject}.
+     *
+     * @param response the response
+     * @return the json object
+     */
+    public static JsonObject responseAsJson(Response response) {
+        try {
+            Map<String, Object> map = Json.mapper.readValue(response.getEntity().getContent(), new TypeReference<Map<String, Object>>() {
+            });
+            return new JsonObject(map);
+        } catch (Exception exc) {
+            throw new ConverterException(exc);
+        }
+
+    }
 
     /**
      * Extracts the headers from a request.
@@ -254,6 +287,7 @@ public final class CommonConverters {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private static List<NamedXContentRegistry.Entry> getDefaultNamedXContents() {
         Map<String, ContextParser<Object, ? extends Aggregation>> map = new HashMap<>();
         map.put(CardinalityAggregationBuilder.NAME, (p, c) -> ParsedCardinality.fromXContent(p, (String) c));

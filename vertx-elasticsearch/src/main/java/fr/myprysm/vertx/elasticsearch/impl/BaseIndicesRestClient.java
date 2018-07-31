@@ -2,6 +2,7 @@ package fr.myprysm.vertx.elasticsearch.impl;
 
 import io.vertx.core.Vertx;
 import org.elasticsearch.client.IndicesClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 import static java.util.Objects.requireNonNull;
 
@@ -13,7 +14,12 @@ abstract class BaseIndicesRestClient extends BaseRestClient implements fr.myprys
     /**
      * The indices client instance.
      */
-    private final IndicesClient client;
+    private final IndicesClient indicesClient;
+
+    /**
+     * The elasticsearch client instance.
+     */
+    private final RestHighLevelClient client;
 
     /**
      * Build a new base indices client instance.
@@ -22,9 +28,10 @@ abstract class BaseIndicesRestClient extends BaseRestClient implements fr.myprys
      * @param client the Elasticsearch indices client instance
      * @param name   the name of the client
      */
-    BaseIndicesRestClient(Vertx vertx, IndicesClient client, String name) {
+    BaseIndicesRestClient(Vertx vertx, RestHighLevelClient client, String name) {
         super(vertx, name);
         this.client = requireNonNull(client);
+        this.indicesClient = client.indices();
     }
 
     /**
@@ -32,7 +39,16 @@ abstract class BaseIndicesRestClient extends BaseRestClient implements fr.myprys
      *
      * @return the indices client
      */
-    IndicesClient client() {
+    IndicesClient indicesClient() {
+        return indicesClient;
+    }
+
+    /**
+     * Get the elasticsearch client.
+     *
+     * @return the elasticsearch client
+     */
+    RestHighLevelClient client() {
         return client;
     }
 }
